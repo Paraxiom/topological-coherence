@@ -1,0 +1,595 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{natbib}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\title{Topological Constraints for Coherent Language Models:\\Why Geometry Prevents Hallucination}
+
+\author{Sylvain Cormier\\
+Paraxiom Research\\
+\texttt{sylvain@paraxiom.org}}
+
+\date{January 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Residual geometry determines whether reasoning is stable. We show that transformer latent dynamics, operating on unconstrained vector spaces, lack the conserved quantities necessary for bounded inference. Recent findings on Manifold-Constrained Hyper-Connections (mHC) confirm this empirically: residual stream mixing requires doubly-stochastic constraints to prevent gradient explosion at scale. We prove this constraint is a special case of Hamiltonian coherence preservation—specifically, evolution on the Birkhoff polytope, a zero-curvature slice of the general coherence manifolds defined in ERLHS. The Tonnetz topology, a toroidal structure with constant spectral gap $\lambda_1 = \Theta(1)$ for fixed side length (not under arbitrary refinement), provides a constructive example of richer geometric structure where low-frequency (coherent) modes propagate without attenuation while high-frequency (incoherent) modes decay as $e^{-\lambda t}$. This establishes a hierarchy of sufficient conditions: mHC (Birkhoff) $\subset$ ERLHS (Hamiltonian) $\subset$ Karmonic (Toroidal + Spectral). The practical consequence—reduced drift, and thereby reduced hallucination—follows from the geometry when these conditions are satisfied. We specify a minimal validation protocol requiring $<$1 GPU-hour.
+\end{abstract}
+
+\section{Introduction}
+
+Transformer architectures lack geometric structure in their latent dynamics. The residual stream $h_t \in \mathbb{R}^n$ evolves without conserved quantities, without topological constraints, and without spectral filtering. This is not an incidental design choice—it is a missing invariant.
+
+The empirical consequence is well-documented: large language models hallucinate \citep{ji2023hallucination}. But hallucination is the symptom. The underlying cause is that unconstrained residual dynamics permit arbitrary drift through latent space.
+
+We argue that hallucination is not a training data problem, an alignment failure, or an inherent limitation of autoregressive generation. \textbf{Hallucination is a geometry problem.}
+
+\subsection{The Missing Constraint}
+
+Consider the latent dynamics of a transformer layer:
+\begin{equation}
+h_{t+1} = h_t + f_\theta(h_t, x_t)
+\end{equation}
+where $h_t \in \mathbb{R}^n$ is the hidden state and $f_\theta$ is the residual function (attention + feedforward). There is no constraint ensuring that $h_{t+1}$ remains in any geometrically meaningful subspace. The residual connection preserves dimensionality but not structure.
+
+Recent work on Hyper-Connections (HC) \citep{zhu2024hyperconnections} extended this paradigm by expanding the residual stream width:
+\begin{equation}
+x_{l+1} = H^{\text{res}}_l x_l + H^{\text{post}\top}_l \mathcal{F}(H^{\text{pre}}_l x_l, W_l)
+\end{equation}
+where $H^{\text{res}}_l \in \mathbb{R}^{n \times n}$ mixes features across parallel streams. While this improves expressivity, the unconstrained nature of $H^{\text{res}}_l$ leads to signal explosion or vanishing when composed across layers.
+
+DeepSeek's Manifold-Constrained Hyper-Connections (mHC) \citep{xie2026mhc} addresses this by projecting $H^{\text{res}}_l$ onto the Birkhoff polytope of doubly-stochastic matrices:
+\begin{equation}
+\mathcal{P}_{\mathcal{M}^{\text{res}}}(H^{\text{res}}_l) := \{H \in \mathbb{R}^{n \times n} \mid H\mathbf{1} = \mathbf{1}, \mathbf{1}^\top H = \mathbf{1}^\top, H \geq 0\}
+\end{equation}
+
+This constraint ensures:
+\begin{enumerate}
+    \item Spectral norm $\|H^{\text{res}}_l\|_2 \leq 1$ (non-expansive)
+    \item Compositional closure under matrix multiplication
+    \item Convex mixing of input features
+\end{enumerate}
+
+\subsection{Our Contribution}
+
+We show that the mHC doubly-stochastic constraint is a \textbf{special case} of coherence-preserving Hamiltonian dynamics on smooth manifolds, as formalized in ERLHS \citep{cormier2025erlhs}. Furthermore, we demonstrate that:
+
+\begin{enumerate}
+    \item The Birkhoff polytope is a zero-curvature slice of the general coherence manifold
+    \item Toroidal (Tonnetz) topology provides richer structure with constant spectral gap
+    \item Harmonic relationships in the Tonnetz map naturally to semantic coherence
+    \item Enforcing topological constraints prevents hallucination by construction
+\end{enumerate}
+
+The key insight is:
+
+\begin{quote}
+\textit{mHC solves signal stability. ERLHS solves coherence preservation. The Tonnetz provides the geometry where both are satisfied simultaneously.}
+\end{quote}
+
+\subsection{Scope and Claims}
+
+This paper does not claim the Tonnetz is the only admissible coherence manifold. It is presented as a \textbf{constructive existence proof} of a topology with bounded drift and constant spectral gap. The contribution is the principle—that latent geometry determines reasoning stability—not the specific manifold choice.
+
+We also distinguish three levels of guarantee:
+\begin{itemize}
+    \item \textbf{Training-time stability}: Addressed by mHC's doubly-stochastic constraint
+    \item \textbf{Inference-time coherence}: Addressed by ERLHS coherence verification
+    \item \textbf{Architectural prior}: Addressed by toroidal topology with spectral filtering
+\end{itemize}
+
+These are complementary, not competing. A complete solution requires all three.
+
+\section{Background}
+
+\subsection{ERLHS: Hamiltonian Coherence Framework}
+
+The Externally-Regularized Latent Hamiltonian System (ERLHS) \citep{cormier2025erlhs} defines coherent machine intelligence as evolution on a constrained manifold.
+
+\textbf{Terminological note}: "Hamiltonian" here refers to the existence of a coherence functional $H$ whose level sets define admissible states—not to literal energy conservation or symplectic dynamics. Practical implementations (Sinkhorn projection, spectral filtering, rejection sampling) are dissipative, not symplectic. ERLHS is Hamiltonian-\textit{inspired}: it borrows the structure of conserved quantities without requiring strict energy preservation.
+
+\begin{definition}[ERLHS Agent]
+An ERLHS agent is a tuple $(M, \omega, H, T, C)$ where:
+\begin{itemize}
+    \item $M$ is a smooth latent manifold
+    \item $\omega$ is a symplectic structure
+    \item $H: M \to \mathbb{R}$ is a coherence functional
+    \item $T$ is a transition operator on $M$
+    \item $C$ is a coherence verifier
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Admissible Transition]
+A transition $z_t \to z_{t+1}$ is admissible if and only if:
+\begin{equation}
+H(z_{t+1}) \leq H(z_t) + \epsilon
+\end{equation}
+for small tolerance $\epsilon$. This enforces coherence-preserving flow.
+\end{definition}
+
+The coherence functional $H$ penalizes off-manifold drift. Intuitively, $H$ measures deviation from learned relationships among latent variables. Coherent reasoning corresponds to trajectories of non-increasing $H$.
+
+\begin{theorem}[Bounded Adversarial Influence, \citet{cormier2025erlhs}]
+If $H$ is Lipschitz with constant $L_H$, then:
+\begin{equation}
+\|z_{t+1} - z_t\| \leq L_H^{-1} |H(z_{t+1}) - H(z_t)|
+\end{equation}
+Adversarial perturbations cannot induce large hidden-state deviations.
+\end{theorem}
+
+\subsection{Karmonic Mesh: Spectral Consensus on Toroidal Topology}
+
+The Karmonic Mesh \citep{cormier2025karmonic} provides the topological structure for coherence-preserving dynamics.
+
+\begin{definition}[$d$-Dimensional Torus]
+The mesh $\mathcal{T}^d_N = (\mathbb{Z}/N)^d$ has:
+\begin{itemize}
+    \item $N^d$ vertices
+    \item Each vertex connected to $2d$ neighbors ($\pm 1$ in each dimension, with wraparound)
+    \item No boundary effects (every vertex is equivalent)
+\end{itemize}
+\end{definition}
+
+\begin{theorem}[Toroidal Spectral Gap, \citet{cormier2025karmonic}]
+\textbf{Important caveat}: The following gap bound holds for fixed torus side length $N$. Scaling $N$ reintroduces gap decay as $O(1/N^2)$. The claim is that for a given topology choice, the gap is constant in the number of nodes $N^d$, not that it is constant under all scalings.
+
+The eigenvalues of the graph Laplacian $L$ on $\mathcal{T}^d_N$ are:
+\begin{equation}
+\lambda(\mathbf{k}) = 2d - 2\sum_{j=1}^d \cos\left(\frac{2\pi k_j}{N}\right)
+\end{equation}
+The spectral gap is:
+\begin{equation}
+\lambda_1 = 2 - 2\cos\left(\frac{2\pi}{N}\right) = \Theta(1)
+\end{equation}
+for fixed $N$, independent of total nodes $N^d$.
+\end{theorem}
+
+\begin{theorem}[Hyperfluid Propagation, \citet{cormier2025karmonic}]
+On the Karmonic Mesh:
+\begin{enumerate}
+    \item Low-frequency modes (coherent information) propagate without attenuation
+    \item High-frequency modes (incoherent noise) decay as $e^{-\lambda t}$
+\end{enumerate}
+\end{theorem}
+
+\subsection{mHC: Doubly-Stochastic Residual Mixing}
+
+Manifold-Constrained Hyper-Connections \citep{xie2026mhc} addresses the instability of expanded residual streams by projecting mixing matrices onto the Birkhoff polytope using the Sinkhorn-Knopp algorithm.
+
+Given a positive matrix $M^{(0)} = \exp(\tilde{H}^{\text{res}}_l)$, iterative row-column normalization:
+\begin{equation}
+M^{(t)} = T_r(T_c(M^{(t-1)}))
+\end{equation}
+converges to a doubly-stochastic matrix.
+
+\textbf{Key empirical finding}: Without this constraint, 27B parameter models exhibit loss spikes and gradient explosions around 12k training steps. With the constraint, training remains stable.
+
+\section{The Topology Hypothesis}
+
+\subsection{Attention as Unconstrained Graph}
+
+In standard transformers, the attention mechanism computes:
+\begin{equation}
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^\top}{\sqrt{d_k}}\right)V
+\end{equation}
+
+The attention weights $A = \text{softmax}(QK^\top/\sqrt{d_k})$ form a fully-connected weighted graph over tokens. Critically:
+
+\begin{itemize}
+    \item Any token can attend to any other token with arbitrary weight
+    \item No topological constraint restricts attention patterns
+    \item The graph structure changes completely at each layer
+    \item There is no notion of "nearby" vs "distant" in latent space
+\end{itemize}
+
+\begin{proposition}[Attention Graph Has No Persistent Neighborhood Structure]
+Let $G_l = (V, E_l, w_l)$ be the attention graph at layer $l$. The edge weights $w_l(i,j) = A_{ij}$ depend on input-dependent queries and keys. No persistent topological neighborhood structure is enforced across layers. (Note: positional encodings and rotary embeddings provide sequence-position information but do not constrain the attention graph topology itself.)
+\end{proposition}
+
+This is the root cause of hallucination: without geometric constraints, latent trajectories can "jump" to arbitrary regions of $\mathbb{R}^n$.
+
+\subsection{The Tonnetz as Coherence Manifold}
+
+The Tonnetz (German: "tone network") is a toroidal lattice historically used in music theory. We propose it as \textit{an example} topology for semantic coherence—not because of musical associations, but because it is the simplest nontrivial toroidal graph with constant spectral gap and multiple commuting cycles. The Tonnetz is not privileged for semantic reasons; any low-genus manifold with comparable spectral properties would serve the same theoretical role.
+
+\begin{definition}[Tonnetz Topology]
+The Tonnetz is a 2-dimensional torus $\mathcal{T}^2$ where:
+\begin{itemize}
+    \item Horizontal edges connect notes by perfect fifths (7 semitones)
+    \item Vertical edges connect notes by major thirds (4 semitones)
+    \item Diagonal edges connect notes by minor thirds (3 semitones)
+    \item Triangular faces represent major and minor triads
+\end{itemize}
+\end{definition}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+    E --- B --- F# --- C# --- G#
+   / \ / \ / \ / \ / \
+  C --- G --- D --- A --- E
+   \ / \ / \ / \ / \ /
+    Ab--- Eb--- Bb--- F --- C
+   / \ / \ / \ / \ / \
+  E --- B --- F# --- C# --- G#
+\end{verbatim}
+\caption{The Tonnetz as a toroidal lattice. Horizontal: fifths. Diagonal: thirds.}
+\end{figure}
+
+\subsection{Why Musical Harmony Maps to Semantic Coherence}
+
+The following mapping is \textit{structural homology}, not semantic isomorphism. We do not claim musical intervals encode meaning; we claim the \textit{graph-theoretic properties} (adjacency, cycles, spectral gap) that make harmonic relationships coherent also constrain semantic drift when imposed on latent spaces:
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Musical Concept} & \textbf{Semantic Analog} \\
+\midrule
+Consonance (small intervals) & Related concepts \\
+Dissonance (large intervals) & Contradictory ideas \\
+Chord (simultaneous notes) & Coherent proposition \\
+Key (tonal center) & Topic/context \\
+Modulation (key change) & Topic shift \\
+Resolution (V $\to$ I) & Logical conclusion \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{proposition}[Tonnetz Distance as Semantic Prior]
+On the Tonnetz, the graph distance $d(u, v)$ between nodes corresponds to harmonic distance. If latent representations are embedded such that semantically related concepts are Tonnetz-adjacent, then Tonnetz distance induces a regularization prior on semantic drift:
+\begin{equation}
+d_{\text{Tonnetz}}(\phi(a), \phi(b)) \leq r \implies d_{\text{semantic}}(a, b) \text{ is bounded under constrained evolution}
+\end{equation}
+where $\phi$ is the embedding into the Tonnetz. This is a constraint, not a ground-truth mapping.
+\end{proposition}
+
+\subsection{Coherent Reasoning as Harmonic Flow}
+
+On the Tonnetz topology:
+
+\begin{itemize}
+    \item \textbf{Coherent reasoning} = smooth flow along edges (small harmonic steps)
+    \item \textbf{Hallucination} = jumps across the torus (large harmonic leaps)
+    \item \textbf{Topic maintenance} = staying within a region (key)
+    \item \textbf{Logical transitions} = modulation along well-defined paths
+\end{itemize}
+
+The spectral gap theorem guarantees that high-frequency modes (abrupt jumps) are exponentially suppressed, while low-frequency modes (smooth flow) propagate without loss.
+
+\subsection{Spectral Alignment as the Mechanism}
+
+The spectral gap explains \textit{what} is filtered. \textit{Spectral alignment} (also called resonance in dynamical systems) explains \textit{why}: modes that align with the manifold's eigenstructure persist under repeated composition.
+
+\begin{definition}[Resonance on a Graph]
+Let $T: \mathbb{R}^n \to \mathbb{R}^n$ be the constrained residual propagation operator (the composition of attention, feedforward, and topological projection across one layer). A latent state $h$ is \textbf{resonant with respect to $T$} if its projection onto the dominant eigenspace of $T$ satisfies:
+\begin{equation}
+\|P_{\lambda < \lambda_c} h\|^2 \gg \|P_{\lambda \geq \lambda_c} h\|^2
+\end{equation}
+where $P_{\lambda < \lambda_c}$ projects onto eigenmodes of the graph Laplacian with eigenvalue below cutoff $\lambda_c$.
+\end{definition}
+
+Resonance is defined with respect to a specific operator acting on a specific space. In this work, the operator is the Tonnetz-constrained residual map; the space is the latent manifold.
+
+Resonant signals align with the manifold's natural modes and propagate without attenuation under repeated application of $T$. Non-resonant signals dissipate as $e^{-\lambda t}$.
+
+In practice, resonance can be measured as persistence of low-frequency latent components across layers, analogous to spectral energy concentration in graph signal processing \cite{shuman2013emerging}. This provides an operational definition: compute the spectral decomposition of hidden states at each layer and track the ratio of energy in low-frequency vs. high-frequency bands.
+
+\textbf{Epistemic boundary}: Resonance \textit{filters}, \textit{stabilizes}, and \textit{selects}. It does not alone guarantee semantic correctness. A resonant mode may be stably wrong. The claim is that non-resonant modes cannot persist—not that resonant modes are necessarily correct.
+
+More generally, any system where harmonic organization creates constructive interference will exhibit mode-selective persistence: aligned modes reinforce, misaligned modes decay. This is a generic property of spectral filtering on structured manifolds, not specific to any particular substrate.\footnote{An analogy exists to physical systems (e.g., nanotube arrays with harmonic length ratios exhibiting extended coherence), but this analogy is not required for the theory and carries no physical implication for LLMs.}
+
+\textbf{Note on the Tonnetz}: The Tonnetz is used here as a minimal example of a low-genus, cyclic, well-understood resonance manifold with constant spectral gap—not as a claim about human semantic universals or cultural structure.
+
+\section{Formal Unification}
+
+\subsection{mHC as Special Case of ERLHS}
+
+\begin{theorem}[Doubly-Stochastic $\subset$ Hamiltonian Coherence]
+The mHC constraint $H^{\text{res}}_l \in \mathcal{M}^{\text{DS}}$ (doubly-stochastic) is a special case of ERLHS coherence preservation with:
+\begin{enumerate}
+    \item Manifold $M = $ Birkhoff polytope $\mathcal{B}_n$
+    \item Coherence functional $H(A) = \|A\mathbf{1} - \mathbf{1}\|^2 + \|\mathbf{1}^\top A - \mathbf{1}^\top\|^2$
+    \item Transition operator $T = $ Sinkhorn-Knopp iteration
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The Birkhoff polytope $\mathcal{B}_n$ is a convex polytope in $\mathbb{R}^{n \times n}$ with vertices at permutation matrices. It is a smooth manifold except at vertices.
+
+The coherence functional $H(A) = \|A\mathbf{1} - \mathbf{1}\|^2 + \|\mathbf{1}^\top A - \mathbf{1}^\top\|^2$ measures deviation from doubly-stochastic. Any matrix with $H(A) = 0$ satisfies the mHC constraint.
+
+The Sinkhorn-Knopp algorithm is gradient descent on $H$ with respect to the KL-divergence geometry, converging to the unique doubly-stochastic matrix in the scaling equivalence class.
+
+Therefore, mHC is ERLHS with a specific (flat, finite-dimensional) manifold choice. $\square$
+\end{proof}
+
+\begin{corollary}[mHC Has Zero Curvature]
+The Birkhoff polytope has zero Riemannian curvature as a convex subset of Euclidean space. This means mHC provides no spectral filtering—all frequency modes are treated equally.
+\end{corollary}
+
+\subsection{Tonnetz Provides Richer Structure}
+
+\begin{theorem}[Tonnetz Spectral Advantage]
+Let $\mathcal{T}^2_{12}$ be the Tonnetz (12-tone equal temperament as $\mathcal{T}^2$ with $N=12$). Compared to the Birkhoff polytope:
+\begin{enumerate}
+    \item Tonnetz has constant spectral gap $\lambda_1 = 2 - 2\cos(\pi/6) \approx 0.27$
+    \item Birkhoff polytope has no intrinsic spectral structure
+    \item Tonnetz provides harmonic distance metric
+    \item Birkhoff polytope provides only convex combination
+\end{enumerate}
+\end{theorem}
+
+\begin{proposition}[Generalization Hierarchy]
+\begin{equation}
+\text{mHC (Birkhoff)} \subset \text{ERLHS (General Manifold)} \subset \text{Karmonic (Toroidal + Spectral)}
+\end{equation}
+Each level adds structure:
+\begin{itemize}
+    \item mHC: Bounded mixing (stability)
+    \item ERLHS: Coherence-preserving flow (no off-manifold drift)
+    \item Karmonic: Spectral filtering (coherent modes preserved, noise suppressed)
+\end{itemize}
+\end{proposition}
+
+\subsection{The Coherence Functional on Tonnetz}
+
+\begin{definition}[Tonnetz Coherence Functional]
+For latent state $z$ embedded on the Tonnetz with coordinates $(q, p)$:
+\begin{equation}
+H_{\text{Tonnetz}}(z) = \sum_{(i,j) \in E} w_{ij} \|z_i - z_j\|^2 + V(z)
+\end{equation}
+where:
+\begin{itemize}
+    \item First term: Harmonic coupling (penalizes deviation from neighbors)
+    \item $V(z)$: Potential encoding learned semantic relationships
+\end{itemize}
+\end{definition}
+
+\begin{theorem}[Hamiltonian Flow on Tonnetz]
+The Hamiltonian equations:
+\begin{equation}
+\dot{q} = \frac{\partial H}{\partial p}, \quad \dot{p} = -\frac{\partial H}{\partial q}
+\end{equation}
+preserve $H$ exactly. Discretized via symplectic integrators, the coherence error is bounded:
+\begin{equation}
+|H(z_T) - H(z_0)| \leq C \cdot \Delta t^k \cdot T
+\end{equation}
+for $k$-th order integrator with step size $\Delta t$.
+\end{theorem}
+
+\section{Implications for LLM Architecture}
+
+\subsection{Tonnetz Embedding: A Concrete Mechanism}
+
+The question "how do you place tokens on the Tonnetz?" requires a concrete answer. We propose one viable mechanism (not the only one):
+
+\textbf{Learned Toroidal Projection.} Define a learnable projection $\phi_\theta: \mathbb{R}^d \to \mathcal{T}^2$ that maps token embeddings to Tonnetz coordinates:
+\begin{equation}
+\phi_\theta(e) = \left( \sigma(W_1 e) \mod 1, \sigma(W_2 e) \mod 1 \right)
+\end{equation}
+where $W_1, W_2 \in \mathbb{R}^{1 \times d}$ are learned, $\sigma$ is sigmoid, and $\mod 1$ enforces toroidal wraparound.
+
+\textbf{Adjacency Loss.} Train $\phi_\theta$ jointly with the model using a loss that encourages semantically related tokens to be Tonnetz-adjacent:
+\begin{equation}
+\mathcal{L}_{\text{topo}} = \mathbb{E}_{(a,b) \sim \text{co-occur}}\left[ d_{\mathcal{T}}(\phi(a), \phi(b)) \right] - \lambda \cdot \mathbb{E}_{(a,c) \sim \text{random}}\left[ d_{\mathcal{T}}(\phi(a), \phi(c)) \right]
+\end{equation}
+The first term pulls co-occurring tokens together; the second prevents collapse.
+
+\textbf{Alternative: Post-hoc Verification.} If architectural integration is impractical, Tonnetz structure can serve as a diagnostic: project trained embeddings onto $\mathcal{T}^2$ via spectral methods and measure whether semantic clusters map to Tonnetz neighborhoods. This verifies whether existing models implicitly learn toroidal structure, without modifying architecture.
+
+\textbf{Limitations.} Learned embeddings may not converge to musically-meaningful Tonnetz positions—and they need not. The goal is spectral structure, not harmonic fidelity. Any embedding that induces constant spectral gap suffices.
+
+\subsection{Tonnetz-Constrained Attention}
+
+\begin{definition}[Topological Attention]
+Replace standard attention with Tonnetz-constrained attention:
+\begin{equation}
+\text{TopoAttention}(Q, K, V) = \text{softmax}\left(\frac{QK^\top}{\sqrt{d_k}} \odot M_{\text{Tonnetz}}\right)V
+\end{equation}
+where $M_{\text{Tonnetz}}$ is a mask encoding Tonnetz adjacency:
+\begin{equation}
+M_{\text{Tonnetz}}(i, j) = \begin{cases}
+1 & \text{if } d_{\text{Tonnetz}}(i, j) \leq r \\
+e^{-\alpha \cdot d_{\text{Tonnetz}}(i,j)} & \text{otherwise}
+\end{cases}
+\end{equation}
+\end{definition}
+
+This constrains attention to respect topological locality while allowing exponentially-suppressed long-range connections.
+
+\textbf{Recall-coherence tradeoff.} Suppressing long-range attention may hurt tasks requiring non-local retrieval (e.g., copying from distant context, long-range coreference). The optimal radius $r$ and decay rate $\alpha$ are task-dependent. We do not claim a universal setting; we claim the tradeoff exists and is tunable. For tasks prioritizing coherence over recall, tighter constraints help. For knowledge-intensive retrieval, looser constraints (larger $r$) may be necessary.
+
+\subsection{Coherence-Preserving Residual Streams}
+
+Combine mHC's doubly-stochastic constraint with Tonnetz structure:
+
+\begin{equation}
+H^{\text{res}}_l = \mathcal{P}_{\mathcal{B}_n}\left(\mathcal{P}_{\text{Tonnetz}}(\tilde{H}^{\text{res}}_l)\right)
+\end{equation}
+
+First project onto Tonnetz-compatible matrices (respecting harmonic distance), then project onto doubly-stochastic (ensuring bounded mixing).
+
+\textbf{Open design choice}: The projection order matters and is not uniquely determined by theory. Alternative orderings (Birkhoff first, then Tonnetz) may have different contractivity properties. Whether the composition preserves positivity depends on the Tonnetz projection definition. We present this as one viable instantiation; optimal projection sequencing remains an empirical question.
+
+\subsection{Inference-Time Coherence Verification}
+
+The ERLHS coherence verifier $C$ can operate at inference time:
+
+\begin{enumerate}
+    \item Compute $H(z_t)$ at each generation step
+    \item If $H(z_{t+1}) > H(z_t) + \epsilon$: reject token, resample
+    \item Track cumulative coherence drift: $\sum_t \Delta H_t$
+    \item Alert if trajectory leaves coherent region
+\end{enumerate}
+
+This provides runtime hallucination detection without retraining.
+
+\section{Experimental Predictions}
+
+While full experimental validation is beyond the scope of this theoretical work, we make the following testable predictions:
+
+\begin{enumerate}
+    \item \textbf{Stability}: Tonnetz-constrained transformers will exhibit stable training at larger scales than unconstrained models
+
+    \item \textbf{Hallucination rate}: Models with topological constraints will produce fewer factual errors on knowledge-intensive tasks
+
+    \item \textbf{Coherence metrics}: Latent trajectories will show lower variance in $H$ for coherent outputs vs. hallucinations
+
+    \item \textbf{Adversarial robustness}: Prompt injection success rate will decrease proportionally to spectral gap $\lambda_1$
+\end{enumerate}
+
+\subsection{Minimal Validation Protocol}
+
+We specify a minimal experiment to test the core hypothesis:
+
+\textbf{Setup:}
+\begin{itemize}
+    \item 2-layer transformer, $d_{\text{model}} = 64$, 4 attention heads
+    \item Synthetic task: next-token prediction on sequences with controlled semantic drift
+    \item Training data: sequences where valid continuations are Tonnetz-adjacent; invalid continuations require "jumps"
+\end{itemize}
+
+\textbf{Conditions:}
+\begin{enumerate}
+    \item \textbf{Baseline}: Standard attention (unconstrained)
+    \item \textbf{mHC}: Doubly-stochastic residual mixing
+    \item \textbf{Toroidal}: Attention mask $M_{\text{Tonnetz}}$ with exponential distance decay
+\end{enumerate}
+
+\textbf{Metrics:}
+\begin{itemize}
+    \item Drift rate: frequency of predictions requiring $d_{\text{Tonnetz}} > 2$
+    \item Coherence variance: $\text{Var}[H(z_t)]$ over generation
+    \item Training stability: gradient norm at step 1000
+\end{itemize}
+
+\textbf{Hypothesis}: Condition 3 will show lowest drift rate, lowest coherence variance, and stable gradients. Condition 1 will show highest drift and potential gradient spikes.
+
+This experiment requires $<$1 GPU-hour and validates the principle before scaling.
+
+\section{Discussion}
+
+\subsection{Why Not Implicit Smoothing?}
+
+Standard transformer components provide some implicit spectral filtering: LayerNorm suppresses outlier activations, softmax temperature controls attention sharpness, and multi-head averaging smooths individual head outputs. However, none of these impose \textit{topological} constraints—they operate pointwise or via soft weighting, not via manifold structure. They smooth without providing a conserved quantity or spectral gap guarantee. The distinction is between ad-hoc regularization (which helps) and geometric constraint (which bounds).
+
+\subsection{Why Hasn't This Been Done?}
+
+Several factors explain why topological constraints haven't been widely explored:
+
+\begin{enumerate}
+    \item \textbf{Scaling laws focus}: Research prioritized parameter count and data size over architectural constraints
+
+    \item \textbf{Geometric ML is young}: Hamiltonian neural networks \citep{greydanus2019hamiltonian} appeared only in 2019
+
+    \item \textbf{mHC just published}: The empirical confirmation of instability without constraints appeared January 2026
+
+    \item \textbf{Interdisciplinary gap}: Music theory (Tonnetz), physics (Hamiltonian), and ML rarely intersect
+\end{enumerate}
+
+\subsection{Relationship to Other Approaches}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{Approach} & \textbf{What It Constrains} & \textbf{Limitation} \\
+\midrule
+RLHF & Output distribution & No latent geometry \\
+Constitutional AI & Output rules & No latent geometry \\
+Retrieval augmentation & Knowledge access & No reasoning constraint \\
+Chain-of-thought & Output format & No geometric constraint \\
+mHC & Residual mixing & No semantic structure \\
+\textbf{Tonnetz-ERLHS} & \textbf{Latent geometry} & Embedding complexity; may constrain long-range jumps \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Limitations}
+
+\begin{enumerate}
+    \item \textbf{Embedding challenge}: Mapping tokens to Tonnetz positions requires learning or heuristics
+
+    \item \textbf{Computational overhead}: Topological constraints add operations per layer
+
+    \item \textbf{Expressivity tradeoff}: Constraints may limit model capacity for some tasks
+
+    \item \textbf{No experiments yet}: This paper provides theory; validation requires implementation
+\end{enumerate}
+
+\section{Conclusion}
+
+We have established:
+
+\begin{enumerate}
+    \item \textbf{Residual geometry determines reasoning stability}: Unconstrained latent dynamics lack the conserved quantities necessary for bounded inference
+
+    \item \textbf{mHC empirically confirms the principle}: Doubly-stochastic constraints are necessary for stable training at scale
+
+    \item \textbf{A formal hierarchy exists}: mHC (Birkhoff) $\subset$ ERLHS (Hamiltonian) $\subset$ Karmonic (Toroidal + Spectral)
+
+    \item \textbf{Tonnetz is a constructive existence proof}: Toroidal topology with constant spectral gap demonstrates richer structure is achievable
+
+    \item \textbf{Hallucination is a consequence, not a cause}: Reduced drift follows from geometric constraints, not alignment heuristics
+\end{enumerate}
+
+The central contribution is a sufficient condition:
+
+\begin{quote}
+\textit{Geometric constraints provide one principled path to coherent artificial intelligence—not the only path, but a formally grounded one.}
+\end{quote}
+
+Future foundation models should be designed with topological constraints from the start. The mathematical framework exists. A minimal validation protocol is specified. Implementation awaits.
+
+\bibliographystyle{plainnat}
+\begin{thebibliography}{99}
+
+\bibitem[Cormier(2025a)]{cormier2025erlhs}
+Cormier, S. (2025).
+\newblock ERLHS: A Hamiltonian Framework for Coherence-Preserving Machine Intelligence.
+\newblock \emph{Zenodo}. DOI: 10.5281/zenodo.17928909
+
+\bibitem[Cormier(2025b)]{cormier2025karmonic}
+Cormier, S. (2025).
+\newblock Karmonic Mesh: Spectral Consensus on Toroidal Manifolds.
+\newblock \emph{Zenodo}. DOI: 10.5281/zenodo.17928991
+
+\bibitem[Greydanus et al.(2019)]{greydanus2019hamiltonian}
+Greydanus, S., Dzamba, M., and Yosinski, J. (2019).
+\newblock Hamiltonian neural networks.
+\newblock In \emph{NeurIPS}.
+
+\bibitem[Ji et al.(2023)]{ji2023hallucination}
+Ji, Z., et al. (2023).
+\newblock Survey of hallucination in natural language generation.
+\newblock \emph{ACM Computing Surveys}, 55(12):1--38.
+
+\bibitem[Xie et al.(2026)]{xie2026mhc}
+Xie, Z., et al. (2026).
+\newblock mHC: Manifold-Constrained Hyper-Connections.
+\newblock \emph{arXiv preprint arXiv:2512.24880}.
+
+\bibitem[Zhu et al.(2024)]{zhu2024hyperconnections}
+Zhu, D., et al. (2024).
+\newblock Hyper-Connections.
+\newblock \emph{arXiv preprint arXiv:2409.19606}.
+
+\bibitem[Shuman et al.(2013)]{shuman2013emerging}
+Shuman, D. I., Narang, S. K., Frossard, P., Ortega, A., and Vandergheynst, P. (2013).
+\newblock The emerging field of signal processing on graphs.
+\newblock \emph{IEEE Signal Processing Magazine}, 30(3):83--98.
+
+\end{thebibliography}
+
+\end{document}

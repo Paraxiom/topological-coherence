@@ -67,6 +67,20 @@ def create_tonnetz_mask(seq_len: int, radius: float = 2.0, alpha: float = 1.0) -
     return mask
 
 
+def create_random_graph_mask(seq_len: int, density: float = 0.3, seed: int = 123) -> torch.Tensor:
+    """
+    NEGATIVE CONTROL: Random graph mask (no topological structure).
+    Same approximate sparsity as Tonnetz but random connectivity.
+    """
+    torch.manual_seed(seed)
+    mask = torch.rand(seq_len, seq_len)
+    mask = (mask < density).float()
+    mask = (mask + mask.T) / 2  # Symmetrize
+    mask = torch.clamp(mask, 0, 1)
+    mask.fill_diagonal_(1.0)  # Self-attention always allowed
+    return mask
+
+
 # =============================================================================
 # 2. SINKHORN-KNOPP (mHC doubly-stochastic projection)
 # =============================================================================
@@ -165,6 +179,38 @@ class mHCAttention(nn.Module):
         return mixed
 
 
+class RandomGraphAttention(nn.Module):
+    """NEGATIVE CONTROL: Random graph mask (no topological structure)."""
+    def __init__(self, d_model: int, n_heads: int, max_seq_len: int = 64):
+        super().__init__()
+        self.n_heads = n_heads
+        self.d_k = d_model // n_heads
+        self.W_q = nn.Linear(d_model, d_model)
+        self.W_k = nn.Linear(d_model, d_model)
+        self.W_v = nn.Linear(d_model, d_model)
+        self.W_o = nn.Linear(d_model, d_model)
+
+        # Pre-compute random mask (same sparsity, no structure)
+        self.register_buffer('random_mask', create_random_graph_mask(max_seq_len))
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        B, T, C = x.shape
+        q = self.W_q(x).view(B, T, self.n_heads, self.d_k).transpose(1, 2)
+        k = self.W_k(x).view(B, T, self.n_heads, self.d_k).transpose(1, 2)
+        v = self.W_v(x).view(B, T, self.n_heads, self.d_k).transpose(1, 2)
+
+        attn = (q @ k.transpose(-2, -1)) / math.sqrt(self.d_k)
+
+        # Apply random mask
+        mask = self.random_mask[:T, :T].unsqueeze(0).unsqueeze(0)
+        attn = attn * mask
+
+        attn = F.softmax(attn, dim=-1)
+
+        out = (attn @ v).transpose(1, 2).contiguous().view(B, T, C)
+        return self.W_o(out)
+
+
 class TinyTransformer(nn.Module):
     """2-layer transformer for validation experiment."""
     def __init__(self, vocab_size: int, d_model: int, n_heads: int,
@@ -183,6 +229,9 @@ class TinyTransformer(nn.Module):
         elif attention_type == "toroidal":
             self.attn1 = ToroidalAttention(d_model, n_heads, max_seq_len)
             self.attn2 = ToroidalAttention(d_model, n_heads, max_seq_len)
+        elif attention_type == "random":
+            self.attn1 = RandomGraphAttention(d_model, n_heads, max_seq_len)
+            self.attn2 = RandomGraphAttention(d_model, n_heads, max_seq_len)
 
         self.ff1 = nn.Sequential(
             nn.Linear(d_model, d_model * 4),
@@ -399,7 +448,7 @@ def main():
 
     results = {}
 
-    for attn_type in ["baseline", "mhc", "toroidal"]:
+    for attn_type in ["baseline", "mhc", "toroidal", "random"]:
         results[attn_type] = run_experiment(attn_type, n_epochs=100)
 
     # Summary
@@ -408,9 +457,9 @@ def main():
     print("="*60)
 
     print(f"\n{'Condition':<12} | {'Final Drift':<12} | {'Final Coh.Var':<14} | {'Grad Norm':<12}")
-    print("-" * 56)
+    print("-" * 60)
 
-    for attn_type in ["baseline", "mhc", "toroidal"]:
+    for attn_type in ["baseline", "mhc", "toroidal", "random"]:
         m = results[attn_type]
         drift = m["drift_rate"][-1] if m["drift_rate"] else 0
         coh = m["coherence_var"][-1] if m["coherence_var"] else 0

@@ -1,0 +1,29 @@
+[package]
+name = "topological-coherence"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.60"
+authors = ["Sylvain Cormier <sylvain@paraxiom.org>"]
+description = "Topological constraints for coherent inference - Tonnetz geometry primitives for attention mechanisms"
+license = "Apache-2.0"
+repository = "https://github.com/Paraxiom/topological-coherence"
+documentation = "https://docs.rs/topological-coherence"
+readme = "README.md"
+keywords = ["topology", "attention", "transformer", "coherence", "tonnetz"]
+categories = ["science", "mathematics", "algorithms"]
+
+[features]
+default = ["std"]
+std = []
+# Substrate/SCALE codec support
+substrate = ["parity-scale-codec", "scale-info"]
+
+[dependencies]
+# no_std compatible math
+libm = "0.2"
+
+# Optional: Substrate SCALE codec
+parity-scale-codec = { version = "3.6", default-features = false, features = ["derive", "max-encoded-len"], optional = true }
+scale-info = { version = "2.10", default-features = false, features = ["derive"], optional = true }
+
+[dev-dependencies]

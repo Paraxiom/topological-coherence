@@ -3,3 +3,7 @@ venv/
 *.log
 *.out
 __pycache__/
+
+# Rust
+target/
+*.lock

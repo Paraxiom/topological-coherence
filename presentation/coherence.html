@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paraxiom | Topological Coherence</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* Tonnetz Color Ratios:
+           Root (C) = Terracotta
+           Fifth (G) = 3:2 ratio = Olive/Green
+           Major Third (E) = 5:4 ratio = Gold/Amber
+           Minor Third = 6:5 ratio = Warm Rose
+        */
+        /* MUTED TREE GREEN - forest palette */
+        :root {
+            --green: #6a9a6a;         /* Tree green - 3% lighter/warmer */
+            --green-light: #b0c4a0;   /* Sage/lichen */
+            --green-dark: #4a6a4a;    /* Deep forest */
+            --gold: #a08a62;          /* Earthy brown-bronze - 3% lighter */
+            --dark: #1e231e;          /* Forest floor - slightly lighter */
+
+            --bg: #1e231e;
+            --bg-light: #282e28;
+            --surface: rgba(88, 129, 87, 0.1);
+            --border: rgba(88, 129, 87, 0.3);
+            --text: #dad7cd;          /* Birch bark */
+            --text-dim: #8a9a8a;
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.85; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        @keyframes pulse-soft {
+            0%, 100% { box-shadow: 0 4px 20px rgba(88, 129, 87, 0.1); }
+            50% { box-shadow: 0 4px 30px rgba(88, 129, 87, 0.2); }
+        }
+
+        @keyframes bioluminescence {
+            0%, 100% { box-shadow: 0 0 12px rgba(88, 129, 87, 0.15), 0 0 25px rgba(88, 129, 87, 0.08); }
+            50% { box-shadow: 0 0 20px rgba(88, 129, 87, 0.25), 0 0 40px rgba(88, 129, 87, 0.12); }
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow: hidden;
+            min-height: 100vh;
+        }
+
+        /* LCARS Frame - Living/Organic */
+        .lcars-frame {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .lcars-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .lcars-top-corner {
+            width: 140px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--green) 0%, var(--gold) 100%);
+            border-radius: 0 0 25px 0;
+        }
+
+        .lcars-top-bar {
+            flex: 1;
+            height: 28px;
+            margin-left: 12px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .lcars-pill {
+            height: 100%;
+            border-radius: 14px;
+            transition: all 0.5s ease;
+        }
+
+        .lcars-pill:nth-child(1) { animation: breathe 6s ease-in-out infinite; }
+        .lcars-pill:nth-child(2) { animation: breathe 6s ease-in-out infinite 1s; }
+        .lcars-pill:nth-child(3) { animation: breathe 6s ease-in-out infinite 2s; }
+        .lcars-pill:nth-child(4) { animation: breathe 6s ease-in-out infinite 3s; }
+
+        .lcars-top-end {
+            width: 100px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--green) 0%, var(--gold) 100%);
+            border-radius: 0 0 0 25px;
+            margin-left: 12px;
+        }
+
+        .lcars-left {
+            position: absolute;
+            left: 0;
+            top: 60px;
+            bottom: 60px;
+            width: 58px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 12px 0;
+            pointer-events: all;
+        }
+
+        .lcars-btn {
+            width: 54px;
+            height: 28px;
+            border-radius: 0 14px 14px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .lcars-btn.green {
+            background: rgba(106, 154, 106, 0.15);
+            border: 1px solid rgba(106, 154, 106, 0.4);
+            color: var(--green-light);
+        }
+
+        .lcars-btn.gold {
+            background: rgba(160, 138, 98, 0.15);
+            border: 1px solid rgba(160, 138, 98, 0.4);
+            color: var(--gold);
+        }
+
+        .lcars-btn:hover {
+            transform: translateX(4px);
+            backdrop-filter: blur(12px);
+        }
+
+        .lcars-btn.green:hover {
+            background: rgba(106, 154, 106, 0.3);
+            border-color: var(--green);
+            box-shadow: 4px 0 15px rgba(106, 154, 106, 0.2);
+        }
+
+        .lcars-btn.gold:hover {
+            background: rgba(160, 138, 98, 0.3);
+            border-color: var(--gold);
+            box-shadow: 4px 0 15px rgba(160, 138, 98, 0.2);
+        }
+
+        .lcars-btn.active.green {
+            background: rgba(106, 154, 106, 0.4);
+            border-color: var(--green);
+            color: #fff;
+        }
+
+        .lcars-btn.active.gold {
+            background: rgba(160, 138, 98, 0.4);
+            border-color: var(--gold);
+            color: #fff;
+        }
+
+        .lcars-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .lcars-bottom-corner {
+            width: 140px;
+            height: 50px;
+            background: linear-gradient(225deg, var(--green) 0%, var(--gold) 100%);
+            border-radius: 0 25px 0 0;
+        }
+
+        .lcars-bottom-bar {
+            flex: 1;
+            height: 28px;
+            margin-left: 12px;
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .lcars-bottom-end {
+            width: 100px;
+            height: 50px;
+            background: linear-gradient(225deg, var(--gold) 0%, var(--green) 100%);
+            border-radius: 25px 0 0 0;
+            margin-left: 12px;
+        }
+
+        /* Logo */
+        .logo {
+            position: fixed;
+            top: 58px;
+            left: 75px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            color: var(--green);
+            z-index: 101;
+        }
+
+        /* Language Toggle */
+        .lang-toggle {
+            position: fixed;
+            top: 58px;
+            right: 120px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-dim);
+            z-index: 101;
+            cursor: pointer;
+            padding: 4px 10px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-light);
+            transition: all 0.3s ease;
+        }
+        .lang-toggle:hover { border-color: var(--green); }
+        .lang-active { color: var(--green); font-weight: 600; }
+
+        /* Slide Counter */
+        .counter {
+            position: fixed;
+            bottom: 58px;
+            right: 32px;
+            font-size: 12px;
+            color: var(--text-dim);
+            z-index: 101;
+        }
+
+        .counter span { color: var(--green); font-weight: 500; }
+
+        /* Presentation */
+        .presentation {
+            position: fixed;
+            top: 65px;
+            left: 75px;
+            right: 24px;
+            bottom: 65px;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: none;
+            opacity: 0;
+            padding: 40px 50px;
+            overflow-y: auto;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: translateY(15px);
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 52px;
+            font-weight: 400;
+            line-height: 1.15;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 500;
+            margin-bottom: 24px;
+            color: var(--text);
+        }
+
+        h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--green);
+            letter-spacing: 0.5px;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text-dim);
+            margin-bottom: 14px;
+            max-width: 680px;
+            font-weight: 400;
+        }
+
+        .accent { color: var(--green); font-weight: 500; }
+        .warm { color: var(--green); }
+
+        /* Title Slide */
+        .title-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .title-slide h1 {
+            font-size: 68px;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--green) 0%, var(--gold) 25%, var(--green) 50%, var(--gold) 75%, var(--green) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 8s ease infinite;
+        }
+
+        .subtitle {
+            font-size: 21px;
+            color: var(--text-dim);
+            font-weight: 400;
+            margin-bottom: 40px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .author {
+            font-size: 14px;
+            color: var(--text-dim);
+            font-weight: 500;
+        }
+
+        /* Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin: 28px 0;
+        }
+
+        .card {
+            background: rgba(36, 40, 36, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.3);
+            animation: bioluminescence 6s ease-in-out infinite;
+        }
+
+        .card:nth-child(2) { animation-delay: 2s; }
+        .card:nth-child(3) { animation-delay: 4s; }
+
+        .card:hover {
+            border-color: var(--green);
+            box-shadow: 0 0 30px rgba(88, 129, 87, 0.3), 0 8px 30px rgba(0,0,0,0.4);
+            transform: translateY(-4px);
+        }
+
+        .card p { font-size: 14px; margin-bottom: 0; }
+
+        /* Timeline */
+        .timeline { margin: 28px 0; }
+
+        .timeline-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 24px;
+            align-items: flex-start;
+        }
+
+        .timeline-year {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--green);
+            min-width: 70px;
+            padding-top: 3px;
+        }
+
+        .timeline-content h4 {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .timeline-content p { font-size: 14px; margin-bottom: 0; }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            gap: 50px;
+            margin: 36px 0;
+        }
+
+        .stat-value {
+            font-size: 42px;
+            font-weight: 500;
+            color: var(--green);
+            line-height: 1;
+            text-shadow: 0 0 20px rgba(88, 129, 87, 0.5);
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .stats > div:nth-child(2) .stat-value { animation-delay: 1.5s; color: var(--gold); text-shadow: 0 0 20px rgba(245, 200, 66, 0.5); }
+        .stats > div:nth-child(3) .stat-value { animation-delay: 3s; color: var(--gold); text-shadow: 0 0 20px rgba(90, 200, 250, 0.5); }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(36, 40, 36, 0.8);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+        }
+
+        th {
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--bg);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+        }
+
+        td {
+            padding: 14px 16px;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(88, 129, 87, 0.15);
+            color: var(--text-dim);
+        }
+
+        td:first-child { color: var(--green); font-weight: 500; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(88, 129, 87, 0.05); }
+
+        /* Equation */
+        @keyframes glow-pulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(88, 129, 87, 0.2), 0 0 20px rgba(88, 129, 87, 0.1); }
+            50% { box-shadow: 0 0 20px rgba(88, 129, 87, 0.4), 0 0 40px rgba(88, 129, 87, 0.2); }
+        }
+
+        .equation {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 17px;
+            color: var(--green);
+            background: rgba(36, 40, 36, 0.9);
+            border: 2px solid var(--green);
+            padding: 18px 28px;
+            border-radius: 12px;
+            display: inline-block;
+            margin: 20px 0;
+            animation: glow-pulse 4s ease-in-out infinite;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 10px rgba(88, 129, 87, 0.5);
+        }
+
+        .equation:hover {
+            transform: scale(1.02);
+            border-color: var(--gold);
+            color: var(--gold);
+            text-shadow: 0 0 15px rgba(245, 200, 66, 0.6);
+        }
+
+        /* Pillars */
+        .pillars {
+            display: flex;
+            gap: 24px;
+            margin: 36px 0;
+        }
+
+        .pillar {
+            flex: 1;
+            text-align: center;
+            padding: 32px 20px;
+            background: rgba(36, 40, 36, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.3);
+        }
+
+        .pillar:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 0 30px rgba(88, 129, 87, 0.25), 0 12px 35px rgba(0,0,0,0.4);
+        }
+
+        .pillar:nth-child(1) { border-top: 4px solid var(--green); animation: bioluminescence 5s ease-in-out infinite; }
+        .pillar:nth-child(2) { border-top: 4px solid var(--green); animation: bioluminescence 5s ease-in-out infinite 1.5s; }
+        .pillar:nth-child(3) { border-top: 4px solid var(--gold); animation: bioluminescence 5s ease-in-out infinite 3s; }
+
+        .pillar-icon {
+            font-size: 32px;
+            margin-bottom: 14px;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .pillar:nth-child(1) .pillar-icon { color: var(--green); animation-delay: 0s; text-shadow: 0 0 15px rgba(196, 92, 58, 0.6); }
+        .pillar:nth-child(2) .pillar-icon { color: var(--green); animation-delay: 1s; text-shadow: 0 0 15px rgba(88, 129, 87, 0.6); }
+        .pillar:nth-child(3) .pillar-icon { color: var(--gold); animation-delay: 2s; text-shadow: 0 0 15px rgba(245, 200, 66, 0.6); }
+
+        .pillar:nth-child(1) h3 { color: var(--green); }
+        .pillar:nth-child(2) h3 { color: var(--green); }
+        .pillar:nth-child(3) h3 { color: var(--gold); }
+
+        .pillar ul {
+            list-style: none;
+            margin-top: 14px;
+            font-size: 13px;
+            color: var(--text-dim);
+            text-align: left;
+        }
+
+        .pillar li { padding: 5px 0; }
+
+        /* Badge */
+        @keyframes badge-pulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(88, 129, 87, 0.4), 0 0 20px rgba(88, 129, 87, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(88, 129, 87, 0.6), 0 0 40px rgba(88, 129, 87, 0.3); }
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+            color: var(--bg);
+            margin-bottom: 20px;
+            animation: badge-pulse 2s ease-in-out infinite;
+        }
+
+        /* Links */
+        a { color: var(--green); text-decoration: none; font-weight: 500; }
+        a:hover { text-decoration: underline; }
+
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 28px 0;
+        }
+
+        .link-card ul { list-style: none; }
+        .link-card li { padding: 7px 0; font-size: 14px; color: var(--text-dim); }
+        .link-card li a { color: var(--green); text-shadow: 0 0 8px rgba(88, 129, 87, 0.3); }
+        .link-card li a:hover { color: var(--gold); text-shadow: 0 0 12px rgba(245, 200, 66, 0.4); }
+
+        /* Canvas */
+        #tonnetz-canvas {
+            width: 100%;
+            height: 280px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            margin: 20px 0;
+            background: rgba(20, 24, 20, 0.9);
+            box-shadow: 0 0 30px rgba(88, 129, 87, 0.1);
+        }
+
+        /* Nav hint */
+        .nav-hint {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: var(--text-dim);
+            z-index: 101;
+        }
+
+        /* Scrollbar */
+        .slide::-webkit-scrollbar { width: 5px; }
+        .slide::-webkit-scrollbar-track { background: transparent; }
+        .slide::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+        @media (max-width: 768px) {
+            .lcars-frame { display: none; }
+            .presentation { top: 20px; left: 20px; right: 20px; bottom: 20px; }
+            .slide { padding: 30px 20px; }
+            h1 { font-size: 32px; }
+            .title-slide h1 { font-size: 38px; }
+            .pillars, .stats { flex-direction: column; gap: 16px; }
+            .link-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- LCARS Frame -->
+    <div class="lcars-frame">
+        <div class="lcars-top">
+            <div class="lcars-top-corner"></div>
+            <div class="lcars-top-bar">
+                <div class="lcars-pill" style="flex: 2; background: var(--green);"></div>
+                <div class="lcars-pill" style="flex: 1; background: var(--gold);"></div>
+                <div class="lcars-pill" style="flex: 3; background: var(--green);"></div>
+                <div class="lcars-pill" style="flex: 1; background: var(--gold);"></div>
+            </div>
+            <div class="lcars-top-end"></div>
+        </div>
+        <div class="lcars-left">
+            <div class="lcars-btn green" onclick="show(0)">HOME</div>
+            <div class="lcars-btn gold" onclick="show(1)">PATH</div>
+            <div class="lcars-btn green" onclick="show(2)">ISSUE</div>
+            <div class="lcars-btn gold" onclick="show(3)">THEORY</div>
+            <div class="lcars-btn green" onclick="show(4)">MATH</div>
+            <div class="lcars-btn gold" onclick="show(5)">PILLARS</div>
+            <div class="lcars-btn green" onclick="show(6)">TONNETZ</div>
+            <div class="lcars-btn gold" onclick="show(7)">RESULTS</div>
+            <div class="lcars-btn green" onclick="show(8)">MARKET</div>
+            <div class="lcars-btn gold" onclick="show(9)">CHAIN</div>
+            <div class="lcars-btn green" onclick="show(10)">POC</div>
+            <div class="lcars-btn gold" onclick="show(11)">AI+CHAIN</div>
+            <div class="lcars-btn green" onclick="show(12)">BETA</div>
+            <div class="lcars-btn gold" onclick="show(13)">DEVONO</div>
+            <div class="lcars-btn green" onclick="show(14)">LINKS</div>
+        </div>
+        <div class="lcars-bottom">
+            <div class="lcars-bottom-corner"></div>
+            <div class="lcars-bottom-bar">
+                <div class="lcars-pill" style="flex: 1; background: var(--gold);"></div>
+                <div class="lcars-pill" style="flex: 2; background: var(--green);"></div>
+                <div class="lcars-pill" style="flex: 1; background: var(--green);"></div>
+                <div class="lcars-pill" style="flex: 3; background: var(--gold);"></div>
+            </div>
+            <div class="lcars-bottom-end"></div>
+        </div>
+    </div>
+
+    <div class="logo">PARAXIOM</div>
+    <div class="lang-toggle" onclick="toggleLang()">
+        <span id="lang-en" class="lang-active">EN</span> | <span id="lang-fr">FR</span>
+    </div>
+    <div class="counter"><span id="cur">1</span> / <span id="tot">15</span></div>
+    <div class="nav-hint" data-en="← → navigate" data-fr="← → naviguer">← → navigate</div>
+
+    <div class="presentation">
+
+        <!-- 1: Title -->
+        <div class="slide title-slide active">
+            <img src="paraxiom-logo.png" alt="Paraxiom" style="width: 100px; margin-bottom: 25px; filter: invert(1) sepia(1) saturate(0.5) hue-rotate(70deg) brightness(0.9);">
+            <h1 data-en="Topological Coherence" data-fr="Cohérence Topologique">Topological Coherence</h1>
+            <div class="subtitle" data-en="Why Geometry Prevents Hallucination" data-fr="Pourquoi la Géométrie Prévient l'Hallucination">Why Geometry Prevents Hallucination</div>
+            <p style="max-width: 560px; text-align: center;" data-en="From Quantum Hardware to Neural Networks to Blockchain Consensus" data-fr="Du Matériel Quantique aux Réseaux Neuronaux au Consensus Blockchain">
+                From Quantum Hardware to Neural Networks to Blockchain Consensus
+            </p>
+            <div class="author">Sylvain Cormier</div>
+        </div>
+
+        <!-- 2: Journey -->
+        <div class="slide">
+            <h2 data-en="The Journey" data-fr="Le Parcours">The Journey</h2>
+            <p data-en="A natural evolution from decentralized exchanges to coherent systems." data-fr="Une évolution naturelle des échanges décentralisés vers les systèmes cohérents.">A natural evolution from decentralized exchanges to coherent systems.</p>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">2017–2019</div>
+                    <div class="timeline-content">
+                        <h4>Volentix / VDex</h4>
+                        <p data-en="Decentralized exchange on EOS. First blockchain consensus work." data-fr="Échange décentralisé sur EOS. Premier travail sur le consensus blockchain.">Decentralized exchange on EOS. First blockchain consensus work.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2020–2021</div>
+                    <div class="timeline-content">
+                        <h4>Kylin Network</h4>
+                        <p data-en="Decentralized oracle on Polkadot. Substrate runtime, autonomous data feeds." data-fr="Oracle décentralisé sur Polkadot. Runtime Substrate, flux de données autonomes.">Decentralized oracle on Polkadot. Substrate runtime, autonomous data feeds.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2021–2022</div>
+                    <div class="timeline-content">
+                        <h4>Layer One X</h4>
+                        <p data-en="L1 protocol engineering. Async Rust, networking, production debugging." data-fr="Ingénierie protocole L1. Rust async, réseau, débogage production.">L1 protocol engineering. Async Rust, networking, production debugging.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2021–2023</div>
+                    <div class="timeline-content">
+                        <h4>QNT Lattice Optics</h4>
+                        <p data-en="Quantum hardware research. Discovery: the Tonnetz predicts qubit coherence." data-fr="Recherche matériel quantique. Découverte: le Tonnetz prédit la cohérence des qubits.">Quantum hardware research. Discovery: the Tonnetz predicts qubit coherence.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2023–Now</div>
+                    <div class="timeline-content">
+                        <h4>Paraxiom / QuantumHarmony</h4>
+                        <p data-en="Convergence: post-quantum blockchain + topological coherence + AI." data-fr="Convergence: blockchain post-quantique + cohérence topologique + IA.">Convergence: post-quantum blockchain + topological coherence + AI.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3: Problem -->
+        <div class="slide">
+            <h2 data-en="The Problem" data-fr="Le Problème">The Problem</h2>
+            <p data-en="LLMs confidently generate false information. They 'jump' to unrelated concepts during attention." data-fr="Les LLM génèrent avec confiance des informations fausses. Ils 'sautent' vers des concepts non liés pendant l'attention.">LLMs confidently generate false information. They "jump" to unrelated concepts during attention.</p>
+            <div class="grid">
+                <div class="card">
+                    <h3 data-en="Hallucinations" data-fr="Hallucinations">Hallucinations</h3>
+                    <p data-en="Models produce plausible but incorrect outputs with high confidence." data-fr="Les modèles produisent des sorties plausibles mais incorrectes avec haute confiance.">Models produce plausible but incorrect outputs with high confidence.</p>
+                </div>
+                <div class="card">
+                    <h3 data-en="Why It Matters" data-fr="Pourquoi C'est Important">Why It Matters</h3>
+                    <p data-en="Critical for medical advice, legal documents, code generation, financial analysis." data-fr="Critique pour conseils médicaux, documents juridiques, génération de code, analyse financière.">Critical for medical advice, legal documents, code generation, financial analysis.</p>
+                </div>
+                <div class="card">
+                    <h3 data-en="Current Solutions" data-fr="Solutions Actuelles">Current Solutions</h3>
+                    <p data-en="RAG, fine-tuning, RLHF — all post-hoc. None address the root cause." data-fr="RAG, fine-tuning, RLHF — tout post-hoc. Aucun ne traite la cause racine.">RAG, fine-tuning, RLHF — all post-hoc. None address the root cause.</p>
+                </div>
+            </div>
+            <div class="equation" data-en="Attention 'jumps' → Semantic discontinuity → Hallucination" data-fr="'Sauts' d'attention → Discontinuité sémantique → Hallucination">Attention "jumps" → Semantic discontinuity → Hallucination</div>
+            <p data-en="<strong>Our insight:</strong> Constrain attention geometrically." data-fr="<strong>Notre vision:</strong> Contraindre l'attention géométriquement."><strong>Our insight:</strong> Constrain attention geometrically.</p>
+        </div>
+
+        <!-- 4: Theory -->
+        <div class="slide">
+            <h2 data-en="Topological Coherence Theory" data-fr="Théorie de la Cohérence Topologique">Topological Coherence Theory</h2>
+            <p data-en="The same mathematics governs coherence in three domains." data-fr="Les mêmes mathématiques gouvernent la cohérence dans trois domaines.">The same mathematics governs coherence in three domains.</p>
+            <div class="stats">
+                <div><div class="stat-value">CNT</div><div class="stat-label" data-en="Quantum Hardware" data-fr="Matériel Quantique">Quantum Hardware</div></div>
+                <div><div class="stat-value">LLM</div><div class="stat-label" data-en="Neural Networks" data-fr="Réseaux Neuronaux">Neural Networks</div></div>
+                <div><div class="stat-value">PoC</div><div class="stat-label">Blockchain</div></div>
+            </div>
+            <div class="equation">C<sub>harmonic</sub>(t) ≥ C<sub>single</sub>(t) · √N · H({p/q})</div>
+            <p data-en="Harmonic ratios (3:2, 4:3, 5:4) enhance coherence by √N. Toroidal geometry creates wraparound — no edges where coherence fails." data-fr="Les ratios harmoniques (3:2, 4:3, 5:4) améliorent la cohérence par √N. La géométrie toroïdale crée un enroulement — pas de bords où la cohérence échoue.">Harmonic ratios (3:2, 4:3, 5:4) enhance coherence by √N. Toroidal geometry creates wraparound — no edges where coherence fails.</p>
+        </div>
+
+        <!-- 5: Equation Breakdown -->
+        <div class="slide">
+            <h2 data-en="The Math" data-fr="Les Maths">The Math</h2>
+            <div class="equation" style="font-size: 20px;">Coherence = Baseline × √N × Harmony</div>
+            <p style="margin: 16px 0; font-size: 15px;" data-en="<strong>N</strong> = number of coupled elements in your system:" data-fr="<strong>N</strong> = nombre d'éléments couplés dans votre système:"><strong>N</strong> = number of coupled elements in your system:</p>
+            <div class="grid" style="margin-bottom: 20px;">
+                <div class="card" style="text-align: center; padding: 16px;">
+                    <h3 style="margin-bottom: 8px;">🔬 Quantum</h3>
+                    <p data-en="N = Qubits in array" data-fr="N = Qubits dans le réseau">N = Qubits in array</p>
+                    <p style="font-size: 12px; color: var(--text-dim);">16 qubits → 4× coherence</p>
+                </div>
+                <div class="card" style="text-align: center; padding: 16px;">
+                    <h3 style="margin-bottom: 8px;">🧠 Neural</h3>
+                    <p data-en="N = Tokens in attention" data-fr="N = Tokens en attention">N = Tokens in attention</p>
+                    <p style="font-size: 12px; color: var(--text-dim);">100 tokens → 10× coherence</p>
+                </div>
+                <div class="card" style="text-align: center; padding: 16px;">
+                    <h3 style="margin-bottom: 8px;">⛓️ Blockchain</h3>
+                    <p data-en="N = Validators in mesh" data-fr="N = Validateurs dans le maillage">N = Validators in mesh</p>
+                    <p style="font-size: 12px; color: var(--text-dim);">64 validators → 8× coherence</p>
+                </div>
+            </div>
+            <p style="font-size: 16px;" data-en="<strong>H(p/q)</strong> = harmonic quality of connections (3:2 fifth = 90%, tritone = 30%)" data-fr="<strong>H(p/q)</strong> = qualité harmonique des connexions (3:2 quinte = 90%, triton = 30%)"><strong>H(p/q)</strong> = harmonic quality of connections (3:2 fifth = 90%, tritone = 30%)</p>
+        </div>
+
+        <!-- 6: Pillars -->
+        <div class="slide">
+            <h2 data-en="Three Pillars" data-fr="Trois Piliers">Three Pillars</h2>
+            <p data-en="Meta Distributed Representations — unified by one geometric framework." data-fr="Représentations Méta Distribuées — unifiées par un cadre géométrique.">Meta Distributed Representations — unified by one geometric framework.</p>
+            <div class="pillars">
+                <div class="pillar">
+                    <div class="pillar-icon">◇</div>
+                    <h3 data-en="Topology" data-fr="Topologie">Topology</h3>
+                    <p style="color: var(--text-dim); font-size: 13px;" data-en="Spatial constraints" data-fr="Contraintes spatiales">Spatial constraints</p>
+                    <ul><li data-en="CNT array geometry" data-fr="Géométrie des réseaux CNT">CNT array geometry</li><li data-en="Attention mask shape" data-fr="Forme du masque d'attention">Attention mask shape</li><li data-en="Validator mesh topology" data-fr="Topologie du maillage validateur">Validator mesh topology</li></ul>
+                </div>
+                <div class="pillar">
+                    <div class="pillar-icon">◎</div>
+                    <h3 data-en="Resonance" data-fr="Résonance">Resonance</h3>
+                    <p style="color: var(--text-dim); font-size: 13px;" data-en="Harmonic relationships" data-fr="Relations harmoniques">Harmonic relationships</p>
+                    <ul><li>Tonnetz ratios (p/q)</li><li data-en="Attention decay λ" data-fr="Décroissance d'attention λ">Attention decay λ</li><li data-en="Consensus weights" data-fr="Poids du consensus">Consensus weights</li></ul>
+                </div>
+                <div class="pillar">
+                    <div class="pillar-icon">↻</div>
+                    <h3 data-en="Temporal" data-fr="Temporel">Temporal</h3>
+                    <p style="color: var(--text-dim); font-size: 13px;" data-en="Time evolution" data-fr="Évolution temporelle">Time evolution</p>
+                    <ul><li data-en="Qubit coherence time" data-fr="Temps de cohérence qubit">Qubit coherence time</li><li data-en="Sequence positions" data-fr="Positions de séquence">Sequence positions</li><li data-en="Block finality" data-fr="Finalité des blocs">Block finality</li></ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6: Tonnetz -->
+        <div class="slide">
+            <h2 data-en="The Tonnetz" data-fr="Le Tonnetz">The Tonnetz</h2>
+            <p data-en="A 2D torus where adjacent nodes are harmonically related." data-fr="Un tore 2D où les nœuds adjacents sont harmoniquement liés.">A 2D torus where adjacent nodes are harmonically related.</p>
+            <canvas id="tonnetz-canvas"></canvas>
+            <div class="grid">
+                <div class="card"><h3>Horizontal</h3><p>Perfect fifths (3:2) — the most consonant interval.</p></div>
+                <div class="card"><h3>Vertical</h3><p>Major thirds (5:4) — harmonic sweetness.</p></div>
+                <div class="card"><h3>Diagonal</h3><p>Minor thirds (6:5) — completing the triads.</p></div>
+            </div>
+        </div>
+
+        <!-- 7: Experiment -->
+        <div class="slide">
+            <h2>Empirical Validation</h2>
+            <span class="badge" style="background: linear-gradient(135deg, var(--gold) 0%, var(--green) 100%);">VALIDATED</span>
+            <table>
+                <tr><th>Condition</th><th>TruthfulQA</th><th>HaluEval</th><th>Result</th></tr>
+                <tr><td>baseline</td><td>14.44%</td><td>55.00%</td><td style="color: var(--text-dim);">Control</td></tr>
+                <tr><td>random</td><td>15.30%</td><td>55.20%</td><td style="color: var(--text-dim);">No effect</td></tr>
+                <tr><td>local_window</td><td>17.26%</td><td>53.00%</td><td>+19.5% rel</td></tr>
+                <tr><td class="accent" style="font-weight: 600;">toroidal</td><td class="accent">17.26%</td><td class="accent" style="color: var(--gold);">52.60%</td><td style="color: var(--gold); font-weight: 600;">BEST</td></tr>
+            </table>
+            <div class="stats" style="margin: 20px 0;">
+                <div><div class="stat-value">+19.5%</div><div class="stat-label">TruthfulQA vs baseline</div></div>
+                <div><div class="stat-value">-4.4%</div><div class="stat-label">HaluEval (lower = better)</div></div>
+                <div><div class="stat-value">0pp</div><div class="stat-label">Random effect (confirms mechanism)</div></div>
+            </div>
+            <p><span class="accent">Toroidal WINS:</span> Ties local_window on truthfulness, <span style="color: var(--gold);">beats it on hallucination detection</span>.</p>
+            <p style="color: var(--text-dim);">Model: Phi-2 (2.7B) with LoRA | Cost: ~$40 total | 22 GPU-hours</p>
+        </div>
+
+        <!-- 8: AI Crypto -->
+        <div class="slide">
+            <h2>AI Crypto Landscape</h2>
+            <p>Where Paraxiom fits in the ecosystem.</p>
+            <table>
+                <tr><th>Token</th><th>Project</th><th>Focus</th></tr>
+                <tr><td>TAO</td><td>Bittensor</td><td>Decentralized AI subnets, inference rewards</td></tr>
+                <tr><td>FET</td><td>Fetch.ai / ASI</td><td>Autonomous AI agents</td></tr>
+                <tr><td>AGIX</td><td>SingularityNET</td><td>AI marketplace</td></tr>
+                <tr><td>OCEAN</td><td>Ocean Protocol</td><td>Data marketplace for AI</td></tr>
+                <tr><td>RNDR</td><td>Render Network</td><td>GPU rendering, AI inference</td></tr>
+            </table>
+            <p><strong>Paraxiom differentiator:</strong> Not just infrastructure — we provide the mathematical framework for coherent AI.</p>
+        </div>
+
+        <!-- 9: PoC -->
+        <div class="slide">
+            <h2>Proof of Coherence</h2>
+            <p>Blockchain consensus that rewards topological coherence.</p>
+            <div class="stats">
+                <div><div class="stat-value">6</div><div class="stat-label">Factor Consensus</div></div>
+                <div><div class="stat-value">QKD</div><div class="stat-label">Quantum Security</div></div>
+                <div><div class="stat-value">SPHINCS+</div><div class="stat-label">Post-Quantum Sigs</div></div>
+            </div>
+            <div class="grid">
+                <div class="card"><h3>QuantumHarmony Chain</h3><p>Substrate-based L1 with post-quantum cryptography. Validators form a mesh with toroidal topology.</p></div>
+                <div class="card"><h3>TNTZ Token</h3><p>Governance + staking. Named after the Tonnetz geometric framework.</p></div>
+            </div>
+        </div>
+
+        <!-- 10: PoC Explainer -->
+        <div class="slide">
+            <h2 data-en="Proof of Coherence" data-fr="Preuve de Cohérence">Proof of Coherence</h2>
+            <p data-en="A new consensus mechanism based on harmonic topology, not just stake." data-fr="Un nouveau mécanisme de consensus basé sur la topologie harmonique, pas seulement le stake.">A new consensus mechanism based on harmonic topology, not just stake.</p>
+            <div class="grid">
+                <div class="card">
+                    <h3 data-en="Not PoW" data-fr="Pas PoW">Not PoW</h3>
+                    <p data-en="No wasted energy on hash puzzles" data-fr="Pas d'énergie gaspillée sur des puzzles de hash">No wasted energy on hash puzzles</p>
+                </div>
+                <div class="card">
+                    <h3 data-en="Not just PoS" data-fr="Pas que PoS">Not just PoS</h3>
+                    <p data-en="Stake matters, but topology matters more" data-fr="Le stake compte, mais la topologie compte plus">Stake matters, but topology matters more</p>
+                </div>
+                <div class="card">
+                    <h3 data-en="PoC = Position + Harmony" data-fr="PoC = Position + Harmonie">PoC = Position + Harmony</h3>
+                    <p data-en="Your mesh position × harmonic sync with neighbors" data-fr="Votre position dans le maillage × sync harmonique avec voisins">Your mesh position × harmonic sync with neighbors</p>
+                </div>
+            </div>
+            <div class="equation" style="margin: 24px 0;">Score = Stake × Uptime × HardwareTier × H(topology)</div>
+            <table>
+                <tr><th data-en="Factor" data-fr="Facteur">Factor</th><th data-en="What it measures" data-fr="Ce que ça mesure">What it measures</th><th data-en="Why it matters" data-fr="Pourquoi c'est important">Why it matters</th></tr>
+                <tr><td>Stake</td><td data-en="Tokens locked" data-fr="Jetons verrouillés">Tokens locked</td><td data-en="Skin in the game" data-fr="Engagement financier">Skin in the game</td></tr>
+                <tr><td>Uptime</td><td data-en="Reliability %" data-fr="Fiabilité %">Reliability %</td><td data-en="Network stability" data-fr="Stabilité du réseau">Network stability</td></tr>
+                <tr><td>Hardware</td><td data-en="QKD/QRNG/Stake tier" data-fr="Niveau QKD/QRNG/Stake">QKD/QRNG/Stake tier</td><td data-en="Quantum security" data-fr="Sécurité quantique">Quantum security</td></tr>
+                <tr><td>H(topology)</td><td data-en="Harmonic position in mesh" data-fr="Position harmonique dans le maillage">Harmonic position in mesh</td><td data-en="Coherence contribution" data-fr="Contribution à la cohérence">Coherence contribution</td></tr>
+            </table>
+            <div style="margin-top: 16px; padding: 12px; background: rgba(100,150,255,0.1); border-left: 3px solid var(--blue); border-radius: 4px; font-size: 13px;">
+                <strong data-en="Block Selection:" data-fr="Sélection de Bloc:">Block Selection:</strong>
+                <span data-en="Highest coherence doesn't guarantee block authorship. Score weights the VRF lottery — higher scores increase probability, but randomness ensures fair distribution. This prevents coherence monopolies while rewarding topology contribution." data-fr="La cohérence la plus élevée ne garantit pas la production de blocs. Le score pondère la loterie VRF — des scores plus élevés augmentent la probabilité, mais le hasard assure une distribution équitable. Cela empêche les monopoles de cohérence tout en récompensant la contribution topologique.">Highest coherence doesn't guarantee block authorship. Score weights the VRF lottery — higher scores increase probability, but randomness ensures fair distribution. This prevents coherence monopolies while rewarding topology contribution.</span>
+            </div>
+        </div>
+
+        <!-- 11: Verifiable AI -->
+        <div class="slide">
+            <h2 data-en="Blockchain + AI = Verifiable Intelligence" data-fr="Blockchain + IA = Intelligence Vérifiable">Blockchain + AI = Verifiable Intelligence</h2>
+            <p data-en="Two layers of defense against AI dishonesty." data-fr="Deux couches de défense contre la malhonnêteté de l'IA.">Two layers of defense against AI dishonesty.</p>
+            <div class="grid">
+                <div class="card" style="border-top: 3px solid var(--green);">
+                    <h3 data-en="Internal: Topological Coherence" data-fr="Interne: Cohérence Topologique">Internal: Topological Coherence</h3>
+                    <p data-en="Constrains attention geometry → Reduces hallucination probability → Model is less likely to be wrong" data-fr="Contraint la géométrie d'attention → Réduit la probabilité d'hallucination → Le modèle est moins susceptible de se tromper">Constrains attention geometry → Reduces hallucination probability → Model is less likely to be wrong</p>
+                </div>
+                <div class="card" style="border-top: 3px solid var(--gold);">
+                    <h3 data-en="External: Blockchain Verification" data-fr="Externe: Vérification Blockchain">External: Blockchain Verification</h3>
+                    <p data-en="Records coherence scores on-chain → Multiple validators check outputs → Economic punishment for lying agents" data-fr="Enregistre les scores de cohérence on-chain → Plusieurs validateurs vérifient → Punition économique pour les agents menteurs">Records coherence scores on-chain → Multiple validators check outputs → Economic punishment for lying agents</p>
+                </div>
+            </div>
+            <table style="margin-top: 20px;">
+                <tr><th data-en="Problem" data-fr="Problème">Problem</th><th data-en="Topological Coherence" data-fr="Cohérence Topologique">Topological Coherence</th><th>Blockchain</th></tr>
+                <tr><td data-en="Model hallucinates" data-fr="Le modèle hallucine">Model hallucinates</td><td style="color: var(--green);">Reduces probability</td><td style="color: var(--text-dim);">Can't prevent</td></tr>
+                <tr><td data-en="Agent lies deliberately" data-fr="L'agent ment délibérément">Agent lies deliberately</td><td style="color: var(--text-dim);">Can't stop</td><td style="color: var(--gold);">Economic punishment</td></tr>
+                <tr><td data-en="Need audit trail" data-fr="Besoin de piste d'audit">Need audit trail</td><td style="color: var(--text-dim);">Not persistent</td><td style="color: var(--gold);">Immutable record</td></tr>
+                <tr><td data-en="Verify without trust" data-fr="Vérifier sans confiance">Verify without trust</td><td style="color: var(--text-dim);">Must trust model</td><td style="color: var(--gold);">Trustless consensus</td></tr>
+            </table>
+            <div class="equation" style="margin-top: 20px;" data-en="Coherent AI + Blockchain Verification = Honest Agents" data-fr="IA Cohérente + Vérification Blockchain = Agents Honnêtes">Coherent AI + Blockchain Verification = Honest Agents</div>
+        </div>
+
+        <!-- 12: Beta -->
+        <div class="slide">
+            <h2>Founding Validator Program</h2>
+            <span class="badge">Private Beta</span>
+            <p>Exclusive early access for select partners. Limited to 12 founding validators.</p>
+            <div class="stats">
+                <div><div class="stat-value">12</div><div class="stat-label">Founding Seats</div></div>
+                <div><div class="stat-value">Q1</div><div class="stat-label">2026 Launch</div></div>
+                <div><div class="stat-value">10x</div><div class="stat-label">Early Multiplier</div></div>
+            </div>
+            <div class="grid">
+                <div class="card"><h3>What You Get</h3><p>Founding validator status, direct line to dev team, early TNTZ allocation, shape protocol direction.</p></div>
+                <div class="card"><h3>What We Need</h3><p>Run a validator node, test coherence mechanisms, stress test the network, feedback on UX/DX.</p></div>
+                <div class="card"><h3>Requirements</h3><p>Server: 4 cores, 16GB RAM. Always-on connectivity. Technical curiosity. Long-term vision.</p></div>
+            </div>
+        </div>
+
+        <!-- 11: Devonomics -->
+        <div class="slide">
+            <h2>Devonomics</h2>
+            <p data-en="The economic framework that rewards builders and quantum infrastructure." data-fr="Le cadre économique qui récompense les bâtisseurs et l'infrastructure quantique.">The economic framework that rewards builders and quantum infrastructure.</p>
+            <h3 data-en="Validator Tiers" data-fr="Niveaux de Validateurs" style="margin-top: 20px;">Validator Tiers</h3>
+            <table>
+                <tr><th data-en="Tier" data-fr="Niveau">Tier</th><th data-en="Hardware" data-fr="Matériel">Hardware</th><th data-en="Multiplier" data-fr="Multiplicateur">Multiplier</th><th data-en="Benefits" data-fr="Avantages">Benefits</th></tr>
+                <tr><td style="color: var(--gold);">🥇 QKD</td><td data-en="Quantum Key Distribution" data-fr="Distribution Quantique de Clés">Quantum Key Distribution</td><td>5×</td><td data-en="Real quantum security, priority blocks" data-fr="Sécurité quantique réelle, blocs prioritaires">Real quantum security, priority blocks</td></tr>
+                <tr><td style="color: var(--green-light);">🥈 QRNG</td><td data-en="Quantum Random Generator" data-fr="Générateur Aléatoire Quantique">Quantum Random Generator</td><td>3×</td><td data-en="Quantum entropy, enhanced randomness" data-fr="Entropie quantique, aléatoire amélioré">Quantum entropy, enhanced randomness</td></tr>
+                <tr><td style="color: var(--text-dim);">🥉 Stake</td><td data-en="Traditional staking" data-fr="Staking traditionnel">Traditional staking</td><td>1×</td><td data-en="Base rewards, network participation" data-fr="Récompenses de base, participation réseau">Base rewards, network participation</td></tr>
+            </table>
+            <div class="grid" style="margin-top: 20px;">
+                <div class="card"><h3 data-en="Sweat Equity" data-fr="Équité de Travail">Sweat Equity</h3><p data-en="Code commits → tokens" data-fr="Commits de code → jetons">Code commits → tokens</p></div>
+                <div class="card"><h3 data-en="Uptime Equity" data-fr="Équité de Disponibilité">Uptime Equity</h3><p data-en="99%+ uptime → rewards" data-fr="99%+ disponibilité → récompenses">99%+ uptime → rewards</p></div>
+                <div class="card"><h3 data-en="Hardware Equity" data-fr="Équité Matériel">Hardware Equity</h3><p data-en="Quantum gear → multiplier" data-fr="Équipement quantique → multiplicateur">Quantum gear → multiplier</p></div>
+            </div>
+        </div>
+
+        <!-- 12: Links -->
+        <div class="slide">
+            <h2>Links & Resources</h2>
+            <div class="link-grid">
+                <div class="card link-card">
+                    <h3>Live Network</h3>
+                    <ul>
+                        <li><a href="https://v1.quantumharmony.network" target="_blank">v1.quantumharmony.network</a> — Main</li>
+                        <li><a href="https://rpc.quantumharmony.network" target="_blank">rpc.quantumharmony.network</a> — RPC</li>
+                        <li><a href="http://localhost:9944" target="_blank">localhost:9944</a> — Local RPC</li>
+                        <li><a href="http://localhost:9615" target="_blank">localhost:9615</a> — Metrics</li>
+                    </ul>
+                </div>
+                <div class="card link-card">
+                    <h3>Dashboards</h3>
+                    <ul>
+                        <li><a href="https://quantumharmony.network/lcars.html" target="_blank">LCARS Dashboard</a> — Network Overview</li>
+                        <li><a href="https://polkadot.js.org/apps/?rpc=wss://v1.quantumharmony.network" target="_blank">Polkadot.js Apps</a> — Explorer</li>
+                        <li><a href="http://localhost:8080" target="_blank">localhost:8080</a> — Node Operator</li>
+                        <li><a href="http://localhost:3000" target="_blank">localhost:3000</a> — Grafana</li>
+                    </ul>
+                </div>
+                <div class="card link-card">
+                    <h3>Documentation</h3>
+                    <ul>
+                        <li><a href="https://paraxiom.org" target="_blank">paraxiom.org</a></li>
+                        <li><a href="https://github.com/Paraxiom" target="_blank">github.com/Paraxiom</a></li>
+                        <li><a href="https://doi.org/10.5281/zenodo.18168012" target="_blank">Zenodo Paper</a></li>
+                    </ul>
+                </div>
+                <div class="card link-card">
+                    <h3>Contact</h3>
+                    <ul><li>sylvain@paraxiom.org</li></ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const total = slides.length;
+        let current = 0;
+        document.getElementById('tot').textContent = total;
+
+        // Language toggle
+        let currentLang = 'en';
+        function toggleLang() {
+            currentLang = currentLang === 'en' ? 'fr' : 'en';
+            document.getElementById('lang-en').classList.toggle('lang-active', currentLang === 'en');
+            document.getElementById('lang-fr').classList.toggle('lang-active', currentLang === 'fr');
+            document.querySelectorAll('[data-en]').forEach(el => {
+                el.innerHTML = el.getAttribute('data-' + currentLang);
+            });
+        }
+
+        const navBtns = document.querySelectorAll('.lcars-btn');
+        navBtns[0].classList.add('active');
+
+        function show(n) {
+            if (n < 0 || n >= total) return;
+            current = n;
+            slides.forEach((s, i) => s.classList.toggle('active', i === n));
+            navBtns.forEach((b, i) => b.classList.toggle('active', i === n));
+            document.getElementById('cur').textContent = n + 1;
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight' || e.key === ' ') show(current + 1);
+            else if (e.key === 'ArrowLeft') show(current - 1);
+            else if (e.key >= '1' && e.key <= '9') show(parseInt(e.key) - 1);
+            else if (e.key === '0') show(9);
+            else if (e.key === '-') show(10);
+            else if (e.key === '=') show(11);
+            else if (e.key === '[') show(12);
+            else if (e.key === ']') show(13);
+            else if (e.key === 'Backspace') show(total - 1);
+        });
+
+        document.querySelector('.presentation').addEventListener('click', e => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            e.clientX > rect.left + rect.width / 2 ? show(current + 1) : show(current - 1);
+        });
+
+        // Tonnetz with harmonic colors - animated
+        let tonnetzTime = 0;
+        let tonnetzAnimating = false;
+
+        function drawTonnetz() {
+            const canvas = document.getElementById('tonnetz-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * 2;
+            canvas.height = rect.height * 2;
+            ctx.scale(2, 2);
+
+            const w = rect.width, h = rect.height;
+            const notes = ['C','G','D','A','E','B','F#','C#','G#','D#','A#','F'];
+            // TONNETZ: Full harmonic spectrum - colorful diagram
+            const colors = {
+                'C': '#c45c3a',  // Root - warm terracotta
+                'G': '#588157',  // Fifth - tree green
+                'D': '#dda15e',  // Gold/amber
+                'A': '#7c9885',  // Sage
+                'E': '#6b8cae',  // Soft blue
+                'B': '#9c7a97',  // Muted purple
+                'F#': '#c9a66b', // Wheat
+                'C#': '#7aa095', // Teal
+                'G#': '#a67c6b', // Clay
+                'D#': '#8b9d77', // Moss
+                'A#': '#b08d7a', // Dusty rose
+                'F': '#6a8f6b'   // Forest
+            };
+            const cols = 8, rows = 4;
+            const cw = w / cols, ch = h / rows;
+
+            ctx.fillStyle = '#141814';
+            ctx.fillRect(0, 0, w, h);
+
+            // Draw lines - muted forest green
+            ctx.lineWidth = 1.2;
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const x = c * cw + cw/2, y = r * ch + ch/2;
+                    const alpha = 0.15 + 0.08 * Math.sin(tonnetzTime * 0.02 + c + r);
+                    ctx.strokeStyle = `rgba(88, 129, 87, ${alpha})`;
+                    ctx.shadowColor = '#588157';
+                    ctx.shadowBlur = 2;
+                    if (c < cols-1) { ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+cw,y); ctx.stroke(); }
+                    if (r < rows-1) { ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x,y+ch); ctx.stroke(); }
+                    ctx.shadowBlur = 0;
+                }
+            }
+
+            // Draw nodes with gentle pulse
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const x = c * cw + cw/2, y = r * ch + ch/2;
+                    const note = notes[(c * 7 + r * 4) % 12];
+                    const pulse = 1 + 0.08 * Math.sin(tonnetzTime * 0.03 + c * 0.5 + r * 0.7);
+                    const radius = 15 * pulse;
+
+                    // Glow
+                    const glow = ctx.createRadialGradient(x, y, 0, x, y, radius * 1.8);
+                    glow.addColorStop(0, colors[note] + '40');
+                    glow.addColorStop(1, colors[note] + '00');
+                    ctx.fillStyle = glow;
+                    ctx.beginPath();
+                    ctx.arc(x, y, radius * 1.8, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Node
+                    ctx.fillStyle = colors[note];
+                    ctx.shadowColor = colors[note];
+                    ctx.shadowBlur = 8;
+                    ctx.beginPath();
+                    ctx.arc(x, y, radius, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+
+                    ctx.fillStyle = '#141814';
+                    ctx.font = '600 10px Outfit';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(note, x, y + 0.5);
+                }
+            }
+        }
+
+        function animateTonnetz() {
+            if (!document.querySelector('.slide:nth-child(7).active')) {
+                tonnetzAnimating = false;
+                return;
+            }
+            tonnetzTime++;
+            drawTonnetz();
+            requestAnimationFrame(animateTonnetz);
+        }
+
+        setTimeout(drawTonnetz, 100);
+        new MutationObserver(() => {
+            if (document.querySelector('.slide:nth-child(7).active') && !tonnetzAnimating) {
+                tonnetzAnimating = true;
+                animateTonnetz();
+            }
+        }).observe(document.querySelector('.presentation'), {subtree:true, attributes:true});
+        window.addEventListener('resize', drawTonnetz);
+    </script>
+</body>
+</html>

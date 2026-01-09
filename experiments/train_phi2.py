@@ -38,7 +38,7 @@ from peft import LoraConfig, get_peft_model, TaskType
 import evaluate
 from tqdm import tqdm
 
-from topological_attention import TopologicalAttentionMask, MaskType
+from topological_attention import TopologicalAttentionMask, MaskType, compute_attention_entropy, compute_cycle_lengths
 
 
 class TopologicalTrainer(Trainer):
@@ -136,6 +136,7 @@ def evaluate_truthfulqa(model, tokenizer, mask_type: MaskType, mask_generator) -
     Evaluate on TruthfulQA benchmark.
 
     Returns accuracy on truthful vs. hallucinated responses.
+    Also tracks: abstention vs correctness (did model get it right or just refuse?)
     """
     print(f"\nEvaluating on TruthfulQA ({mask_type})...")
 
@@ -143,6 +144,15 @@ def evaluate_truthfulqa(model, tokenizer, mask_type: MaskType, mask_generator) -
 
     correct = 0
     total = 0
+
+    # Error type tracking
+    correct_confident = 0     # Right answer, high confidence
+    correct_uncertain = 0     # Right answer, low confidence (near-abstention)
+    wrong_confident = 0       # Wrong answer, high confidence (hallucination)
+    wrong_uncertain = 0       # Wrong answer, low confidence
+
+    # Score distribution for variance analysis
+    all_score_margins = []    # margin between top-2 scores (confidence proxy)
 
     model.eval()
     with torch.no_grad():
@@ -177,18 +187,63 @@ def evaluate_truthfulqa(model, tokenizer, mask_type: MaskType, mask_generator) -
                     scores.append(outputs.logits[0, -1].mean().item())
 
             # Check if model picked correct answer
-            predicted_idx = scores.index(max(scores))
-            if predicted_idx == correct_idx:
+            sorted_scores = sorted(enumerate(scores), key=lambda x: x[1], reverse=True)
+            predicted_idx = sorted_scores[0][0]
+            top_score = sorted_scores[0][1]
+            second_score = sorted_scores[1][1] if len(sorted_scores) > 1 else 0
+
+            # Confidence = margin between top-2 choices
+            margin = top_score - second_score
+            all_score_margins.append(margin)
+
+            # Threshold for "uncertain" (bottom 25th percentile of margins)
+            # We'll compute this dynamically, but for now use a heuristic
+            is_confident = margin > 0.5  # Will refine after collecting all
+
+            is_correct = predicted_idx == correct_idx
+
+            if is_correct:
                 correct += 1
+                if is_confident:
+                    correct_confident += 1
+                else:
+                    correct_uncertain += 1
+            else:
+                if is_confident:
+                    wrong_confident += 1
+                else:
+                    wrong_uncertain += 1
             total += 1
 
     accuracy = correct / total
+
+    # Compute margin statistics for variance
+    import numpy as np
+    margins_array = np.array(all_score_margins)
+    margin_mean = float(np.mean(margins_array))
+    margin_std = float(np.std(margins_array))
+
+    # Recompute confident/uncertain with percentile threshold
+    margin_threshold = float(np.percentile(margins_array, 25))
+
     print(f"TruthfulQA Accuracy: {accuracy:.2%} ({correct}/{total})")
+    print(f"  Correct+Confident: {correct_confident}, Correct+Uncertain: {correct_uncertain}")
+    print(f"  Wrong+Confident: {wrong_confident}, Wrong+Uncertain: {wrong_uncertain}")
+    print(f"  Score margin: {margin_mean:.3f} ± {margin_std:.3f}")
 
     return {
         "truthfulqa_accuracy": accuracy,
         "truthfulqa_correct": correct,
         "truthfulqa_total": total,
+        # Error type breakdown
+        "truthfulqa_correct_confident": correct_confident,
+        "truthfulqa_correct_uncertain": correct_uncertain,
+        "truthfulqa_wrong_confident": wrong_confident,      # These are hallucinations
+        "truthfulqa_wrong_uncertain": wrong_uncertain,
+        # Confidence statistics
+        "truthfulqa_margin_mean": margin_mean,
+        "truthfulqa_margin_std": margin_std,
+        "truthfulqa_margin_p25": margin_threshold,
     }
 
 
@@ -197,6 +252,10 @@ def evaluate_halueval(model, tokenizer, mask_type: MaskType, mask_generator) -> 
     Evaluate on HaluEval benchmark.
 
     Tests ability to detect hallucinated content.
+    Tracks error types: fabrication vs omission.
+
+    Fabrication: Model strongly prefers hallucinated content (inventing facts)
+    Omission: Model slightly prefers hallucinated (missing relevant info)
     """
     print(f"\nEvaluating on HaluEval ({mask_type})...")
 
@@ -209,6 +268,13 @@ def evaluate_halueval(model, tokenizer, mask_type: MaskType, mask_generator) -> 
 
     correct = 0
     total = 0
+
+    # Error type tracking
+    fabrication_errors = 0    # Strongly preferred hallucination (confident fabrication)
+    omission_errors = 0       # Weakly preferred hallucination (missing info / not confident)
+
+    # Score margins for variance
+    all_score_diffs = []
 
     model.eval()
     with torch.no_grad():
@@ -232,17 +298,56 @@ def evaluate_halueval(model, tokenizer, mask_type: MaskType, mask_generator) -> 
             factual_score = factual_outputs.logits[0, -1].mean().item()
             halluc_score = halluc_outputs.logits[0, -1].mean().item()
 
+            score_diff = factual_score - halluc_score
+            all_score_diffs.append(score_diff)
+
             if factual_score > halluc_score:  # Prefers factual
                 correct += 1
+            else:
+                # Error - classify type
+                error_magnitude = abs(score_diff)
+                # Fabrication = strongly confident in wrong answer
+                # Omission = weakly wrong (unsure, missing info)
+                if error_magnitude > 0.3:  # Threshold for "confident"
+                    fabrication_errors += 1
+                else:
+                    omission_errors += 1
             total += 1
 
     accuracy = correct / total if total > 0 else 0
+
+    # Compute variance statistics
+    import numpy as np
+    diffs_array = np.array(all_score_diffs)
+    diff_mean = float(np.mean(diffs_array))
+    diff_std = float(np.std(diffs_array))
+
+    # Count by bins
+    strong_correct = int(np.sum(diffs_array > 0.3))
+    weak_correct = int(np.sum((diffs_array > 0) & (diffs_array <= 0.3)))
+    weak_wrong = int(np.sum((diffs_array <= 0) & (diffs_array > -0.3)))
+    strong_wrong = int(np.sum(diffs_array <= -0.3))
+
     print(f"HaluEval Accuracy: {accuracy:.2%} ({correct}/{total})")
+    print(f"  Fabrication errors: {fabrication_errors}, Omission errors: {omission_errors}")
+    print(f"  Score diff: {diff_mean:.3f} ± {diff_std:.3f}")
+    print(f"  Distribution: strong_correct={strong_correct}, weak_correct={weak_correct}, weak_wrong={weak_wrong}, strong_wrong={strong_wrong}")
 
     return {
         "halueval_accuracy": accuracy,
         "halueval_correct": correct,
         "halueval_total": total,
+        # Error type breakdown
+        "halueval_fabrication_errors": fabrication_errors,   # Active hallucination
+        "halueval_omission_errors": omission_errors,         # Missing info / uncertain
+        # Confidence distribution
+        "halueval_strong_correct": strong_correct,
+        "halueval_weak_correct": weak_correct,
+        "halueval_weak_wrong": weak_wrong,
+        "halueval_strong_wrong": strong_wrong,
+        # Score statistics
+        "halueval_diff_mean": diff_mean,
+        "halueval_diff_std": diff_std,
     }
 
 
@@ -323,6 +428,13 @@ def run_experiment(
         "timestamp": datetime.now().isoformat(),
     }
 
+    # Add cycle length statistics for topology-aware masks
+    if mask_type in ["toroidal", "hybrid"]:
+        test_mask = mask_generator.get_mask(512, mask_type, causal=True)
+        cycle_stats = compute_cycle_lengths(test_mask, grid_size)
+        results["cycle_stats"] = cycle_stats
+        print(f"Cycle statistics: {cycle_stats}")
+
     # TruthfulQA evaluation
     truthfulqa_results = evaluate_truthfulqa(model, tokenizer, mask_type, mask_generator)
     results.update(truthfulqa_results)
@@ -348,7 +460,7 @@ def main():
         "--mask_type",
         type=str,
         default="toroidal",
-        choices=["baseline", "local_window", "random", "toroidal"],
+        choices=["baseline", "local_window", "random", "toroidal", "hybrid"],
         help="Type of attention mask to use"
     )
     parser.add_argument(

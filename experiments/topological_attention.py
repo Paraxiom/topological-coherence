@@ -17,7 +17,85 @@ import math
 from functools import lru_cache
 from typing import Literal, Optional
 
-MaskType = Literal["baseline", "local_window", "random", "toroidal"]
+MaskType = Literal["baseline", "local_window", "random", "toroidal", "hybrid"]
+
+
+def compute_attention_entropy(attn_weights: torch.Tensor) -> torch.Tensor:
+    """
+    Compute entropy of attention distribution per position.
+
+    Higher entropy = more uniform attention (attending broadly)
+    Lower entropy = more focused attention (attending narrowly)
+
+    Args:
+        attn_weights: (batch, heads, seq_len, seq_len) attention probabilities
+
+    Returns:
+        Tensor of shape (batch, heads, seq_len) with entropy values
+    """
+    # Clamp to avoid log(0)
+    attn_weights = attn_weights.clamp(min=1e-10)
+    entropy = -torch.sum(attn_weights * torch.log(attn_weights), dim=-1)
+    return entropy
+
+
+def compute_cycle_lengths(mask: torch.Tensor, grid_size: int) -> dict:
+    """
+    Compute statistics about attention cycles in toroidal topology.
+
+    For toroidal masks, measures the distribution of "wrap-around" distances.
+
+    Returns:
+        dict with cycle statistics:
+        - mean_cycle_length: average path length before wraparound
+        - cycle_length_std: variance in cycle lengths
+        - wraparound_fraction: fraction of attention going through wraparound
+    """
+    seq_len = mask.shape[0]
+
+    # Positions on torus
+    i = torch.arange(seq_len, device=mask.device)
+    xi = (i // grid_size) % grid_size
+    yi = i % grid_size
+
+    # Compute which attention paths use wraparound
+    xi_diff = xi.unsqueeze(1) - xi.unsqueeze(0)
+    yi_diff = yi.unsqueeze(1) - yi.unsqueeze(0)
+
+    # Direct distance
+    direct_dx = torch.abs(xi_diff).float()
+    direct_dy = torch.abs(yi_diff).float()
+    direct_dist = torch.sqrt(direct_dx**2 + direct_dy**2)
+
+    # Wrapped distance
+    wrap_dx = grid_size - direct_dx
+    wrap_dy = grid_size - direct_dy
+
+    # Check if wraparound is shorter in either dimension
+    uses_x_wrap = wrap_dx < direct_dx
+    uses_y_wrap = wrap_dy < direct_dy
+    uses_wraparound = uses_x_wrap | uses_y_wrap
+
+    # Weighted by attention values
+    attn_sum = mask.sum()
+    wraparound_attn = (mask * uses_wraparound.float()).sum()
+    wraparound_fraction = (wraparound_attn / attn_sum).item() if attn_sum > 0 else 0
+
+    # Effective cycle lengths (geodesic distances)
+    min_dx = torch.minimum(direct_dx, wrap_dx)
+    min_dy = torch.minimum(direct_dy, wrap_dy)
+    geodesic_dist = torch.sqrt(min_dx**2 + min_dy**2)
+
+    # Weighted mean and std of geodesic distances
+    weighted_dist = (mask * geodesic_dist).sum() / attn_sum if attn_sum > 0 else 0
+    weighted_var = (mask * (geodesic_dist - weighted_dist)**2).sum() / attn_sum if attn_sum > 0 else 0
+
+    return {
+        "mean_cycle_length": weighted_dist.item() if torch.is_tensor(weighted_dist) else weighted_dist,
+        "cycle_length_std": torch.sqrt(weighted_var).item() if torch.is_tensor(weighted_var) else math.sqrt(weighted_var),
+        "wraparound_fraction": wraparound_fraction,
+        "grid_size": grid_size,
+    }
 
 
 class TopologicalAttentionMask:
@@ -67,6 +145,8 @@ class TopologicalAttentionMask:
             mask = self._random_mask(seq_len, causal)
         elif mask_type == "toroidal":
             mask = self._toroidal_mask(seq_len, causal)
+        elif mask_type == "hybrid":
+            mask = self._hybrid_mask(seq_len, causal)
         else:
             raise ValueError(f"Unknown mask type: {mask_type}")
 
@@ -160,6 +240,57 @@ class TopologicalAttentionMask:
 
         # Exponential decay
         mask = torch.exp(-self.decay * distance)
+
+        if causal:
+            mask = mask * torch.tril(torch.ones(seq_len, seq_len, device=self.device))
+
+        return mask
+
+    def _hybrid_mask(self, seq_len: int, causal: bool) -> torch.Tensor:
+        """
+        Hybrid mask: local_window + low-rank toroidal wrap.
+
+        Combines:
+        1. Strong local attention (window_size neighborhood)
+        2. Low-rank toroidal connections (sparse long-range via wrap)
+
+        This preserves strong local attention while adding structured
+        long-range connections through the toroidal topology.
+        """
+        # Get local window mask (strong local attention)
+        local = self._local_window_mask(seq_len, causal)
+
+        # Get toroidal mask
+        toroidal = self._toroidal_mask(seq_len, causal)
+
+        # Extract only the "wrap-around" connections from toroidal
+        # These are positions where toroidal distance < linear distance
+        i = torch.arange(seq_len, device=self.device)
+        xi = (i // self.grid_size) % self.grid_size
+        yi = i % self.grid_size
+
+        xi_diff = xi.unsqueeze(1) - xi.unsqueeze(0)
+        yi_diff = yi.unsqueeze(1) - yi.unsqueeze(0)
+
+        direct_dx = torch.abs(xi_diff).float()
+        direct_dy = torch.abs(yi_diff).float()
+        wrap_dx = self.grid_size - direct_dx
+        wrap_dy = self.grid_size - direct_dy
+
+        # Wraparound is beneficial in either dimension
+        uses_x_wrap = wrap_dx < direct_dx
+        uses_y_wrap = wrap_dy < direct_dy
+        wraparound_mask = (uses_x_wrap | uses_y_wrap).float()
+
+        # Scale down the toroidal wrap contribution (low-rank)
+        # Only 30% weight for wrap connections vs full local
+        wrap_weight = 0.3
+
+        # Combine: local (full strength) + toroidal wrap (reduced)
+        mask = local + wrap_weight * toroidal * wraparound_mask
+
+        # Normalize to [0, 1] range
+        mask = mask / mask.max()
 
         if causal:
             mask = mask * torch.tril(torch.ones(seq_len, seq_len, device=self.device))
@@ -306,9 +437,14 @@ if __name__ == "__main__":
 
     seq_len = 128
 
-    for mask_type in ["baseline", "local_window", "random", "toroidal"]:
+    for mask_type in ["baseline", "local_window", "random", "toroidal", "hybrid"]:
         mask = mask_gen.get_mask(seq_len, mask_type)
         sparsity = (mask < 0.1).float().mean().item()
         print(f"{mask_type:15} - shape: {mask.shape}, sparsity: {sparsity:.2%}")
+
+        # Compute cycle stats for toroidal masks
+        if mask_type in ["toroidal", "hybrid"]:
+            cycle_stats = compute_cycle_lengths(mask, mask_gen.grid_size)
+            print(f"                  cycle_len: {cycle_stats['mean_cycle_length']:.2f} ± {cycle_stats['cycle_length_std']:.2f}, wrap_frac: {cycle_stats['wraparound_fraction']:.2%}")
 
     print("\nMask generation test passed!")

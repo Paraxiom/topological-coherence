@@ -1,9 +1,27 @@
+# Python
 venv/
+__pycache__/
+*.pyc
+
+# LaTeX temp files
 *.aux
 *.log
 *.out
-__pycache__/
+*.synctex.gz
+*.fls
+*.fdb_latexmk
 
 # Rust
 target/
-*.lock
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Private notes
+SOCIAL_POSTS.md
+TODO.md
+
+# IDE
+.vscode/
+.idea/

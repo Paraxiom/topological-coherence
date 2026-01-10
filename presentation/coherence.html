@@ -61,6 +61,7 @@
 
         /* LCARS Frame - Living/Organic */
         .lcars-frame {
+            pointer-events: none;
             position: fixed;
             top: 0;
             left: 0;
@@ -114,75 +115,125 @@
             margin-left: 12px;
         }
 
-        .lcars-left {
-            position: absolute;
-            left: 0;
-            top: 60px;
-            bottom: 60px;
-            width: 58px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            padding: 12px 0;
-            pointer-events: all;
-        }
-
-        .lcars-btn {
-            width: 54px;
-            height: 28px;
-            border-radius: 0 14px 14px 0;
+        /* Radial Navigation Map */
+        .nav-toggle {
+            pointer-events: auto;
+            position: fixed;
+            bottom: 70px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--green);
+            border: 2px solid var(--gold);
+            color: var(--bg);
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 200;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 8px;
-            font-weight: 500;
-            letter-spacing: 0.8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(106, 154, 106, 0.5);
+        }
+        .nav-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(106, 154, 106, 0.7);
+        }
+
+        .nav-map {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(20, 25, 20, 0.95);
+            z-index: 150;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        .nav-map.open { display: flex; }
+
+        .nav-spiral {
+            position: relative;
+            width: 700px;
+            height: 700px;
+        }
+
+        .nav-node {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            background: rgba(36, 40, 36, 0.9);
+            border: 2px solid var(--border);
+            text-align: center;
         }
-
-        .lcars-btn.green {
-            background: rgba(106, 154, 106, 0.15);
-            border: 1px solid rgba(106, 154, 106, 0.4);
-            color: var(--green-light);
-        }
-
-        .lcars-btn.gold {
-            background: rgba(160, 138, 98, 0.15);
-            border: 1px solid rgba(160, 138, 98, 0.4);
-            color: var(--gold);
-        }
-
-        .lcars-btn:hover {
-            transform: translateX(4px);
-            backdrop-filter: blur(12px);
-        }
-
-        .lcars-btn.green:hover {
-            background: rgba(106, 154, 106, 0.3);
+        .nav-node:hover {
+            transform: scale(1.15);
             border-color: var(--green);
-            box-shadow: 4px 0 15px rgba(106, 154, 106, 0.2);
+            box-shadow: 0 0 25px rgba(106, 154, 106, 0.5);
+            z-index: 10;
         }
-
-        .lcars-btn.gold:hover {
-            background: rgba(160, 138, 98, 0.3);
+        .nav-node.active {
+            background: var(--green);
             border-color: var(--gold);
-            box-shadow: 4px 0 15px rgba(160, 138, 98, 0.2);
+            box-shadow: 0 0 30px rgba(106, 154, 106, 0.6);
+        }
+        .nav-node.active .nav-label { color: var(--bg); }
+        .nav-node.active .nav-num { color: var(--bg); opacity: 0.7; }
+
+        .nav-num {
+            font-size: 12px; font-weight: 500;
+            color: var(--green);
+            font-weight: 600;
+        }
+        .nav-label {
+            font-size: 9px;
+            color: var(--text-dim);
+            margin-top: 2px;
+            line-height: 1.2;
+            max-width: 110px;
         }
 
-        .lcars-btn.active.green {
-            background: rgba(106, 154, 106, 0.4);
-            border-color: var(--green);
-            color: #fff;
+        /* Connection lines */
+        .nav-spiral svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .nav-spiral svg path {
+            fill: none;
+            stroke: var(--border);
+            stroke-width: 1;
         }
 
-        .lcars-btn.active.gold {
-            background: rgba(160, 138, 98, 0.4);
-            border-color: var(--gold);
-            color: #fff;
+        /* Close button */
+        .nav-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 32px;
+            color: var(--text-dim);
+            cursor: pointer;
+            z-index: 160;
         }
+        .nav-close:hover { color: var(--green); }
+
+        /* Hide old nav */
+        .lcars-left { display: none; }
+        .slide-nav { display: none; }
 
         .lcars-bottom {
             position: absolute;
@@ -222,8 +273,8 @@
         .logo {
             position: fixed;
             top: 58px;
-            left: 75px;
-            font-size: 13px;
+            left: 24px;
+            font-size: 12px; font-weight: 500;
             font-weight: 600;
             letter-spacing: 3px;
             color: var(--green);
@@ -263,15 +314,17 @@
 
         /* Presentation */
         .presentation {
+            pointer-events: auto;
             position: fixed;
             top: 65px;
-            left: 75px;
+            left: 24px;
             right: 24px;
-            bottom: 65px;
+            bottom: 120px;
             overflow: hidden;
         }
 
         .slide {
+            pointer-events: auto;
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
@@ -407,7 +460,7 @@
             font-size: 12px;
             font-weight: 600;
             color: var(--green);
-            min-width: 70px;
+            min-width: 110px;
             padding-top: 3px;
         }
 
@@ -440,7 +493,7 @@
         .stats > div:nth-child(3) .stat-value { animation-delay: 3s; color: var(--gold); text-shadow: 0 0 20px rgba(90, 200, 250, 0.5); }
 
         .stat-label {
-            font-size: 13px;
+            font-size: 12px; font-weight: 500;
             color: var(--text-dim);
             margin-top: 8px;
             font-weight: 500;
@@ -460,7 +513,7 @@
 
         th {
             text-align: left;
-            font-size: 11px;
+            font-size: 12px; font-weight: 500;
             font-weight: 600;
             color: var(--bg);
             text-transform: uppercase;
@@ -552,7 +605,7 @@
         .pillar ul {
             list-style: none;
             margin-top: 14px;
-            font-size: 13px;
+            font-size: 12px; font-weight: 500;
             color: var(--text-dim);
             text-align: left;
         }
@@ -606,15 +659,9 @@
             box-shadow: 0 0 30px rgba(88, 129, 87, 0.1);
         }
 
-        /* Nav hint */
+        /* Nav hint - hidden, using circular nav now */
         .nav-hint {
-            position: fixed;
-            bottom: 60px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 11px;
-            color: var(--text-dim);
-            z-index: 101;
+            display: none;
         }
 
         /* Scrollbar */
@@ -623,17 +670,153 @@
         .slide::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
         @media (max-width: 768px) {
-            .lcars-frame { display: none; }
-            .presentation { top: 20px; left: 20px; right: 20px; bottom: 20px; }
-            .slide { padding: 30px 20px; }
+            .lcars-frame {
+            pointer-events: none; display: none; }
+            .presentation {
+            pointer-events: auto; top: 20px; left: 20px; right: 20px; bottom: 20px; }
+            .slide {
+            pointer-events: auto; padding: 30px 20px; }
             h1 { font-size: 32px; }
             .title-slide h1 { font-size: 38px; }
             .pillars, .stats { flex-direction: column; gap: 16px; }
             .link-grid { grid-template-columns: 1fr; }
         }
+        /* Circular Navigation Menu */
+        .circular-nav-fixed {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 50;
+        }
+        .circular-nav {
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        .nav-item {
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: rgba(88, 129, 87, 0.15);
+            border: 2px solid rgba(88, 129, 87, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            pointer-events: auto;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 12px; font-weight: 500;
+            color: #8ab88a;
+            text-decoration: none;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        .nav-item:hover {
+            background: rgba(88, 129, 87, 0.4);
+            border-color: #6a9a6a;
+            color: #c4d4c4;
+            transform: scale(1.15);
+            box-shadow: 0 0 20px rgba(88, 129, 87, 0.5);
+        }
+        .nav-item span { line-height: 1.2; }
+        /* Menu Button for all slides */
+        .menu-btn { /* hidden - using fixed nav */
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 30px;
+            background: rgba(88, 129, 87, 0.3);
+            border: 2px solid rgba(88, 129, 87, 0.6);
+            border-radius: 25px;
+            color: #8ab88a;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 500;
+            transition: all 0.3s ease;
+        }
+        .menu-btn:hover {
+            background: rgba(88, 129, 87, 0.5);
+            color: #c4d4c4;
+            box-shadow: 0 0 20px rgba(88, 129, 87, 0.5);
+        }
+        /* Full screen nav overlay */
+        .nav-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(20, 25, 20, 0.95);
+            background-image: url("/presentations/paraxiom-logo.png");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 400px;
+            background-blend-mode: soft-light;
+            box-shadow: inset 0 0 200px rgba(88, 129, 87, 0.1);
+        }
+        .nav-overlay::before {
+            content: "";
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 800px; height: 800px;
+            transform: translate(-50%, -50%);
+            border: 2px solid rgba(88, 129, 87, 0.15);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .nav-overlay::after {
+            content: "";
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 500px; height: 500px;
+            transform: translate(-50%, -50%);
+            border: 1px solid rgba(88, 129, 87, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .nav-overlay.open { display: flex; }
+        .nav-close-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            font-size: 30px;
+            color: #8ab88a;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .nav-close-btn:hover { color: #f5c842; }
     </style>
 </head>
 <body>
+    <!-- Fixed Circular Navigation -->
+    <div class="circular-nav-fixed">
+        <div class="nav-item" style="left:50%;top:15px;transform:translateX(-50%);" onclick="show(0)"><span>Home</span></div>
+        <div class="nav-item" style="right:15px;top:10%;" onclick="show(1)"><span>Journey</span></div>
+        <div class="nav-item" style="right:15px;top:22%;" onclick="show(2)"><span>Problem</span></div>
+        <div class="nav-item" style="right:15px;top:34%;" onclick="show(3)"><span>Theory</span></div>
+        <div class="nav-item" style="right:15px;top:46%;" onclick="show(4)"><span>Math</span></div>
+        <div class="nav-item" style="right:15px;top:58%;" onclick="show(5)"><span>Pillars</span></div>
+        <div class="nav-item" style="right:15px;top:70%;" onclick="show(6)"><span>Tonnetz</span></div>
+        <div class="nav-item" style="right:15px;top:82%;" onclick="show(7)"><span>Results</span></div>
+        <div class="nav-item" style="left:50%;bottom:15px;transform:translateX(-50%);" onclick="show(14)"><span>Links</span></div>
+        <div class="nav-item" style="left:15px;top:82%;" onclick="show(8)"><span>AI Crypto</span></div>
+        <div class="nav-item" style="left:15px;top:70%;" onclick="show(9)"><span>PoC</span></div>
+        <div class="nav-item" style="left:15px;top:58%;" onclick="show(10)"><span>PoC Detail</span></div>
+        <div class="nav-item" style="left:15px;top:46%;" onclick="show(11)"><span>AI+Chain</span></div>
+        <div class="nav-item" style="left:15px;top:34%;" onclick="show(12)"><span>Beta</span></div>
+        <div class="nav-item" style="left:15px;top:22%;" onclick="show(13)"><span>Devonomics</span></div>
+    </div>
     <!-- LCARS Frame -->
     <div class="lcars-frame">
         <div class="lcars-top">
@@ -646,22 +829,15 @@
             </div>
             <div class="lcars-top-end"></div>
         </div>
-        <div class="lcars-left">
-            <div class="lcars-btn green" onclick="show(0)">HOME</div>
-            <div class="lcars-btn gold" onclick="show(1)">PATH</div>
-            <div class="lcars-btn green" onclick="show(2)">ISSUE</div>
-            <div class="lcars-btn gold" onclick="show(3)">THEORY</div>
-            <div class="lcars-btn green" onclick="show(4)">MATH</div>
-            <div class="lcars-btn gold" onclick="show(5)">PILLARS</div>
-            <div class="lcars-btn green" onclick="show(6)">TONNETZ</div>
-            <div class="lcars-btn gold" onclick="show(7)">RESULTS</div>
-            <div class="lcars-btn green" onclick="show(8)">MARKET</div>
-            <div class="lcars-btn gold" onclick="show(9)">CHAIN</div>
-            <div class="lcars-btn green" onclick="show(10)">POC</div>
-            <div class="lcars-btn gold" onclick="show(11)">AI+CHAIN</div>
-            <div class="lcars-btn green" onclick="show(12)">BETA</div>
-            <div class="lcars-btn gold" onclick="show(13)">DEVONO</div>
-            <div class="lcars-btn green" onclick="show(14)">LINKS</div>
+        <!-- Navigation Toggle Button -->
+        <div class="nav-toggle" onclick="toggleNav()">◎</div>
+
+        <!-- Radial Navigation Map -->
+        <div class="nav-map" id="navMap">
+            <div class="nav-close" onclick="toggleNav()">×</div>
+            <div class="nav-spiral" id="navSpiral">
+                <!-- Nodes will be generated by JS -->
+            </div>
         </div>
         <div class="lcars-bottom">
             <div class="lcars-bottom-corner"></div>
@@ -693,6 +869,23 @@
                 From Quantum Hardware to Neural Networks to Blockchain Consensus
             </p>
             <div class="author">Sylvain Cormier</div>
+            <div class="circular-nav" id="circularNav">
+                <div class="nav-item" style="left:265px;top:-5px;" onclick="show(1)"><span>Journey</span></div>
+                <div class="nav-item" style="left:370px;top:15px;" onclick="show(2)"><span>Problem</span></div>
+                <div class="nav-item" style="left:455px;top:80px;" onclick="show(3)"><span>Theory</span></div>
+                <div class="nav-item" style="left:500px;top:175px;" onclick="show(4)"><span>Math</span></div>
+                <div class="nav-item" style="left:495px;top:280px;" onclick="show(5)"><span>Pillars</span></div>
+                <div class="nav-item" style="left:445px;top:380px;" onclick="show(6)"><span>Tonnetz</span></div>
+                <div class="nav-item" style="left:360px;top:455px;" onclick="show(7)"><span>Results</span></div>
+                <div class="nav-item" style="left:250px;top:490px;" onclick="show(8)"><span>AI Crypto</span></div>
+                <div class="nav-item" style="left:145px;top:470px;" onclick="show(9)"><span>PoC</span></div>
+                <div class="nav-item" style="left:55px;top:400px;" onclick="show(10)"><span>PoC Detail</span></div>
+                <div class="nav-item" style="left:10px;top:300px;" onclick="show(11)"><span>AI+Chain</span></div>
+                <div class="nav-item" style="left:10px;top:195px;" onclick="show(12)"><span>Beta</span></div>
+                <div class="nav-item" style="left:55px;top:100px;" onclick="show(13)"><span>Devonomics</span></div>
+                <div class="nav-item" style="left:145px;top:25px;" onclick="show(14)"><span>Links</span></div>
+            </div>
+            
         </div>
 
         <!-- 2: Journey -->
@@ -806,19 +999,19 @@
                 <div class="pillar">
                     <div class="pillar-icon">◇</div>
                     <h3 data-en="Topology" data-fr="Topologie">Topology</h3>
-                    <p style="color: var(--text-dim); font-size: 13px;" data-en="Spatial constraints" data-fr="Contraintes spatiales">Spatial constraints</p>
+                    <p style="color: var(--text-dim); font-size: 12px; font-weight: 500;" data-en="Spatial constraints" data-fr="Contraintes spatiales">Spatial constraints</p>
                     <ul><li data-en="CNT array geometry" data-fr="Géométrie des réseaux CNT">CNT array geometry</li><li data-en="Attention mask shape" data-fr="Forme du masque d'attention">Attention mask shape</li><li data-en="Validator mesh topology" data-fr="Topologie du maillage validateur">Validator mesh topology</li></ul>
                 </div>
                 <div class="pillar">
                     <div class="pillar-icon">◎</div>
                     <h3 data-en="Resonance" data-fr="Résonance">Resonance</h3>
-                    <p style="color: var(--text-dim); font-size: 13px;" data-en="Harmonic relationships" data-fr="Relations harmoniques">Harmonic relationships</p>
+                    <p style="color: var(--text-dim); font-size: 12px; font-weight: 500;" data-en="Harmonic relationships" data-fr="Relations harmoniques">Harmonic relationships</p>
                     <ul><li>Tonnetz ratios (p/q)</li><li data-en="Attention decay λ" data-fr="Décroissance d'attention λ">Attention decay λ</li><li data-en="Consensus weights" data-fr="Poids du consensus">Consensus weights</li></ul>
                 </div>
                 <div class="pillar">
                     <div class="pillar-icon">↻</div>
                     <h3 data-en="Temporal" data-fr="Temporel">Temporal</h3>
-                    <p style="color: var(--text-dim); font-size: 13px;" data-en="Time evolution" data-fr="Évolution temporelle">Time evolution</p>
+                    <p style="color: var(--text-dim); font-size: 12px; font-weight: 500;" data-en="Time evolution" data-fr="Évolution temporelle">Time evolution</p>
                     <ul><li data-en="Qubit coherence time" data-fr="Temps de cohérence qubit">Qubit coherence time</li><li data-en="Sequence positions" data-fr="Positions de séquence">Sequence positions</li><li data-en="Block finality" data-fr="Finalité des blocs">Block finality</li></ul>
                 </div>
             </div>
@@ -912,7 +1105,7 @@
                 <tr><td>Hardware</td><td data-en="QKD/QRNG/Stake tier" data-fr="Niveau QKD/QRNG/Stake">QKD/QRNG/Stake tier</td><td data-en="Quantum security" data-fr="Sécurité quantique">Quantum security</td></tr>
                 <tr><td>H(topology)</td><td data-en="Harmonic position in mesh" data-fr="Position harmonique dans le maillage">Harmonic position in mesh</td><td data-en="Coherence contribution" data-fr="Contribution à la cohérence">Coherence contribution</td></tr>
             </table>
-            <div style="margin-top: 16px; padding: 12px; background: rgba(100,150,255,0.1); border-left: 3px solid var(--blue); border-radius: 4px; font-size: 13px;">
+            <div style="margin-top: 16px; padding: 12px; background: rgba(100,150,255,0.1); border-left: 3px solid var(--blue); border-radius: 4px; font-size: 12px; font-weight: 500;">
                 <strong data-en="Block Selection:" data-fr="Sélection de Bloc:">Block Selection:</strong>
                 <span data-en="Highest coherence doesn't guarantee block authorship. Score weights the VRF lottery — higher scores increase probability, but randomness ensures fair distribution. This prevents coherence monopolies while rewarding topology contribution." data-fr="La cohérence la plus élevée ne garantit pas la production de blocs. Le score pondère la loterie VRF — des scores plus élevés augmentent la probabilité, mais le hasard assure une distribution équitable. Cela empêche les monopoles de cohérence tout en récompensant la contribution topologique.">Highest coherence doesn't guarantee block authorship. Score weights the VRF lottery — higher scores increase probability, but randomness ensures fair distribution. This prevents coherence monopolies while rewarding topology contribution.</span>
             </div>
@@ -1002,11 +1195,29 @@
                 <div class="card link-card">
                     <h3>Documentation</h3>
                     <ul>
+                        <li><a href="https://github.com/Paraxiom/quantumharmony/blob/main/docs/papers/LIGHTPAPER.pdf" target="_blank">Light Paper</a></li>
                         <li><a href="https://paraxiom.org" target="_blank">paraxiom.org</a></li>
                         <li><a href="https://github.com/Paraxiom" target="_blank">github.com/Paraxiom</a></li>
-                        <li><a href="https://doi.org/10.5281/zenodo.18168012" target="_blank">Zenodo Paper</a></li>
+                        <li><a href="https://doi.org/10.5281/zenodo.18187835" target="_blank">Zenodo Paper</a></li>
+                        <li><a href="https://crates.io/crates/topological-coherence" target="_blank">Rust Crate</a></li>
                     </ul>
                 </div>
+                <div class="card link-card">
+                    <h3>QNT Simulations</h3>
+                    <ul>
+                        <li><a href="doppler-cooling-demo.html" target="_blank">Doppler Cooling Demo</a></li>
+                        <li><a href="enhanced-doppler-cooling-demo.html" target="_blank">Enhanced Cooling Demo</a></li>
+                    </ul>
+                </div>
+                <div class="card link-card">
+                    <h3>Animations</h3>
+                    <ul>
+                        <li><a href="/animations/enhanced-kirq-animation.html" target="_blank">KIRQ Network</a></li>
+                        <li><a href="/animations/kirq-milestones-animation.html" target="_blank">KIRQ Milestones</a></li>
+                        <li><a href="/animations/secure-numana-animations.html" target="_blank">Numana Integration</a></li>
+                    </ul>
+                </div>
+                
                 <div class="card link-card">
                     <h3>Contact</h3>
                     <ul><li>sylvain@paraxiom.org</li></ul>
@@ -1033,19 +1244,67 @@
             });
         }
 
-        const navBtns = document.querySelectorAll('.lcars-btn');
-        navBtns[0].classList.add('active');
+        // Slide labels for navigation
+        const slideLabels = [
+            'Home', 'Journey', 'Problem', 'Theory', 'Math',
+            'Pillars', 'Tonnetz', 'Results', 'AI Crypto', 'PoC',
+            'PoC Detail', 'AI+Chain', 'Beta', 'Devonomics', 'Links'
+        ];
+
+        // Generate spiral navigation
+        function generateNavSpiral() {
+            const spiral = document.getElementById('navSpiral');
+            const centerX = 350, centerY = 350;
+
+            // Create SVG for connection lines
+            let svg = '<svg viewBox="0 0 700 700"><path d="';
+            const positions = [];
+
+            // Spiral layout - starts from center, expands outward
+            for (let i = 0; i < total; i++) {
+                const angle = (i / total) * Math.PI * 2 - Math.PI / 2;
+                const radius = 100 + (i * 18); // Expanding spiral
+                const x = centerX + Math.cos(angle) * radius - 40;
+                const y = centerY + Math.sin(angle) * radius - 40;
+                positions.push({x: x + 40, y: y + 40});
+
+                const node = document.createElement('div');
+                node.className = 'nav-node' + (i === 0 ? ' active' : '');
+                node.style.left = x + 'px';
+                node.style.top = y + 'px';
+                node.innerHTML = `<span class="nav-num">${i + 1}</span><span class="nav-label">${slideLabels[i]}</span>`;
+                node.onclick = () => { show(i); toggleNav(); };
+                spiral.appendChild(node);
+            }
+
+            // Draw spiral path
+            svg += `M ${positions[0].x} ${positions[0].y}`;
+            for (let i = 1; i < positions.length; i++) {
+                svg += ` L ${positions[i].x} ${positions[i].y}`;
+            }
+            svg += '"/></svg>';
+            spiral.insertAdjacentHTML('afterbegin', svg);
+        }
+
+        generateNavSpiral();
+        const navNodes = document.querySelectorAll('.nav-node');
+
+        function toggleNav() {
+            document.getElementById('navMap').classList.toggle('open');
+        }
 
         function show(n) {
             if (n < 0 || n >= total) return;
             current = n;
             slides.forEach((s, i) => s.classList.toggle('active', i === n));
-            navBtns.forEach((b, i) => b.classList.toggle('active', i === n));
+            navNodes.forEach((b, i) => b.classList.toggle('active', i === n));
             document.getElementById('cur').textContent = n + 1;
         }
 
         document.addEventListener('keydown', e => {
-            if (e.key === 'ArrowRight' || e.key === ' ') show(current + 1);
+            if (e.key === 'm' || e.key === 'M') toggleNav();
+            else if (e.key === 'Escape') document.getElementById('navMap').classList.remove('open');
+            else if (e.key === 'ArrowRight' || e.key === ' ') show(current + 1);
             else if (e.key === 'ArrowLeft') show(current - 1);
             else if (e.key >= '1' && e.key <= '9') show(parseInt(e.key) - 1);
             else if (e.key === '0') show(9);
@@ -1165,6 +1424,41 @@
             }
         }).observe(document.querySelector('.presentation'), {subtree:true, attributes:true});
         window.addEventListener('resize', drawTonnetz);
+        // Navigation overlay functions
+        function openNavOverlay() {
+            document.getElementById("navOverlay").classList.add("open");
+        }
+        function closeNavOverlay() {
+            document.getElementById("navOverlay").classList.remove("open");
+        }
+        function goTo(n) {
+            show(n);
+            closeNavOverlay();
+        }
     </script>
+    <!-- Menu Button -->
+    <div class="menu-btn" onclick="openNavOverlay()">☰ Navigate</div>
+    
+    <!-- Navigation Overlay -->
+    <div class="nav-overlay" id="navOverlay">
+        <div class="nav-close-btn" onclick="closeNavOverlay()">×</div>
+        <div class="circular-nav" style="position:relative;top:0;left:0;transform:none;">
+            <div class="nav-item" style="left:305px;top:5px;" onclick="goTo(0)"><span>Home</span></div>
+            <div class="nav-item" style="left:420px;top:35px;" onclick="goTo(1)"><span>Journey</span></div>
+            <div class="nav-item" style="left:510px;top:110px;" onclick="goTo(2)"><span>Problem</span></div>
+            <div class="nav-item" style="left:560px;top:210px;" onclick="goTo(3)"><span>Theory</span></div>
+            <div class="nav-item" style="left:560px;top:320px;" onclick="goTo(4)"><span>Math</span></div>
+            <div class="nav-item" style="left:510px;top:420px;" onclick="goTo(5)"><span>Pillars</span></div>
+            <div class="nav-item" style="left:420px;top:500px;" onclick="goTo(6)"><span>Tonnetz</span></div>
+            <div class="nav-item" style="left:305px;top:540px;" onclick="goTo(7)"><span>Results</span></div>
+            <div class="nav-item" style="left:190px;top:520px;" onclick="goTo(8)"><span>AI Crypto</span></div>
+            <div class="nav-item" style="left:90px;top:450px;" onclick="goTo(9)"><span>PoC</span></div>
+            <div class="nav-item" style="left:30px;top:350px;" onclick="goTo(10)"><span>PoC Detail</span></div>
+            <div class="nav-item" style="left:20px;top:240px;" onclick="goTo(11)"><span>AI+Chain</span></div>
+            <div class="nav-item" style="left:60px;top:140px;" onclick="goTo(12)"><span>Beta</span></div>
+            <div class="nav-item" style="left:140px;top:60px;" onclick="goTo(13)"><span>Devonomics</span></div>
+            <div class="nav-item" style="left:230px;top:20px;" onclick="goTo(14)"><span>Links</span></div>
+        </div>
+    </div>
 </body>
 </html>

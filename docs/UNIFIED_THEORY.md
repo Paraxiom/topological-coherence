@@ -15,6 +15,7 @@ Or equivalently:
 > If repeated application of an operator is not norm-bounded, no amount of local throughput optimization will save the system.
 
 This principle applies identically to:
+- Post-quantum cryptographic signatures
 - Transformer attention layers
 - Byzantine fault-tolerant consensus
 - Cross-shard governance
@@ -36,6 +37,41 @@ The key insight: **throughput is tunable; instability is fatal.**
 ---
 
 ## Domain Mappings
+
+### 0. Cryptography (Post-Quantum Foundation)
+
+| Property | Classical (ECDSA) | Post-Quantum (Falcon, SLH-DSA) |
+|----------|-------------------|--------------------------------|
+| Security assumption | Discrete log hardness | Lattice/hash hardness |
+| Quantum vulnerability | Broken by Shor's algorithm | Resistant |
+| Signature size | ~64 bytes | ~690 bytes (Falcon-512) |
+| Verification | O(1) exponentiations | O(1) lattice operations |
+
+**Mechanism:** Post-quantum signatures resist exponential quantum speedups by relying on problems (lattice shortest vector, hash preimage) with no known quantum advantage.
+
+**The connection to conservative composition:** Shor's algorithm exploits the *multiplicative structure* of classical groups. Lattice-based schemes avoid this by operating in structures where repeated composition doesn't expose exploitable patterns.
+
+| Algorithm | Type | NIST Standard | Used In |
+|-----------|------|---------------|---------|
+| **Falcon-512** | Lattice (NTRU) | ML-DSA | qssh, QuantumHarmony |
+| **SPHINCS+** | Hash-based | SLH-DSA | qssh fallback |
+| **Kyber** | Lattice (LWE) | ML-KEM | Key encapsulation |
+
+**Why this matters for the stack:**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Layer 3: ML Inference    → Toroidal attention (no drift)  │
+├─────────────────────────────────────────────────────────────┤
+│  Layer 2: Consensus       → Bounded BFT (no explosion)     │
+├─────────────────────────────────────────────────────────────┤
+│  Layer 1: Governance      → Conserved influence (no plutocracy) │
+├─────────────────────────────────────────────────────────────┤
+│  Layer 0: Cryptography    → PQ signatures (no quantum break) │
+└─────────────────────────────────────────────────────────────┘
+```
+
+Each layer applies the same principle: **bound the operator norm to prevent exponential attacks**.
 
 ### 1. Machine Learning (Attention)
 
@@ -175,29 +211,29 @@ The Tonnetz proves such manifolds exist and are practical. The choice of *which*
                     │     ||A^n|| ≤ C for all n          │
                     └──────────────┬──────────────────────┘
                                    │
-           ┌───────────────────────┼───────────────────────┐
-           │                       │                       │
-           ▼                       ▼                       ▼
-    ┌──────────────┐       ┌──────────────┐       ┌──────────────┐
-    │   ATTENTION  │       │  CONSENSUS   │       │  GOVERNANCE  │
-    │              │       │              │       │              │
-    │  Toroidal    │       │  O(log N)    │       │  Influence   │
-    │  Topology    │       │  Rounds      │       │  Conservation│
-    │              │       │              │       │              │
-    │  Spectral    │       │  Bounded     │       │  Bounded     │
-    │  Gap > ε     │       │  Fan-out     │       │  Accumulation│
-    └──────┬───────┘       └──────┬───────┘       └──────┬───────┘
-           │                       │                       │
-           ▼                       ▼                       ▼
-    ┌──────────────┐       ┌──────────────┐       ┌──────────────┐
-    │   RESULT     │       │   RESULT     │       │   RESULT     │
-    │              │       │              │       │              │
-    │  40% less    │       │  N log N     │       │  Stable      │
-    │  drift       │       │  scaling     │       │  distribution│
-    │              │       │              │       │              │
-    │  Stable      │       │  1000+       │       │  No          │
-    │  reasoning   │       │  validators  │       │  plutocracy  │
-    └──────────────┘       └──────────────┘       └──────────────┘
+       ┌───────────────┬───────────┼───────────┬───────────────┐
+       │               │           │           │               │
+       ▼               ▼           ▼           ▼               ▼
+┌────────────┐  ┌────────────┐  ┌────────────┐  ┌────────────┐
+│ CRYPTO     │  │ ATTENTION  │  │ CONSENSUS  │  │ GOVERNANCE │
+│            │  │            │  │            │  │            │
+│ Lattice/   │  │ Toroidal   │  │ O(log N)   │  │ Influence  │
+│ Hash-based │  │ Topology   │  │ Rounds     │  │ Conservation│
+│            │  │            │  │            │  │            │
+│ No quantum │  │ Spectral   │  │ Bounded    │  │ Bounded    │
+│ speedup    │  │ Gap > ε    │  │ Fan-out    │  │ Accumulation│
+└─────┬──────┘  └─────┬──────┘  └─────┬──────┘  └─────┬──────┘
+      │               │               │               │
+      ▼               ▼               ▼               ▼
+┌────────────┐  ┌────────────┐  ┌────────────┐  ┌────────────┐
+│  RESULT    │  │  RESULT    │  │  RESULT    │  │  RESULT    │
+│            │  │            │  │            │  │            │
+│ Quantum-   │  │ 40% less   │  │ N log N    │  │ Stable     │
+│ resistant  │  │ drift      │  │ scaling    │  │ distribution│
+│            │  │            │  │            │  │            │
+│ Falcon-512 │  │ Stable     │  │ 1000+      │  │ No         │
+│ SPHINCS+   │  │ reasoning  │  │ validators │  │ plutocracy │
+└────────────┘  └────────────┘  └────────────┘  └────────────┘
 ```
 
 ---
@@ -241,7 +277,13 @@ The same researchers who dismissed "blockchain math" as irrelevant are now measu
 
 ## Links
 
+### Topological Coherence
 - [Topological Coherence Paper](https://doi.org/10.5281/zenodo.18187835)
 - [Live Demo](https://huggingface.co/spaces/paraxiom/topological-coherence)
 - [PyPI Package](https://pypi.org/project/topological-coherence/)
+
+### Post-Quantum Infrastructure
 - [QuantumHarmony Blockchain](https://github.com/Paraxiom/QuantumHarmony)
+- [qssh - Quantum Secure Shell](https://github.com/Paraxiom/qssh)
+- [NIST Post-Quantum Standards](https://csrc.nist.gov/projects/post-quantum-cryptography)
+- [Blockstream PQ Signatures for Bitcoin](https://blog.blockstream.com/) — SLH-DSA size optimization research

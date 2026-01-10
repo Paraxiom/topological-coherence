@@ -1,0 +1,65 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "topological-coherence"
+version = "0.1.2"
+description = "Toroidal attention constraints for reducing LLM hallucination"
+readme = "README_PYPI.md"
+license = "MIT"
+authors = [
+    { name = "Sylvain Cormier", email = "sylvain@paraxiom.io" }
+]
+keywords = [
+    "attention",
+    "transformer",
+    "hallucination",
+    "topology",
+    "tonnetz",
+    "llm",
+    "machine-learning"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "torch>=2.0.0",
+    "numpy>=1.21.0",
+]
+
+[project.optional-dependencies]
+demo = [
+    "gradio>=4.0.0",
+]
+dev = [
+    "pytest>=7.0.0",
+    "black",
+    "ruff",
+]
+
+[project.urls]
+Homepage = "https://github.com/Paraxiom/topological-coherence"
+Documentation = "https://paraxiom.org/presentations/coherence.html"
+Repository = "https://github.com/Paraxiom/topological-coherence"
+Paper = "https://doi.org/10.5281/zenodo.18187835"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/topological_coherence"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/README.md",
+    "/README_PYPI.md",
+    "/LICENSE",
+]

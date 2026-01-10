@@ -105,9 +105,13 @@ This proves:
 topological-coherence/
 ├── cormier_topological_coherence_2026.pdf   # Paper (15 pages)
 ├── cormier_topological_coherence_2026.tex   # LaTeX source
+├── docs/
+│   ├── UNIFIED_THEORY.md                    # Cross-domain unified theory
+│   └── diagrams/                            # SVG diagrams
 ├── experiments/
 │   ├── tonnetz_validation.py                # Minimal validation experiment
 │   └── venv/                                # Python environment (not tracked)
+├── src/topological_coherence/               # PyPI package source
 ├── README.md                                # This file
 └── LICENSE                                  # Apache 2.0
 ```
@@ -196,6 +200,7 @@ The distinction is between **ad-hoc regularization** (which helps) and **geometr
 
 | Paper | Topic | Link |
 |-------|-------|------|
+| **Unified Theory** | Conservative composition across ML, blockchain, consensus | [docs/UNIFIED_THEORY.md](docs/UNIFIED_THEORY.md) |
 | ERLHS | Hamiltonian framework for coherence-preserving ML | [DOI: 10.5281/zenodo.17928909](https://doi.org/10.5281/zenodo.17928909) |
 | Karmonic Mesh | Spectral consensus on toroidal manifolds | [DOI: 10.5281/zenodo.17928991](https://doi.org/10.5281/zenodo.17928991) |
 | mHC | Manifold-Constrained Hyper-Connections | [arXiv:2512.24880](https://arxiv.org/abs/2512.24880) |

@@ -113,6 +113,60 @@ This is why:
 
 ---
 
+## Why Tonnetz? Alternative Topologies
+
+The Tonnetz (torus) is not the only geometry that works. What matters are two properties:
+
+1. **Compactness** — closed topology, no escape to infinity
+2. **Regularity** — uniform local structure (same degree at every node)
+
+These properties guarantee a **constant spectral gap** under scaling.
+
+### Topology Comparison
+
+| Topology | Compact? | Regular Tiling? | Spectral Gap | Verdict |
+|----------|----------|-----------------|--------------|---------|
+| **Torus (T²)** | Yes | Yes (perfect grid) | Constant | **Best** — minimal working example |
+| **Sphere (S²)** | Yes | No (needs 12 pentagons) | Exists but irregular | Works with caveats |
+| **Ellipsoid** | Yes | No (same as sphere) | Same as sphere | No advantage over sphere |
+| **Open helix** | No | — | — | **Fails** — unbounded axis |
+| **Closed helix / Torus knot** | Yes | Yes | Constant | Works |
+| **Klein bottle** | Yes | Non-orientable | Exotic spectrum | Possible, unexplored |
+| **Higher genus (pretzel)** | Yes | Yes | Different eigenvalues | Works, richer structure |
+| **Hyperbolic (H²)** | No* | Yes | Exponential decay | Interesting for hierarchies |
+
+*Hyperbolic space is not compact but can be quotiented to compact surfaces.
+
+### Why Torus is Minimal
+
+The torus is the **simplest** manifold satisfying all requirements:
+
+- **Flat** (zero curvature) — every point looks identical
+- **No singularities** — unlike sphere's poles
+- **Easy parameterization** — just two angles (θ, φ)
+- **Computable spectrum** — eigenvalues are explicit: `λₖ = 2 - 2cos(2πk/N)`
+
+### Research Directions: Alternative Geometries
+
+| Geometry | Potential Application |
+|----------|----------------------|
+| **Hyperbolic** | Hierarchical semantics (tree-like relationships) |
+| **Spherical** | Semantic spaces with natural "poles" (sentiment, etc.) |
+| **Higher genus** | Multi-topic attention (separate "holes" for separate concepts) |
+| **Product manifolds** | T² × S¹ for time-aware toroidal attention |
+
+### The Core Requirement
+
+Any manifold works if it provides:
+
+```
+Spectral gap: λ₁ - λ₂ > ε > 0 (constant as n → ∞)
+```
+
+The Tonnetz proves such manifolds exist and are practical. The choice of *which* manifold should match the structure of the semantic space being modeled.
+
+---
+
 ## Diagram: The Unified Operator
 
 ```

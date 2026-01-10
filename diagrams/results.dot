@@ -1,0 +1,97 @@
+digraph ToroidalResults {
+    rankdir=TB;
+    bgcolor="white";
+    pad="0.5";
+    nodesep=0.8;
+    ranksep=1.0;
+
+    node [fontname="Futura, Helvetica Neue, Arial", fontsize=13, penwidth=2];
+    edge [fontname="Futura, Helvetica Neue, Arial", fontsize=10, penwidth=1.5, color="#333333"];
+
+    // Title
+    labelloc="t";
+    label=<<FONT FACE="Futura, Helvetica Neue" POINT-SIZE="24"><B>TOPOLOGICAL COHERENCE</B></FONT><BR/><FONT FACE="Futura, Helvetica Neue" POINT-SIZE="14" COLOR="#666666">Attention Geometry Reduces Hallucination</FONT>>;
+
+    // Results row
+    subgraph cluster_results {
+        label="";
+        style=invis;
+
+        baseline [
+            label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4">
+                <TR><TD><FONT POINT-SIZE="11" COLOR="#999999">BASELINE</FONT></TD></TR>
+                <TR><TD><FONT POINT-SIZE="28" COLOR="#E63946"><B>14.44%</B></FONT></TD></TR>
+                <TR><TD><FONT POINT-SIZE="10" COLOR="#999999">control</FONT></TD></TR>
+            </TABLE>>,
+            shape=circle,
+            width=1.8,
+            style=filled,
+            fillcolor="#FFF5F5",
+            color="#E63946"
+        ];
+
+        random [
+            label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4">
+                <TR><TD><FONT POINT-SIZE="11" COLOR="#999999">RANDOM</FONT></TD></TR>
+                <TR><TD><FONT POINT-SIZE="28" COLOR="#999999"><B>15.30%</B></FONT></TD></TR>
+                <TR><TD><FONT POINT-SIZE="10" COLOR="#999999">no effect</FONT></TD></TR>
+            </TABLE>>,
+            shape=circle,
+            width=1.8,
+            style=filled,
+            fillcolor="#F8F9FA",
+            color="#CCCCCC"
+        ];
+
+        local [
+            label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4">
+                <TR><TD><FONT POINT-SIZE="11" COLOR="#999999">LOCAL</FONT></TD></TR>
+                <TR><TD><FONT POINT-SIZE="28" COLOR="#2A9D8F"><B>17.26%</B></FONT></TD></TR>
+                <TR><TD><FONT POINT-SIZE="10" COLOR="#2A9D8F">+20%</FONT></TD></TR>
+            </TABLE>>,
+            shape=circle,
+            width=1.8,
+            style=filled,
+            fillcolor="#F0FFF4",
+            color="#2A9D8F"
+        ];
+
+        toroidal [
+            label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4">
+                <TR><TD><FONT POINT-SIZE="11" COLOR="#1D3557">TOROIDAL</FONT></TD></TR>
+                <TR><TD><FONT POINT-SIZE="32" COLOR="#1D3557"><B>17.26%</B></FONT></TD></TR>
+                <TR><TD><FONT POINT-SIZE="10" COLOR="#E9C46A">★ BEST</FONT></TD></TR>
+            </TABLE>>,
+            shape=circle,
+            width=2.0,
+            style=filled,
+            fillcolor="#E9C46A",
+            color="#1D3557",
+            penwidth=4
+        ];
+    }
+
+    // Flow
+    baseline -> random [style=invis];
+    random -> local [style=invis];
+    local -> toroidal [style=invis];
+
+    // Insight box
+    insight [
+        label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="8">
+            <TR><TD><FONT POINT-SIZE="12" COLOR="#1D3557"><B>KEY FINDING</B></FONT></TD></TR>
+            <TR><TD><FONT POINT-SIZE="11" COLOR="#333333">Structure matters. Sparsity alone does not.</FONT></TD></TR>
+        </TABLE>>,
+        shape=rect,
+        style="filled,rounded",
+        fillcolor="#F1FAEE",
+        color="#1D3557",
+        penwidth=2
+    ];
+
+    // Layout
+    {rank=same; baseline; random; local; toroidal}
+    {rank=max; insight}
+
+    toroidal -> insight [style=dashed, color="#E9C46A", penwidth=2];
+}

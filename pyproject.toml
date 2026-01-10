@@ -7,7 +7,7 @@ name = "topological-coherence"
 version = "0.1.2"
 description = "Toroidal attention constraints for reducing LLM hallucination"
 readme = "README_PYPI.md"
-license = "MIT"
+license = "Apache-2.0"
 authors = [
     { name = "Sylvain Cormier", email = "sylvain@paraxiom.io" }
 ]

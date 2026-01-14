@@ -3,3 +3,27 @@ dist/
 __pycache__/
 .eggs/
 *.pyc
+
+# Local R&D - unvalidated theoretical work
+# Keep local until experimentally confirmed
+docs/versions/
+docs/THEORETICAL_FOUNDATION.*
+docs/unified_architecture.*
+docs/qnt_lattice_architecture.*
+docs/length_temporal_mapping.*
+docs/lattice_temporal_buffer.*
+docs/phonon_energy_flow.*
+docs/quantum_memory_mechanism.*
+docs/cross_domain_temporal.*
+docs/doppler_cooling_mechanism.*
+docs/tonnetz_harmonic_structure.*
+docs/harmonic_energy_paths.*
+docs/length_harmony_correct.*
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg

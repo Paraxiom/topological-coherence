@@ -1,5 +1,6 @@
 # Topological Coherence Experiment Requirements
 # For RunPod A100 GPU
+# Estimated: 600 GPU-hours for full validation
 
 # Core ML
 torch>=2.0.0
@@ -7,6 +8,11 @@ transformers>=4.36.0
 datasets>=2.16.0
 accelerate>=0.25.0
 peft>=0.7.0
+bitsandbytes>=0.41.0
+
+# Quantum Simulation (Experiment 3, 4)
+qutip>=5.0.0
+scipy>=1.10.0
 
 # Evaluation
 evaluate>=0.4.0
@@ -15,6 +21,7 @@ scikit-learn>=1.3.0
 # Utilities
 tqdm>=4.66.0
 numpy>=1.24.0
+matplotlib>=3.7.0
 
 # For TruthfulQA
 bleurt @ git+https://github.com/google-research/bleurt.git

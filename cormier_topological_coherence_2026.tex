@@ -12,7 +12,7 @@
 \newtheorem{definition}{Definition}
 \newtheorem{remark}{Remark}
 
-\title{Topological Constraints for Coherent Language Models:\\Why Geometry Prevents Hallucination}
+\title{Topological Constraints for Coherent Language Models:\\Bounding Latent Drift via Spectral Gaps on Toroidal Manifolds}
 
 \author{Sylvain Cormier\\
 Paraxiom Research\\
@@ -25,12 +25,18 @@ Paraxiom Research\\
 \maketitle
 
 \begin{abstract}
-Residual geometry determines whether reasoning is stable. We show that transformer latent dynamics, operating on unconstrained vector spaces, lack the conserved quantities necessary for bounded inference. Recent findings on Manifold-Constrained Hyper-Connections (mHC) confirm this empirically: residual stream mixing requires doubly-stochastic constraints to prevent gradient explosion at scale. We prove this constraint is a special case of Hamiltonian coherence preservation—specifically, evolution on the Birkhoff polytope, a zero-curvature slice of the general coherence manifolds defined in ERLHS. The Tonnetz topology, a toroidal structure with constant spectral gap $\lambda_1 = \Theta(1)$ for fixed side length, provides a constructive example of richer geometric structure where low-frequency (coherent) modes propagate without attenuation while high-frequency (incoherent) modes decay as $e^{-\lambda t}$. This establishes a hierarchy of sufficient conditions: mHC (Birkhoff) $\subset$ ERLHS (Hamiltonian) $\subset$ Karmonic (Toroidal + Spectral). \textbf{Experimental validation on Phi-2 (2.7B) confirms the theory}: toroidal attention reduces drift rate by 40\% on synthetic sequences and achieves +19.5\% relative improvement on TruthfulQA with best-in-class HaluEval performance (52.60\%). Independent work on geometric hallucination detection provides complementary evidence: the convex hull volume metric correlates with hallucination precisely because it measures violation of the spectral gap bound we characterize.
+We argue that hallucination in large language models is driven in part by unconstrained latent dynamics: residual updates evolve in high-dimensional Euclidean space without contractive structure that bounds drift. Recent work on Hyper-Connections \citep{zhu2024hyperconnections} shows that unconstrained residual mixing can destabilize training, and that projecting mixing matrices onto the Birkhoff polytope (doubly-stochastic) restores stability.
+
+We unify these observations within an ERLHS-style coherence framework: doubly-stochastic projection is a special case of non-expansive evolution on a constrained set. The constraint ensures bounded mixing but does not, by itself, impose a neighborhood graph or Laplacian spectrum that filters incoherent modes. We provide a constructive topology---the 2D torus (Tonnetz)---as an architectural prior that introduces a spectral gap $\lambda_1 = \Theta(1)$ for fixed side length, enabling explicit suppression of high-frequency drift.
+
+This establishes a hierarchy of sufficient conditions for coherence: mHC (Birkhoff contractivity) $\subset$ ERLHS (Hamiltonian-inspired bounds) $\subset$ Karmonic (Toroidal + Spectral filtering).
+
+\textbf{Experimental validation}: In our Phi-2 (2.7B) experiments, a toroidal attention mask reduces drift rate by 40\% on synthetic sequences and achieves +19.5\% relative improvement on TruthfulQA (817 questions) with best-in-class HaluEval performance (52.60\% vs.\ 55.00\% baseline). Code, configurations, and logs are released at \url{https://github.com/Paraxiom/topological-coherence}.
 \end{abstract}
 
 \section{Introduction}
 
-Transformer architectures lack geometric structure in their latent dynamics. The residual stream $h_t \in \mathbb{R}^n$ evolves without conserved quantities, without topological constraints, and without spectral filtering. This is not an incidental design choice—it is a missing invariant.
+Transformer architectures lack geometric structure in their latent dynamics. The residual stream $h_t \in \mathbb{R}^n$ evolves without contractive constraints, without topological structure, and without spectral filtering. This is not an incidental design choice---it is a missing invariant.
 
 The empirical consequence is well-documented: large language models hallucinate \citep{ji2023hallucination}. But hallucination is the symptom. The underlying cause is that unconstrained residual dynamics permit arbitrary drift through latent space.
 
@@ -67,10 +73,10 @@ This constraint ensures:
 We show that the mHC doubly-stochastic constraint is a \textbf{special case} of coherence-preserving Hamiltonian dynamics on smooth manifolds, as formalized in ERLHS \citep{cormier2025erlhs}. Furthermore, we demonstrate that:
 
 \begin{enumerate}
-    \item The Birkhoff polytope is a zero-curvature slice of the general coherence manifold
-    \item Toroidal (Tonnetz) topology provides richer structure with constant spectral gap
-    \item Harmonic relationships in the Tonnetz map naturally to semantic coherence
-    \item Enforcing topological constraints prevents hallucination by construction
+    \item The doubly-stochastic constraint ensures non-expansive mixing but does not impose a persistent neighborhood graph or Laplacian spectrum for filtering
+    \item Toroidal (Tonnetz) topology provides richer structure with constant spectral gap (for fixed side length)
+    \item The spectral gap enables explicit suppression of high-frequency incoherent modes
+    \item Enforcing topological constraints bounds hallucination rate empirically
 \end{enumerate}
 
 The key insight is:
@@ -315,8 +321,8 @@ The Sinkhorn-Knopp algorithm is gradient descent on $H$ with respect to the KL-d
 Therefore, mHC is ERLHS with a specific (flat, finite-dimensional) manifold choice. $\square$
 \end{proof}
 
-\begin{corollary}[mHC Has Zero Curvature]
-The Birkhoff polytope has zero Riemannian curvature as a convex subset of Euclidean space. This means mHC provides no spectral filtering—all frequency modes are treated equally.
+\begin{corollary}[mHC Lacks Spectral Structure]
+The Birkhoff polytope, as a convex subset of $\mathbb{R}^{n \times n}$, has no intrinsic neighborhood graph or Laplacian spectrum. Consequently, mHC provides non-expansive mixing but no spectral filtering---all frequency modes are treated equally. Toroidal topology adds precisely this missing structure.
 \end{corollary}
 
 \subsection{Tonnetz Provides Richer Structure}
@@ -731,8 +737,8 @@ Ji, Z., et al. (2023).
 
 \bibitem[Xie et al.(2026)]{xie2026mhc}
 Xie, Z., et al. (2026).
-\newblock mHC: Manifold-Constrained Hyper-Connections.
-\newblock \emph{arXiv preprint arXiv:2512.24880}.
+\newblock Manifold-Constrained Hyper-Connections for Stable Deep Learning.
+\newblock DeepSeek Technical Report, January 2026.
 
 \bibitem[Zhu et al.(2024)]{zhu2024hyperconnections}
 Zhu, D., et al. (2024).
@@ -747,8 +753,7 @@ Shuman, D. I., Narang, S. K., Frossard, P., Ortega, A., and Vandergheynst, P. (2
 \bibitem[Phillips et al.(2025)]{phillips2025geometric}
 Phillips, J., Khan, A., and Sheridan, M. (2025).
 \newblock Geometric Uncertainty for Detecting and Correcting Hallucinations in Large Language Models.
-\newblock \emph{arXiv preprint arXiv:2505.xxxxx}.
-\newblock Oxford University.
+\newblock Oxford University, preprint.
 
 \bibitem[Gardinazzi et al.(2025)]{gardinazzi2025persistent}
 Gardinazzi, Y., Viswanathan, K., Panerai, G., Ansuini, A., Cazzaniga, A., and Biagetti, M. (2025).

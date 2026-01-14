@@ -557,7 +557,7 @@ Several factors explain why topological constraints haven't been widely explored
 \begin{enumerate}
     \item \textbf{Scaling laws focus}: Research prioritized parameter count and data size over architectural constraints
 
-    \item \textbf{Geometric ML is young}: Hamiltonian neural networks \citep{greydanus2019hamiltonian} appeared only in 2019
+    \item \textbf{Geometric ML is young}: Hamiltonian neural networks \citep{greydanus2019hamiltonian} appeared only in 2019; hyperbolic embeddings for LLMs \citep{patel2025hyperbolic} emerged in 2025
 
     \item \textbf{mHC just published}: The empirical confirmation of instability without constraints appeared January 2026
 
@@ -576,11 +576,14 @@ Constitutional AI & Output rules & No latent geometry \\
 Retrieval augmentation & Knowledge access & No reasoning constraint \\
 Chain-of-thought & Output format & No geometric constraint \\
 mHC & Residual mixing & No semantic structure \\
+Hyperbolic LLMs \citep{patel2025hyperbolic} & Hierarchical structure & No local coherence \\
 Geometric Volume \citep{phillips2025geometric} & Detects dispersion post-hoc & No prevention mechanism \\
 \textbf{Tonnetz-ERLHS} & \textbf{Latent geometry} & Embedding complexity; may constrain long-range jumps \\
 \bottomrule
 \end{tabular}
 \end{center}
+
+\noindent\textbf{Note on geometric approaches}: Hyperbolic geometry \citep{patel2025hyperbolic} excels at representing hierarchical structures (trees, taxonomies) due to its negative curvature, while toroidal geometry (this work) enforces local coherence through periodic boundaries and spectral gaps. These are complementary: hyperbolic for semantic hierarchy, toroidal for inference stability. Future work may combine both.
 
 \subsection{Empirical Validation from Geometric Detection}
 
@@ -764,6 +767,11 @@ Gardinazzi, Y., Viswanathan, K., Panerai, G., Ansuini, A., Cazzaniga, A., and Bi
 Zenil, H. (2026).
 \newblock On the Limits of Self-Improving in LLMs and Why AGI, ASI and the Singularity Are Not Near Without Symbolic Model Synthesis.
 \newblock \emph{arXiv preprint arXiv:2601.05280v1}.
+
+\bibitem[Patel et al.(2025)]{patel2025hyperbolic}
+Patel, S., et al. (2025).
+\newblock Hyperbolic Large Language Models.
+\newblock \emph{arXiv preprint arXiv:2509.05757}.
 
 \end{thebibliography}
 

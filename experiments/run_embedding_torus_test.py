@@ -29,9 +29,12 @@ def build_embedding_torus_map(model, tokenizer, grid_size=12, device='cuda'):
     Build a mapping from token IDs to torus positions based on embedding similarity.
 
     1. Get embedding vectors for all tokens
-    2. Cluster into grid_size² clusters using k-means
-    3. Each cluster = one torus position
+    2. Reduce dimensionality with PCA (critical for good clustering!)
+    3. Cluster into grid_size² clusters using k-means
+    4. Each cluster = one torus position
     """
+    from sklearn.decomposition import PCA
+
     print("Building embedding-based torus mapping...")
 
     vocab_size = model.config.vocab_size
@@ -49,15 +52,22 @@ def build_embedding_torus_map(model, tokenizer, grid_size=12, device='cuda'):
 
     print(f"  Embedding shape: {embeddings.shape}")
 
-    # Normalize embeddings for better clustering
+    # Normalize embeddings
     norms = np.linalg.norm(embeddings, axis=1, keepdims=True)
-    norms[norms == 0] = 1  # Avoid division by zero
+    norms[norms == 0] = 1
     embeddings_normalized = embeddings / norms
 
-    # Cluster embeddings into grid_size² clusters
+    # CRITICAL: Reduce dimensionality with PCA before clustering
+    # High-dimensional spaces make k-means fail
+    print(f"  Reducing dimensionality with PCA (4096 -> 64)...")
+    pca = PCA(n_components=64, random_state=42)
+    embeddings_reduced = pca.fit_transform(embeddings_normalized)
+    print(f"  Variance explained: {pca.explained_variance_ratio_.sum():.1%}")
+
+    # Cluster reduced embeddings
     print(f"  Clustering {vocab_size} tokens into {n_clusters} clusters...")
-    kmeans = MiniBatchKMeans(n_clusters=n_clusters, random_state=42, batch_size=1024, n_init=3)
-    cluster_labels = kmeans.fit_predict(embeddings_normalized)
+    kmeans = MiniBatchKMeans(n_clusters=n_clusters, random_state=42, batch_size=1024, n_init=10)
+    cluster_labels = kmeans.fit_predict(embeddings_reduced)
 
     # Map: token_id -> torus_position (cluster label)
     token_to_torus = torch.tensor(cluster_labels, device=device, dtype=torch.long)

@@ -1,5 +1,7 @@
 # Toroidal Coherence Validation Results - FINAL
 
+**Paper DOI**: https://doi.org/10.5281/zenodo.18512373
+
 ## February 6, 2026 - 100 Sample Validated Tests
 
 ### Executive Summary

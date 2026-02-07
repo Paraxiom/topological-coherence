@@ -1,5 +1,7 @@
 # Zenodo Upload: Toroidal Logit Bias for Hallucination Reduction
 
+**DOI: https://doi.org/10.5281/zenodo.18512373**
+
 ## Title
 Toroidal Logit Bias for Hallucination Reduction in Large Language Models
 

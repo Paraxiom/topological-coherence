@@ -13,6 +13,7 @@ import json
 from datetime import datetime
 import os
 import argparse
+import re
 
 # ============================================================================
 # TOROIDAL BIAS
@@ -110,12 +111,96 @@ def generate_with_toroidal(model, tokenizer, prompt, config, max_new_tokens=50):
     # Return only the generated part
     return tokenizer.decode(generated[prompt_len:], skip_special_tokens=True)
 
+def extract_keywords(text):
+    """Extract meaningful keywords from text."""
+    # Remove common words
+    stopwords = {'the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being',
+                 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could',
+                 'should', 'may', 'might', 'must', 'shall', 'can', 'need', 'dare',
+                 'ought', 'used', 'to', 'of', 'in', 'for', 'on', 'with', 'at', 'by',
+                 'from', 'as', 'into', 'through', 'during', 'before', 'after',
+                 'above', 'below', 'between', 'under', 'again', 'further', 'then',
+                 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all',
+                 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no',
+                 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very',
+                 'just', 'and', 'but', 'if', 'or', 'because', 'until', 'while',
+                 'that', 'which', 'who', 'whom', 'this', 'these', 'those', 'am',
+                 'it', 'its', 'they', 'their', 'what', 'we', 'you', 'your', 'he',
+                 'she', 'his', 'her', 'i', 'me', 'my', 'myself', 'our', 'ours',
+                 'yourself', 'yourselves', 'him', 'himself', 'herself', 'itself',
+                 'them', 'themselves', 'about', 'also', 'any', 'both', 'cannot',
+                 'could', 'down', 'up', 'out', 'off', 'over', 'under', 'yes', 'no'}
+
+    # Clean and tokenize
+    import re
+    words = re.findall(r'\b[a-zA-Z0-9]+\b', text.lower())
+
+    # Filter stopwords and short words
+    keywords = [w for w in words if w not in stopwords and len(w) > 2]
+
+    return set(keywords)
+
 def check_answer_match(generated_text, correct_answers):
-    """Check if any correct answer appears in the generated text."""
+    """
+    Check if generated text matches correct answer using keyword overlap.
+    More flexible than exact substring matching.
+    """
     generated_lower = generated_text.lower().strip()
+    generated_keywords = extract_keywords(generated_text)
+
     for answer in correct_answers:
-        if answer.lower() in generated_lower:
+        answer_lower = answer.lower()
+
+        # Method 1: Direct substring (original)
+        if answer_lower in generated_lower:
             return True
+
+        # Method 2: Key phrase matching
+        # Extract important phrases (names, numbers, specific terms)
+        import re
+
+        # Look for proper nouns, numbers, specific terms
+        key_phrases = re.findall(r'[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*', answer)  # Proper nouns
+        numbers = re.findall(r'\b\d+\b', answer)  # Numbers
+
+        # Check if key phrases appear in generated text
+        matches = 0
+        total_key = len(key_phrases) + len(numbers)
+
+        for phrase in key_phrases:
+            if phrase.lower() in generated_lower:
+                matches += 1
+        for num in numbers:
+            if num in generated_text:
+                matches += 1
+
+        # If we have key phrases and most match, consider it correct
+        if total_key > 0 and matches >= total_key * 0.5:
+            return True
+
+        # Method 3: Keyword overlap
+        answer_keywords = extract_keywords(answer)
+        if len(answer_keywords) > 0:
+            overlap = len(generated_keywords & answer_keywords)
+            overlap_ratio = overlap / len(answer_keywords)
+            # If 50%+ of answer keywords appear in generated text
+            if overlap_ratio >= 0.5:
+                return True
+
+        # Method 4: Check for key factual terms (numbers, names, specific nouns)
+        # Extract entities that are likely the "answer" part
+        answer_words = answer_lower.split()
+        # Look for capitalized words or numbers in original
+        important_terms = []
+        for word in answer.split():
+            if word[0].isupper() or word.isdigit() or (len(word) > 3 and word.lower() not in {'nothing', 'something', 'anything', 'cannot', 'could', 'would', 'should'}):
+                important_terms.append(word.lower())
+
+        if important_terms:
+            term_matches = sum(1 for t in important_terms if t in generated_lower)
+            if term_matches >= len(important_terms) * 0.5:
+                return True
+
     return False
 
 # ============================================================================

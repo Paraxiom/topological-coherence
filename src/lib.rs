@@ -48,42 +48,26 @@ use parity_scale_codec::{Decode, Encode, MaxEncodedLen};
 use scale_info::TypeInfo;
 
 // =============================================================================
-// TODO: Implementation Roadmap
+// Implementation Status
 // =============================================================================
 //
-// Phase 1: Core Topology - COMPLETE
-// --------------------------------
-// [x] Tonnetz struct with const generic grid size
-// [x] Toroidal distance calculation
-// [x] Basic attention mask generation
-// [x] Spectral gap computation
-// [x] Property tests (symmetry, triangle inequality)
+// Phase 1: Core Topology — COMPLETE
+//   Tonnetz struct, toroidal distance, attention masks, spectral gap, property tests
 //
-// Phase 2: Mask Variants - COMPLETE
-// ----------------------
-// [x] Hard cutoff mask (M(i,j) = 1 if d <= r, else 0)
-// [x] Soft exponential decay (M(i,j) = exp(-α * d))
-// [x] Hybrid mask (hard within r, soft decay outside)
-// [x] Sinkhorn-Knopp projection for doubly-stochastic
+// Phase 2: Mask Variants — COMPLETE
+//   Hard cutoff, soft exponential, hybrid, Sinkhorn-Knopp projection
 //
-// Phase 3: Integration Points - IN PROGRESS
-// ---------------------------
-// [ ] Off-chain worker trait implementation
-// [ ] Pallet storage types for embeddings
-// [ ] Benchmarks for on-chain verification
-// [ ] SCALE codec for mask serialization
+// Phase 3: Integration Points — COMPLETE
+//   Substrate SCALE codec types, CoherenceConfig, CoherenceResult, ToroidalPosition
 //
-// Phase 4: Advanced Features
-// --------------------------
-// [ ] Learned toroidal projection φ_θ(e) = (σ(W₁e) mod 1, σ(W₂e) mod 1)
-// [ ] Adjacency loss computation
-// [ ] Multi-scale Tonnetz (different grid sizes)
-// [ ] Higher-dimensional tori (T^3, T^4)
+// Phase 4: Advanced Features — COMPLETE
+//   Learned toroidal projection, adjacency loss, multi-scale Tonnetz, 3D torus (T^3),
+//   sparse CSR mask format
 //
 // References:
-// - Paper: https://github.com/Paraxiom/topological-coherence
-// - ERLHS: DOI 10.5281/zenodo.17928909
-// - Karmonic: DOI 10.5281/zenodo.17928991
+//   Paper: https://github.com/Paraxiom/topological-coherence
+//   ERLHS: DOI 10.5281/zenodo.17928909
+//   Karmonic: DOI 10.5281/zenodo.17928991
 //
 // =============================================================================
 

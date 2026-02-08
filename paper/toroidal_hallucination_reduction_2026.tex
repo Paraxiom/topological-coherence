@@ -357,11 +357,18 @@ Unknown & 0.2 & 2.5 & 2000 \\
 
 \section{Related Work}
 
-\textbf{Logit Manipulation}: Prior work has used logit biasing for controllable generation (e.g., reducing toxicity, enforcing style). Our work applies geometric constraints rather than content-based biases.
+\textbf{Geometric Latent Spaces.}
+Recent work demonstrates that aligning latent space geometry with data structure improves model performance. \citet{gu2018learning} introduced mixed-curvature product manifolds (Euclidean, hyperbolic, spherical) for embedding relational data, showing that non-Euclidean geometry better captures hierarchical and cyclical structure. \citet{saezdeocariz2023nlgs} formalized neural latent geometry search (NLGS), using Gromov-Hausdorff distances to compare product manifolds and Bayesian optimization to find optimal latent geometries---establishing that the choice of manifold significantly impacts downstream task performance. \citet{patel2025hyperbolic} applied hyperbolic geometry directly to LLM representations.
+Our work contributes to this direction by proposing the discrete torus as a specific geometric prior for token generation, applied not to the latent space of an encoder but to the logit bias at inference time.
 
-\textbf{Topological Methods in NLP}: Persistent homology has been applied to analyze word embeddings and document structure. We extend topological thinking to the generation process itself.
+\textbf{Spectral Methods on Manifolds.}
+The NLGS framework \citep{saezdeocariz2023nlgs} employs diffusion kernels based on graph Laplacian eigendecomposition $K = U e^{-\beta\Lambda} U^T$ to define similarity in their search space---the same spectral machinery underlying our toroidal approach. \citet{shuman2013emerging} established the foundations of signal processing on graphs, including spectral filtering via Laplacian eigenbases. Our spectral resonance extension (forthcoming) directly uses the Laplacian eigenbasis of the torus to compute harmonic mode energy for logit biasing.
 
-\textbf{Hallucination Mitigation}: RAG, fine-tuning, and chain-of-thought prompting are established methods. Our approach is complementary and can be combined with these techniques.
+\textbf{Logit Manipulation.} Prior work has used logit biasing for controllable generation (e.g., reducing toxicity, enforcing style). Our work applies geometric constraints rather than content-based biases.
+
+\textbf{Topological Methods in NLP.} Persistent homology has been applied to analyze word embeddings and document structure \citep{gardinazzi2025persistent}. We extend topological thinking to the generation process itself.
+
+\textbf{Hallucination Mitigation.} RAG, fine-tuning, and chain-of-thought prompting are established methods \citep{ji2023hallucination}. Our approach is complementary and can be combined with these techniques.
 
 \section{Conclusion}
 
@@ -382,7 +389,7 @@ The method generalizes across benchmarks (custom and TruthfulQA) with consistent
 This work was supported by Paraxiom Research. Experiments conducted on RunPod RTX 4090 infrastructure.
 
 \bibliographystyle{plain}
-\begin{thebibliography}{9}
+\begin{thebibliography}{99}
 
 \bibitem{ji2023hallucination}
 Ji, Z., Lee, N., Frieske, R., Yu, T., Su, D., Xu, Y., ... \& Fung, P. (2023).
@@ -392,12 +399,37 @@ Survey of hallucination in natural language generation.
 \bibitem{cormier2025erlhs}
 Cormier, S. (2025).
 ERLHS: Emergent Reasoning via Latent Hamiltonian Structure.
-\textit{Paraxiom Research Technical Report}.
+\textit{Paraxiom Research Technical Report}. DOI: 10.5281/zenodo.17928909.
 
 \bibitem{zhu2024hyperconnections}
 Zhu, D., et al. (2024).
 Hyper-Connections: Scaling Residual Connections in Deep Networks.
 \textit{arXiv preprint arXiv:2409.19606}.
+
+\bibitem{saezdeocariz2023nlgs}
+S\'{a}ez de Oc\'{a}riz Borde, H., Arroyo, \'{A}., Morales L\'{o}pez, I., Posner, I., \& Dong, X. (2023).
+Neural Latent Geometry Search: Product Manifold Inference via Gromov-Hausdorff-Informed Bayesian Optimization.
+In \textit{Advances in Neural Information Processing Systems (NeurIPS 2023)}.
+
+\bibitem{gu2018learning}
+Gu, A., Sala, F., Gunel, B., \& R\'{e}, C. (2018).
+Learning mixed-curvature representations in product spaces.
+In \textit{International Conference on Learning Representations (ICLR)}.
+
+\bibitem{patel2025hyperbolic}
+Patel, S., et al. (2025).
+Hyperbolic Large Language Models.
+\textit{arXiv preprint arXiv:2509.05757}.
+
+\bibitem{shuman2013emerging}
+Shuman, D. I., Narang, S. K., Frossard, P., Ortega, A., \& Vandergheynst, P. (2013).
+The emerging field of signal processing on graphs.
+\textit{IEEE Signal Processing Magazine}, 30(3), 83-98.
+
+\bibitem{gardinazzi2025persistent}
+Gardinazzi, Y., et al. (2025).
+Persistent Topological Features in Large Language Models.
+\textit{arXiv preprint arXiv:2410.11042v3}.
 
 \end{thebibliography}
 

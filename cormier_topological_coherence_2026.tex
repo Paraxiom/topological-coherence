@@ -87,7 +87,7 @@ The key insight is:
 
 \subsection{Scope and Claims}
 
-This paper does not claim the Tonnetz is the only admissible coherence manifold. It is presented as a \textbf{constructive existence proof} of a topology with bounded drift and constant spectral gap. The contribution is the principle—that latent geometry determines reasoning stability—not the specific manifold choice.
+This paper does not claim the Tonnetz is the only admissible coherence manifold. It is presented as a \textbf{constructive existence proof} of a topology with bounded drift and constant spectral gap. The contribution is the principle---that latent geometry determines reasoning stability---not the specific manifold choice. This is consistent with the Neural Latent Geometry Search (NLGS) framework \citep{saezdeocariz2023nlgs}, which demonstrated at NeurIPS 2023 that the choice of latent manifold (from a product space of Euclidean, hyperbolic, and spherical components) significantly impacts downstream task performance, and that Gromov-Hausdorff distances between candidate geometries provide a meaningful inductive bias. Our work extends this principle from encoder latent spaces to inference-time logit biasing in LLMs, using the discrete torus---a product manifold $T^2 = S^1 \times S^1$---as the geometric prior. The product manifold framework of \citet{gu2018learning} further supports the tractability of this approach, as exponential maps and geodesic distances on product spaces of constant curvature retain closed-form solutions.
 
 We also distinguish three levels of guarantee:
 \begin{itemize}
@@ -772,6 +772,16 @@ Zenil, H. (2026).
 Patel, S., et al. (2025).
 \newblock Hyperbolic Large Language Models.
 \newblock \emph{arXiv preprint arXiv:2509.05757}.
+
+\bibitem[S\'{a}ez de Oc\'{a}riz Borde et al.(2023)]{saezdeocariz2023nlgs}
+S\'{a}ez de Oc\'{a}riz Borde, H., Arroyo, \'{A}., Morales L\'{o}pez, I., Posner, I., and Dong, X. (2023).
+\newblock Neural Latent Geometry Search: Product Manifold Inference via Gromov-Hausdorff-Informed Bayesian Optimization.
+\newblock In \emph{Advances in Neural Information Processing Systems (NeurIPS 2023)}.
+
+\bibitem[Gu et al.(2018)]{gu2018learning}
+Gu, A., Sala, F., Gunel, B., and R\'{e}, C. (2018).
+\newblock Learning mixed-curvature representations in product spaces.
+\newblock In \emph{International Conference on Learning Representations (ICLR)}.
 
 \end{thebibliography}
 

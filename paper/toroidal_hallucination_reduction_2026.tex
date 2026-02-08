@@ -362,7 +362,7 @@ Recent work demonstrates that aligning latent space geometry with data structure
 Our work contributes to this direction by proposing the discrete torus as a specific geometric prior for token generation, applied not to the latent space of an encoder but to the logit bias at inference time.
 
 \textbf{Spectral Methods on Manifolds.}
-The NLGS framework \citep{saezdeocariz2023nlgs} employs diffusion kernels based on graph Laplacian eigendecomposition $K = U e^{-\beta\Lambda} U^T$ to define similarity in their search space---the same spectral machinery underlying our toroidal approach. \citet{shuman2013emerging} established the foundations of signal processing on graphs, including spectral filtering via Laplacian eigenbases. Our spectral resonance extension (forthcoming) directly uses the Laplacian eigenbasis of the torus to compute harmonic mode energy for logit biasing.
+The NLGS framework \citep{saezdeocariz2023nlgs} employs diffusion kernels based on graph Laplacian eigendecomposition $K = U e^{-\beta\Lambda} U^T$ to define similarity in their search space---the same spectral machinery that naturally arises on toroidal manifolds. \citet{shuman2013emerging} established the foundations of signal processing on graphs, including spectral filtering via Laplacian eigenbases. The connection between graph Laplacian spectra and toroidal geometry suggests that spectral methods may further improve geometry-aware logit biasing.
 
 \textbf{Logit Manipulation.} Prior work has used logit biasing for controllable generation (e.g., reducing toxicity, enforcing style). Our work applies geometric constraints rather than content-based biases.
 

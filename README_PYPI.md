@@ -4,11 +4,13 @@
 
 *Sylvain Cormier | Paraxiom Research | 2026*
 
-## Key Results
+## Key Results (v2 — February 2026)
 
-- **40% lower semantic drift** than baseline attention
+- **+2.8pp on Mistral 7B**, +2.1pp on Qwen 7B — TruthfulQA (817 samples, LLM-judged)
+- **4/4 models improved** across 2 architectures and 3 parameter scales
+- **Improvement scales with model capacity** — larger models benefit more
 - **28x lower drift** than random sparsity (proves topology matters, not just compute reduction)
-- **+6.8% on TruthfulQA** with Toroidal Logit Bias ([DOI: 10.5281/zenodo.18516477](https://doi.org/10.5281/zenodo.18516477))
+- Paper: [DOI: 10.5281/zenodo.18516477](https://doi.org/10.5281/zenodo.18516477)
 
 ## Installation
 

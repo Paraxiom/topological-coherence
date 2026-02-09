@@ -7,7 +7,7 @@ DOI: 10.5281/zenodo.18187835
 Toroidal Logit Bias: DOI 10.5281/zenodo.18516477
 """
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 __author__ = "Sylvain Cormier"
 
 # Core geometry

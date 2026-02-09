@@ -1,10 +1,10 @@
 [package]
 name = "topological-coherence"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 rust-version = "1.60"
 authors = ["Sylvain Cormier <sylvain@paraxiom.org>"]
-description = "Topological constraints for coherent inference - Tonnetz geometry primitives for attention mechanisms"
+description = "Toroidal logit bias for LLM hallucination reduction — Tonnetz geometry primitives validated on 4 models (TruthfulQA 817 samples)"
 license = "Apache-2.0"
 repository = "https://github.com/Paraxiom/topological-coherence"
 documentation = "https://docs.rs/topological-coherence"

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "topological-coherence"
-version = "0.1.2"
+version = "0.2.0"
 description = "Toroidal attention constraints for reducing LLM hallucination"
 readme = "README_PYPI.md"
 license = "Apache-2.0"
@@ -18,12 +18,14 @@ keywords = [
     "topology",
     "tonnetz",
     "llm",
-    "machine-learning"
+    "machine-learning",
+    "logit-bias",
+    "coherence",
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -38,6 +40,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+hf = [
+    "transformers>=4.30.0",
+]
 demo = [
     "gradio>=4.0.0",
 ]

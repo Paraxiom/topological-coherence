@@ -1,49 +1,120 @@
-# Topological Constraints for Coherent Language Models
+# Topological Coherence
 
-**Why Geometry Prevents Hallucination**
+**Toroidal attention constraints for reducing LLM hallucination**
 
-*Sylvain Cormier | Paraxiom Research | January 2026*
+*Sylvain Cormier | Paraxiom Research | 2026*
 
-## Key Result
+## Key Results
 
 - **40% lower semantic drift** than baseline attention
-- **28x lower drift** than random sparsity (negative control)
-- Proves: **topology matters, not just compute reduction**
+- **28x lower drift** than random sparsity (proves topology matters, not just compute reduction)
+- **+6.8% on TruthfulQA** with Toroidal Logit Bias ([DOI: 10.5281/zenodo.18516477](https://doi.org/10.5281/zenodo.18516477))
 
 ## Installation
 
 ```bash
 pip install topological-coherence
+
+# With HuggingFace transformers support
+pip install topological-coherence[hf]
 ```
 
-## Usage
+## Quick Start: Toroidal Logit Bias
+
+Drop-in logit processor for any HuggingFace model — no fine-tuning required:
+
+```python
+from topological_coherence import ToroidalLogitProcessor
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+model = AutoModelForCausalLM.from_pretrained("gpt2")
+tokenizer = AutoTokenizer.from_pretrained("gpt2")
+
+processor = ToroidalLogitProcessor(grid_size=12, radius=2.0, alpha=0.3)
+
+inputs = tokenizer("The quantum nature of", return_tensors="pt")
+outputs = model.generate(
+    **inputs,
+    logits_processor=[processor],
+    max_new_tokens=100
+)
+print(tokenizer.decode(outputs[0]))
+```
+
+## Core API
+
+### Tonnetz Geometry
+
+```python
+from topological_coherence import Tonnetz, distance_matrix
+
+# Create a 12x12 torus topology
+t = Tonnetz(grid_size=12)
+t.distance(0, 5)        # L1 toroidal distance with wraparound
+t.spectral_gap()         # First eigenvalue of the torus Laplacian
+
+# Vectorized distance matrix (numpy, fast)
+dm = distance_matrix(n_tokens=64, grid_size=12)  # (64, 64)
+```
+
+### Attention Masks (3 variants)
+
+```python
+from topological_coherence import ToroidalMask, sinkhorn_knopp
+
+mask = ToroidalMask.hybrid(seq_len=64, radius=2.0, alpha=1.0)   # default
+mask = ToroidalMask.hard_cutoff(seq_len=64, radius=2.0)          # binary
+mask = ToroidalMask.soft_exponential(seq_len=64, alpha=1.0)      # smooth decay
+
+tensor = mask.to_tensor()                     # torch.Tensor for attention
+ds = sinkhorn_knopp(tensor, n_iters=50)       # project to doubly-stochastic
+```
+
+### Drift Measurement
+
+```python
+from topological_coherence import DriftMeter
+
+meter = DriftMeter(threshold=2, grid_size=12)
+meter.record(pred=5, target=8)
+meter.record(pred=5, target=100)
+print(f"Drift rate: {meter.rate():.3f}")
+```
+
+### Toroidal Attention (PyTorch)
 
 ```python
 from topological_coherence import ToroidalAttention, TinyTransformer
 
-# Use toroidal attention in your model
+# Drop-in attention replacement
 attn = ToroidalAttention(d_model=64, n_heads=4, max_seq_len=64)
 
-# Or use the full demo transformer
+# Full demo transformer with swappable attention
 model = TinyTransformer(
-    vocab_size=144,
-    d_model=64,
-    n_heads=4,
+    vocab_size=144, d_model=64, n_heads=4,
     attention_type="toroidal"  # or "baseline", "random"
 )
 ```
 
-## Abstract
+## Theory
 
-Residual geometry determines whether reasoning is stable. We show that transformer latent dynamics, operating on unconstrained vector spaces, lack the conserved quantities necessary for bounded inference.
+Hallucination is a geometry problem. Unconstrained latent dynamics permit arbitrary drift through embedding space. Toroidal constraints provide a **constant spectral gap** that suppresses non-resonant modes:
 
-Toroidal (periodic) constraints on attention provide a spectral gap guarantee that suppresses non-resonant modes, reducing semantic drift.
+```
+λ₁ = 2 - 2cos(2π/N) = Θ(1)    for fixed grid size N
+```
+
+This bounds semantic drift without reducing model capacity.
+
+**Hierarchy:** mHC (Birkhoff) ⊂ ERLHS (Hamiltonian) ⊂ Karmonic (Toroidal + Spectral)
 
 ## Links
 
 - [Paper (Zenodo)](https://doi.org/10.5281/zenodo.18187835)
-- [Live Demo (HuggingFace)](https://huggingface.co/spaces/paraxiom/topological-coherence)
-- [Code (GitHub)](https://github.com/Paraxiom/topological-coherence)
+- [Toroidal Logit Bias Paper](https://doi.org/10.5281/zenodo.18516477)
+- [Live Demo (HuggingFace)](https://huggingface.co/spaces/paraxiom-research/topological-coherence)
+- [Source (GitHub)](https://github.com/Paraxiom/topological-coherence)
+- [Rust Crate (crates.io)](https://crates.io/crates/topological-coherence)
 
 ## Citation
 
@@ -56,3 +127,7 @@ Toroidal (periodic) constraints on attention provide a spectral gap guarantee th
   doi = {10.5281/zenodo.18187835}
 }
 ```
+
+## License
+
+Apache-2.0

@@ -1,11 +1,33 @@
+# Build artifacts
 dist/
+target/
 *.egg-info/
 __pycache__/
 .eggs/
 *.pyc
+.pytest_cache/
+
+# Virtual environments
+venv/
+.venv/
+experiments/venv/
+
+# OS files
+.DS_Store
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.synctex.gz
+
+# Nested projects (clone separately)
+atlas-embeddings/
 
 # Local R&D - unvalidated theoretical work
-# Keep local until experimentally confirmed
 docs/versions/
 docs/THEORETICAL_FOUNDATION.*
 docs/unified_architecture.*
@@ -19,11 +41,3 @@ docs/doppler_cooling_mechanism.*
 docs/tonnetz_harmonic_structure.*
 docs/harmonic_energy_paths.*
 docs/length_harmony_correct.*
-
-# LaTeX build artifacts
-*.aux
-*.log
-*.out
-*.toc
-*.bbl
-*.blg

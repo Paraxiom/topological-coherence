@@ -78,17 +78,29 @@ Training-time toroidal attention masks on a 2-layer transformer:
 
 ```
 topological-coherence/
-├── cormier_topological_coherence_2026.pdf   # Paper (15 pages)
-├── cormier_topological_coherence_2026.tex   # LaTeX source
-├── docs/
-│   ├── UNIFIED_THEORY.md                    # Cross-domain unified theory
-│   └── diagrams/                            # SVG diagrams
-├── experiments/
-│   ├── tonnetz_validation.py                # Minimal validation experiment
-│   └── venv/                                # Python environment (not tracked)
-├── src/topological_coherence/               # PyPI package source
-├── README.md                                # This file
-└── LICENSE                                  # Apache 2.0
+├── src/
+│   ├── topological_coherence/          # Python package (PyPI)
+│   │   ├── logit_bias.py              # ToroidalLogitProcessor
+│   │   ├── tonnetz.py                 # Tonnetz topology
+│   │   ├── masks.py                   # Toroidal mask generation
+│   │   ├── attention.py               # Attention layer variants
+│   │   ├── drift.py                   # Drift measurement
+│   │   └── tests/                     # Unit tests
+│   └── lib.rs                         # Rust crate (crates.io)
+├── paper/
+│   ├── toroidal_hallucination_reduction_2026.tex  # v2 paper (multi-model)
+│   └── toroidal_hallucination_reduction_2026.pdf
+├── cormier_topological_coherence_2026.tex   # Theory paper (LaTeX)
+├── cormier_topological_coherence_2026.pdf   # Theory paper (PDF)
+├── results/                            # v2 benchmark data & charts
+├── experiments/                        # Validation scripts
+├── diagrams/                           # Result visualizations
+├── docs/                               # Unified theory & diagrams
+├── huggingface-space/                  # HuggingFace Space demo
+├── presentation/                       # HTML presentation
+├── Cargo.toml                          # Rust crate config
+├── pyproject.toml                      # Python package config
+└── LICENSE                             # Apache 2.0
 ```
 
 ---

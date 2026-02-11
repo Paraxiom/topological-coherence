@@ -2,85 +2,85 @@ digraph ToroidalResults {
     rankdir=TB;
     bgcolor="white";
     pad="0.5";
-    nodesep=0.8;
-    ranksep=1.0;
+    nodesep=0.6;
+    ranksep=0.8;
 
-    node [fontname="Futura, Helvetica Neue, Arial", fontsize=13, penwidth=2];
-    edge [fontname="Futura, Helvetica Neue, Arial", fontsize=10, penwidth=1.5, color="#333333"];
+    node [fontname="Helvetica Neue, Arial", fontsize=12, penwidth=2];
+    edge [fontname="Helvetica Neue, Arial", fontsize=10, penwidth=1.5, color="#333333"];
 
     // Title
     labelloc="t";
-    label=<<FONT FACE="Futura, Helvetica Neue" POINT-SIZE="24"><B>TOPOLOGICAL COHERENCE</B></FONT><BR/><FONT FACE="Futura, Helvetica Neue" POINT-SIZE="14" COLOR="#666666">Attention Geometry Reduces Hallucination</FONT>>;
+    label=<<FONT FACE="Helvetica Neue" POINT-SIZE="22"><B>TOROIDAL LOGIT BIAS</B></FONT><BR/><FONT FACE="Helvetica Neue" POINT-SIZE="13" COLOR="#666666">TruthfulQA v2 — 817 samples, 4 models, 2 architectures</FONT>>;
 
-    // Results row
+    // Model results
     subgraph cluster_results {
-        label="";
-        style=invis;
+        label=<<FONT POINT-SIZE="12" COLOR="#1D3557"><B>Truthful &amp; Informative Score</B></FONT>>;
+        style="rounded,filled";
+        fillcolor="#F8F9FA";
+        color="#1D3557";
 
-        baseline [
+        qwen05 [
             label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4">
-                <TR><TD><FONT POINT-SIZE="11" COLOR="#999999">BASELINE</FONT></TD></TR>
-                <TR><TD><FONT POINT-SIZE="28" COLOR="#E63946"><B>14.44%</B></FONT></TD></TR>
-                <TR><TD><FONT POINT-SIZE="10" COLOR="#999999">control</FONT></TD></TR>
+                <TR><TD><FONT POINT-SIZE="10" COLOR="#999999">Qwen 0.5B</FONT></TD></TR>
+                <TR><TD><FONT POINT-SIZE="14" COLOR="#666666">16.9%</FONT> <FONT POINT-SIZE="10" COLOR="#999999">→</FONT> <FONT POINT-SIZE="14" COLOR="#2A9D8F">17.1%</FONT></TD></TR>
+                <TR><TD><FONT POINT-SIZE="16" COLOR="#2A9D8F"><B>+0.2pp</B></FONT></TD></TR>
             </TABLE>>,
-            shape=circle,
-            width=1.8,
-            style=filled,
-            fillcolor="#FFF5F5",
-            color="#E63946"
-        ];
-
-        random [
-            label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4">
-                <TR><TD><FONT POINT-SIZE="11" COLOR="#999999">RANDOM</FONT></TD></TR>
-                <TR><TD><FONT POINT-SIZE="28" COLOR="#999999"><B>15.30%</B></FONT></TD></TR>
-                <TR><TD><FONT POINT-SIZE="10" COLOR="#999999">no effect</FONT></TD></TR>
-            </TABLE>>,
-            shape=circle,
-            width=1.8,
-            style=filled,
-            fillcolor="#F8F9FA",
-            color="#CCCCCC"
-        ];
-
-        local [
-            label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4">
-                <TR><TD><FONT POINT-SIZE="11" COLOR="#999999">LOCAL</FONT></TD></TR>
-                <TR><TD><FONT POINT-SIZE="28" COLOR="#2A9D8F"><B>17.26%</B></FONT></TD></TR>
-                <TR><TD><FONT POINT-SIZE="10" COLOR="#2A9D8F">+20%</FONT></TD></TR>
-            </TABLE>>,
-            shape=circle,
-            width=1.8,
-            style=filled,
+            shape=rect,
+            style="filled,rounded",
             fillcolor="#F0FFF4",
             color="#2A9D8F"
         ];
 
-        toroidal [
+        qwen15 [
             label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4">
-                <TR><TD><FONT POINT-SIZE="11" COLOR="#1D3557">TOROIDAL</FONT></TD></TR>
-                <TR><TD><FONT POINT-SIZE="32" COLOR="#1D3557"><B>17.26%</B></FONT></TD></TR>
-                <TR><TD><FONT POINT-SIZE="10" COLOR="#E9C46A">★ BEST</FONT></TD></TR>
+                <TR><TD><FONT POINT-SIZE="10" COLOR="#999999">Qwen 1.5B</FONT></TD></TR>
+                <TR><TD><FONT POINT-SIZE="14" COLOR="#666666">32.2%</FONT> <FONT POINT-SIZE="10" COLOR="#999999">→</FONT> <FONT POINT-SIZE="14" COLOR="#2A9D8F">32.8%</FONT></TD></TR>
+                <TR><TD><FONT POINT-SIZE="16" COLOR="#2A9D8F"><B>+0.6pp</B></FONT></TD></TR>
             </TABLE>>,
-            shape=circle,
-            width=2.0,
-            style=filled,
+            shape=rect,
+            style="filled,rounded",
+            fillcolor="#E8FFF0",
+            color="#2A9D8F"
+        ];
+
+        qwen7 [
+            label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4">
+                <TR><TD><FONT POINT-SIZE="10" COLOR="#999999">Qwen 7B</FONT></TD></TR>
+                <TR><TD><FONT POINT-SIZE="14" COLOR="#666666">75.6%</FONT> <FONT POINT-SIZE="10" COLOR="#999999">→</FONT> <FONT POINT-SIZE="14" COLOR="#1D7A6E">77.7%</FONT></TD></TR>
+                <TR><TD><FONT POINT-SIZE="18" COLOR="#1D7A6E"><B>+2.1pp</B></FONT></TD></TR>
+            </TABLE>>,
+            shape=rect,
+            style="filled,rounded",
+            fillcolor="#D0FFE8",
+            color="#1D7A6E",
+            penwidth=3
+        ];
+
+        mistral7 [
+            label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4">
+                <TR><TD><FONT POINT-SIZE="10" COLOR="#1D3557">Mistral 7B</FONT></TD></TR>
+                <TR><TD><FONT POINT-SIZE="14" COLOR="#666666">74.4%</FONT> <FONT POINT-SIZE="10" COLOR="#999999">→</FONT> <FONT POINT-SIZE="14" COLOR="#1D3557">77.2%</FONT></TD></TR>
+                <TR><TD><FONT POINT-SIZE="20" COLOR="#1D3557"><B>+2.8pp</B></FONT></TD></TR>
+            </TABLE>>,
+            shape=rect,
+            style="filled,rounded",
             fillcolor="#E9C46A",
             color="#1D3557",
             penwidth=4
         ];
     }
 
-    // Flow
-    baseline -> random [style=invis];
-    random -> local [style=invis];
-    local -> toroidal [style=invis];
+    // Scaling arrow
+    qwen05 -> qwen15 [label="  3x params", color="#2A9D8F", style=dashed];
+    qwen15 -> qwen7 [label="  4.7x params", color="#2A9D8F", style=dashed];
+    qwen7 -> mistral7 [label="  different arch", color="#1D3557", style=dashed];
 
-    // Insight box
+    // Key insight
     insight [
-        label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="8">
-            <TR><TD><FONT POINT-SIZE="12" COLOR="#1D3557"><B>KEY FINDING</B></FONT></TD></TR>
-            <TR><TD><FONT POINT-SIZE="11" COLOR="#333333">Structure matters. Sparsity alone does not.</FONT></TD></TR>
+        label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="6">
+            <TR><TD><FONT POINT-SIZE="13" COLOR="#1D3557"><B>KEY FINDING</B></FONT></TD></TR>
+            <TR><TD><FONT POINT-SIZE="11" COLOR="#333333">Improvement scales with model capacity.</FONT></TD></TR>
+            <TR><TD><FONT POINT-SIZE="11" COLOR="#333333">4/4 models improved. No fine-tuning. ~5% overhead.</FONT></TD></TR>
         </TABLE>>,
         shape=rect,
         style="filled,rounded",
@@ -89,9 +89,22 @@ digraph ToroidalResults {
         penwidth=2
     ];
 
-    // Layout
-    {rank=same; baseline; random; local; toroidal}
-    {rank=max; insight}
+    // Method box
+    method [
+        label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4">
+            <TR><TD><FONT POINT-SIZE="11" COLOR="#E63946"><B>METHOD</B></FONT></TD></TR>
+            <TR><TD><FONT POINT-SIZE="10" COLOR="#333333">12x12 Tonnetz torus | radius=2.0 | alpha=0.3</FONT></TD></TR>
+            <TR><TD><FONT POINT-SIZE="10" COLOR="#333333">Bias top ~1400 tokens only (full-vocab is harmful)</FONT></TD></TR>
+        </TABLE>>,
+        shape=rect,
+        style="filled,rounded",
+        fillcolor="#FFF5F5",
+        color="#E63946",
+        penwidth=1
+    ];
 
-    toroidal -> insight [style=dashed, color="#E9C46A", penwidth=2];
+    {rank=max; insight; method}
+
+    mistral7 -> insight [style=dashed, color="#E9C46A", penwidth=2];
+    qwen05 -> method [style=invis];
 }

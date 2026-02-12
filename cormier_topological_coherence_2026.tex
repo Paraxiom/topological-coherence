@@ -707,7 +707,11 @@ The central contribution is a sufficient condition:
 \textit{Geometric constraints provide one principled path to coherent artificial intelligence—not the only path, but a formally grounded one with empirical validation.}
 \end{quote}
 
-Future foundation models should be designed with topological constraints from the start. The mathematical framework exists. Experimental validation demonstrates efficacy. An interactive demo is available at \url{https://huggingface.co/spaces/paraxiom/topological-coherence}.
+Future foundation models should be designed with topological constraints from the start. The mathematical framework exists. Experimental validation demonstrates efficacy.
+
+Notably, toroidal topology provides coherence guarantees beyond the LLM domain. The QuantumTimeSandwich platform \citep{cormier2024qts} demonstrates the same principle in quantum computing: a Rust-native quantum SDK implementing BB84 key distribution, toric code error correction, and Tonnetz coherence simulation---all built on the same toroidal geometry that constrains drift in our LLM experiments. This cross-domain applicability reinforces the central thesis: the spectral gap is a \textit{geometric} property, not a domain-specific one.
+
+An interactive demo is available at \url{https://huggingface.co/spaces/paraxiom/topological-coherence}.
 
 \bibliographystyle{plainnat}
 \begin{thebibliography}{99}
@@ -781,6 +785,11 @@ Gu, A., Sala, F., Gunel, B., and R\'{e}, C. (2018).
 Veli\v{c}kovi\'{c}, P., Cucurull, G., Casanova, A., Romero, A., Li\`{o}, P., and Bengio, Y. (2018).
 \newblock Graph Attention Networks.
 \newblock In \emph{International Conference on Learning Representations (ICLR)}.
+
+\bibitem[Cormier(2024)]{cormier2024qts}
+Cormier, S. (2024).
+\newblock QuantumTimeSandwich: A Rust Quantum Computing Platform with Toroidal Coherence Simulation.
+\newblock \url{https://github.com/Paraxiom/QuantumTimeSandwich}
 
 \end{thebibliography}
 

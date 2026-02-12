@@ -191,14 +191,7 @@ In standard transformers, the attention mechanism computes:
 \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^\top}{\sqrt{d_k}}\right)V
 \end{equation}
 
-The attention weights $A = \text{softmax}(QK^\top/\sqrt{d_k})$ form a fully-connected weighted graph over tokens. Critically:
-
-\begin{itemize}
-    \item Any token can attend to any other token with arbitrary weight
-    \item No topological constraint restricts attention patterns
-    \item The graph structure changes completely at each layer
-    \item There is no notion of "nearby" vs "distant" in latent space
-\end{itemize}
+The attention weights $A = \text{softmax}(QK^\top/\sqrt{d_k})$ form a fully-connected weighted graph over tokens. Graph Attention Networks \citep{velickovic2018gat} demonstrated that imposing graph structure on attention---computing learned attention coefficients over node neighborhoods rather than all pairs---yields strong performance on graph-structured tasks. However, GAT learns its attention weights via neural network parameters, providing no geometric guarantee: the learned graph has no persistent topology, no spectral gap, and no bounded mixing. Our approach can be viewed as replacing GAT's learned attention with \textit{geometric} attention derived from a fixed topology (the Tonnetz), trading adaptability for provable spectral properties. Critically:
 
 \begin{proposition}[Attention Graph Has No Persistent Neighborhood Structure]
 Let $G_l = (V, E_l, w_l)$ be the attention graph at layer $l$. The edge weights $w_l(i,j) = A_{ij}$ depend on input-dependent queries and keys. No persistent topological neighborhood structure is enforced across layers. (Note: positional encodings and rotary embeddings provide sequence-position information but do not constrain the attention graph topology itself.)
@@ -576,6 +569,7 @@ Constitutional AI & Output rules & No latent geometry \\
 Retrieval augmentation & Knowledge access & No reasoning constraint \\
 Chain-of-thought & Output format & No geometric constraint \\
 mHC & Residual mixing & No semantic structure \\
+GAT \citep{velickovic2018gat} & Graph attention weights & Learned, no spectral guarantee \\
 Hyperbolic LLMs \citep{patel2025hyperbolic} & Hierarchical structure & No local coherence \\
 Geometric Volume \citep{phillips2025geometric} & Detects dispersion post-hoc & No prevention mechanism \\
 \textbf{Tonnetz-ERLHS} & \textbf{Latent geometry} & Embedding complexity; may constrain long-range jumps \\
@@ -781,6 +775,11 @@ S\'{a}ez de Oc\'{a}riz Borde, H., Arroyo, \'{A}., Morales L\'{o}pez, I., Posner,
 \bibitem[Gu et al.(2018)]{gu2018learning}
 Gu, A., Sala, F., Gunel, B., and R\'{e}, C. (2018).
 \newblock Learning mixed-curvature representations in product spaces.
+\newblock In \emph{International Conference on Learning Representations (ICLR)}.
+
+\bibitem[Veli\v{c}kovi\'{c} et al.(2018)]{velickovic2018gat}
+Veli\v{c}kovi\'{c}, P., Cucurull, G., Casanova, A., Romero, A., Li\`{o}, P., and Bengio, Y. (2018).
+\newblock Graph Attention Networks.
 \newblock In \emph{International Conference on Learning Representations (ICLR)}.
 
 \end{thebibliography}

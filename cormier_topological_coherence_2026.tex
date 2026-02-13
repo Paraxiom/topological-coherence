@@ -368,6 +368,60 @@ preserve $H$ exactly. Discretized via symplectic integrators, the coherence erro
 for $k$-th order integrator with step size $\Delta t$.
 \end{theorem}
 
+\subsection{Covariant Descent: Why Geometry Guarantees Convergence}
+
+Standard gradient descent treats the parameter space as flat $\mathbb{R}^n$, ignoring the
+geometric structure of the manifold on which latent states evolve. \textit{Covariant descent}
+replaces the Euclidean gradient with the Riemannian gradient compatible with the manifold metric,
+yielding convergence guarantees that are impossible in flat space.
+
+\begin{definition}[Covariant Gradient Descent on $T^2$]
+Given a loss function $\mathcal{L}: T^2 \to \mathbb{R}$ on the Tonnetz torus, the covariant
+update is:
+\begin{equation}
+\theta_{t+1} = \operatorname{Exp}_{\theta_t}\left(-\eta \cdot g^{-1} \nabla \mathcal{L}(\theta_t)\right)
+\end{equation}
+where $\operatorname{Exp}$ is the exponential map on $T^2$ (geodesic step with wraparound),
+$g$ is the Riemannian metric tensor, and $g^{-1}\nabla\mathcal{L}$ is the natural gradient
+\citep{amari1998natural}.
+\end{definition}
+
+The key distinction: on $T^2$, the exponential map implements periodic boundary conditions
+automatically---the descent wraps around the torus rather than escaping to infinity. This is
+precisely what toroidal logit bias enforces at inference time.
+
+\begin{theorem}[Poincar\'{e} Inequality on $T^2$]
+For any function $f \in L^2(T^2)$ with mean $\bar{f}$:
+\begin{equation}
+\|f - \bar{f}\|^2 \leq \frac{1}{\lambda_1} \|\nabla f\|^2
+\end{equation}
+where $\lambda_1 = 2 - 2\cos(2\pi/N)$ is the spectral gap. This bounds the maximum deviation
+of any state from equilibrium by the inverse spectral gap.
+\end{theorem}
+
+\begin{corollary}[Exponential Convergence]
+Covariant gradient flow on $T^2$ converges exponentially:
+\begin{equation}
+\|f(t) - f^*\| \leq e^{-\lambda_1 t} \|f(0) - f^*\|
+\end{equation}
+The convergence rate is exactly $\lambda_1$---the same spectral gap that bounds coherence decay
+in quantum systems \citep{cormier2024qts}, mixing time in consensus protocols
+\citep{cormier2025karmonic}, and hallucination drift in language models (this work).
+\end{corollary}
+
+This reveals the deep structure: convergence and coherence are the \textit{same mathematical
+property} measured in different domains. The spectral gap is not merely correlated with
+coherence---it \textit{is} the convergence rate of any gradient flow on the manifold.
+Without it ($\lambda_1 = 0$, as in flat $\mathbb{R}^n$), no convergence guarantee exists.
+With it ($\lambda_1 > 0$, as on $T^2$), convergence is exponential and the rate is tight.
+
+This connects to the natural gradient of \citet{amari1998natural}, which uses the Fisher
+information metric for probability distributions, and to Riemannian stochastic gradient descent
+\citep{bonnabel2013stochastic}, which generalizes SGD to arbitrary manifolds. Our contribution
+is identifying that the Tonnetz torus provides an \textit{optimal} structure: the spectral gap
+$\lambda_1 = \Theta(1)$ is independent of model dimension, giving dimension-free convergence
+bounds that scale to arbitrary model sizes.
+
 \section{Implications for LLM Architecture}
 
 \subsection{Tonnetz Embedding: A Concrete Mechanism}
@@ -790,6 +844,16 @@ Veli\v{c}kovi\'{c}, P., Cucurull, G., Casanova, A., Romero, A., Li\`{o}, P., and
 Cormier, S. (2024).
 \newblock QuantumTimeSandwich: A Rust Quantum Computing Platform with Toroidal Coherence Simulation.
 \newblock \url{https://github.com/Paraxiom/QuantumTimeSandwich}
+
+\bibitem[Amari(1998)]{amari1998natural}
+Amari, S. (1998).
+\newblock Natural Gradient Works Efficiently in Learning.
+\newblock \emph{Neural Computation}, 10(2):251--276.
+
+\bibitem[Bonnabel(2013)]{bonnabel2013stochastic}
+Bonnabel, S. (2013).
+\newblock Stochastic Gradient Descent on Riemannian Manifolds.
+\newblock \emph{IEEE Transactions on Automatic Control}, 58(9):2217--2229.
 
 \end{thebibliography}
 

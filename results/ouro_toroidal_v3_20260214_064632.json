@@ -1,0 +1,636 @@
+{
+  "experiment": "ouro_toroidal_v3_light_strengths",
+  "model": "ByteDance/Ouro-1.4B",
+  "device": "cpu",
+  "date": "2026-02-14T06:46:36.523256",
+  "loop_counts": [
+    4,
+    8
+  ],
+  "strengths": [
+    0.01,
+    0.05,
+    0.1,
+    0.2
+  ],
+  "mask_configs": [
+    {
+      "name": "r2_a1",
+      "radius": 2.0,
+      "alpha": 1.0,
+      "grid_size": 12
+    },
+    {
+      "name": "r4_a0.5",
+      "radius": 4.0,
+      "alpha": 0.5,
+      "grid_size": 12
+    }
+  ],
+  "layer_fractions": [
+    0.67,
+    0.85
+  ],
+  "method": "additive toroidal mask, light strengths, variable radius/layers",
+  "baseline": {
+    "4": {
+      "perplexity": 2.8896284506608176,
+      "accuracy": 0.8,
+      "correct_count": 16,
+      "total_prompts": 20,
+      "details": [
+        {
+          "prompt": "The capital of France is",
+          "answer": "paris.\n\n## step 2: evaluate the options\nlet's evaluate each option to see which one matches the capital of france:\na",
+          "keywords": [
+            "paris"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Water boils at a temperature of",
+          "answer": "100\u00b0c.\n\n## step 2: identify the correct boiling point\nthe boiling point of water is a well-known",
+          "keywords": [
+            "100",
+            "212",
+            "celsius",
+            "fahrenheit"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The speed of light is approximately",
+          "answer": "299,792,458 meters per second.\n\n## step 2: calculate the time it takes for light",
+          "keywords": [
+            "300",
+            "3",
+            "km",
+            "186"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "Newton discovered the law of",
+          "answer": "universal gravitation, which states that every point mass attracts every other point mass by a force acting along the line intersecting both points. the force is proportional",
+          "keywords": [
+            "gravity",
+            "gravitation",
+            "motion"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The chemical formula for water is",
+          "answer": "h2o.\n\n## step 2: identify the correct option\nfrom the given options, the correct chemical formula for water is h2",
+          "keywords": [
+            "h2o"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "DNA stands for",
+          "answer": "\"short tandem repeat\" and refers to a region of dna that consists of short, repeated sequences of nucleotides. these sequences are typically 2-6",
+          "keywords": [
+            "deoxyribonucleic"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "The largest planet in our solar system is",
+          "answer": "jupiter.\n\nthe final answer is a.",
+          "keywords": [
+            "jupiter"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Shakespeare wrote the play",
+          "answer": ".\n\nso, i think a is correct.\n\nthe answer should be a: william shakespeare.\n\nthe problem says \"put the",
+          "keywords": [
+            "hamlet",
+            "romeo",
+            "macbeth",
+            "othello",
+            "lear"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "The theory of relativity was proposed by",
+          "answer": "albert einstein in 1905 and 1915.\n\n## step 2: evaluate each option\na: isaac newton",
+          "keywords": [
+            "einstein",
+            "albert"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Photosynthesis converts sunlight into",
+          "answer": "chemical energy, which is then used to produce glucose.\n\nso, the process that converts sunlight is photosynthesis.\n\ntherefore, the answer should",
+          "keywords": [
+            "energy",
+            "glucose",
+            "sugar",
+            "chemical"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The human body has approximately how many bones:",
+          "answer": "206.\n\nthe human body has approximately how many bones: 206.\n\nthe human body has approximately how many",
+          "keywords": [
+            "206"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Mount Everest is located in",
+          "answer": "the himalayas, which is in asia.\n\nthe himalayas are in asia, yes.\n\nperhaps the question is about the continent, and asia",
+          "keywords": [
+            "nepal",
+            "himalaya",
+            "tibet"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The periodic table was created by",
+          "answer": "dmitri mendeleev in 1869. he arranged the elements based on their atomic weights and properties, and he left gaps for",
+          "keywords": [
+            "mendeleev"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "An electron has a charge of",
+          "answer": "-1.602 x 10^-19 c. if it moves with a velocity of 2.00 x",
+          "keywords": [
+            "negative",
+            "-1",
+            "1.6"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The Great Wall of China was built to",
+          "answer": "protect against invasions from the north.\n\n## step 1: evaluate the historical context of the great wall of china\nthe great wall of china",
+          "keywords": [
+            "protect",
+            "defend",
+            "invad",
+            "mongol",
+            "border"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Pi is approximately equal to",
+          "answer": "22/7.\n\nthe value of pi is a fundamental constant in mathematics, and its calculation has been a subject of interest for centuries",
+          "keywords": [
+            "3.14"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "The mitochondria is known as the",
+          "answer": "powerhouse of the cell because it produces atp through cellular respiration.\n\nso, i think a is correct.\n\nbut let me see if there",
+          "keywords": [
+            "powerhouse"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The French Revolution began in the year",
+          "answer": "1789.\n\nthe american revolution ended in 1783.\n\nso, the american revolution ended before the french",
+          "keywords": [
+            "1789"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Gravity on Earth accelerates objects at approximately",
+          "answer": "9.8 m/s\u00b2.\n\n## step 2: calculate the acceleration due to gravity on the moon\nthe acceleration due to",
+          "keywords": [
+            "9.8",
+            "10",
+            "m/s"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The Pythagorean theorem states that",
+          "answer": "in a right-angled triangle, the square of the length of the hypotenuse (the side opposite the right angle) is equal to the sum",
+          "keywords": [
+            "a\u00b2",
+            "a^2",
+            "square",
+            "hypotenuse",
+            "right triangle"
+          ],
+          "correct": true
+        }
+      ]
+    },
+    "8": {
+      "perplexity": 2.9534545849155065,
+      "accuracy": 0.85,
+      "correct_count": 17,
+      "total_prompts": 20,
+      "details": [
+        {
+          "prompt": "The capital of France is",
+          "answer": "paris.\n\n## step 1: identify the capital of france\nthe capital of france is paris.\n\n## step 2: identify",
+          "keywords": [
+            "paris"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Water boils at a temperature of",
+          "answer": "100 degrees celsius.\n\n## step 3: evaluate the options\n- **a: 0 degrees celsius**: this is the",
+          "keywords": [
+            "100",
+            "212",
+            "celsius",
+            "fahrenheit"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The speed of light is approximately",
+          "answer": "299,792,458 meters per second.\n\nthe speed of light is a fundamental constant in physics, and",
+          "keywords": [
+            "300",
+            "3",
+            "km",
+            "186"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "Newton discovered the law of",
+          "answer": "universal gravitation, which states that every point mass attracts every other point mass by a force acting along the line intersecting both points. the force of attraction",
+          "keywords": [
+            "gravity",
+            "gravitation",
+            "motion"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The chemical formula for water is",
+          "answer": "h2o.\n\n## step 2: identify the elements in water\nwater is composed of two elements: hydrogen (h) and oxygen",
+          "keywords": [
+            "h2o"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "DNA stands for",
+          "answer": "\"double helix,\" which is the shape of dna.\n\nso, i think it's fine.\n\nperhaps the answer is c.",
+          "keywords": [
+            "deoxyribonucleic"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "The largest planet in our solar system is",
+          "answer": "jupiter.\n\nthe final answer is a.",
+          "keywords": [
+            "jupiter"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Shakespeare wrote the play",
+          "answer": "in 1599, and it was performed in 1599.\n\nthe play was written in 1599",
+          "keywords": [
+            "hamlet",
+            "romeo",
+            "macbeth",
+            "othello",
+            "lear"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "The theory of relativity was proposed by",
+          "answer": "albert einstein in 1905 and 1915.\n\n## step \nthe theory of relativity is a fundamental concept in",
+          "keywords": [
+            "einstein",
+            "albert"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Photosynthesis converts sunlight into",
+          "answer": "chemical energy, which is then used to produce glucose.\n\nso, the process of photosynthesis is the conversion of light energy to chemical energy.",
+          "keywords": [
+            "energy",
+            "glucose",
+            "sugar",
+            "chemical"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The human body has approximately how many bones:",
+          "answer": "206\n- the human body has approximately how many cells: 37 trillion\n- the human body has approximately how many hairs:",
+          "keywords": [
+            "206"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Mount Everest is located in",
+          "answer": "the himalayas, which is in asia.\n\nthe himalayas are in asia, yes.\n\nbut let's see the options: a is mount",
+          "keywords": [
+            "nepal",
+            "himalaya",
+            "tibet"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The periodic table was created by",
+          "answer": "dmitri mendeleev in 1869. he arranged the elements based on their atomic weights and properties, and he left gaps for",
+          "keywords": [
+            "mendeleev"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "An electron has a charge of",
+          "answer": "-1.602 \u00d7 10^-19 c and a mass of 9.109 \u00d7 10^",
+          "keywords": [
+            "negative",
+            "-1",
+            "1.6"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The Great Wall of China was built to",
+          "answer": "protect against invasions from nomadic tribes.\n\ni: the great wall of china was built to protect against invasions from nomadic tribes.\n\nj:",
+          "keywords": [
+            "protect",
+            "defend",
+            "invad",
+            "mongol",
+            "border"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Pi is approximately equal to",
+          "answer": "3.141592653589793.\n\nthe program should also handle the case where the",
+          "keywords": [
+            "3.14"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The mitochondria is known as the",
+          "answer": "powerhouse of the cell.\n\nso, i think a is the answer.\n\nthe question says \"which of the following statements,\" and it",
+          "keywords": [
+            "powerhouse"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The French Revolution began in the year",
+          "answer": "1789.\n\nthe american revolution ended in 1783.\n\nthe french revolution was influenced by the american revolution",
+          "keywords": [
+            "1789"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Gravity on Earth accelerates objects at approximately",
+          "answer": "9.8 m/s\u00b2.\n\n## step 2: calculate the acceleration due to gravity on the moon\nthe acceleration due to",
+          "keywords": [
+            "9.8",
+            "10",
+            "m/s"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The Pythagorean theorem states that",
+          "answer": "in a right-angled triangle, the square of the length of the hypotenuse (the side opposite the right angle) is equal to the sum",
+          "keywords": [
+            "a\u00b2",
+            "a^2",
+            "square",
+            "hypotenuse",
+            "right triangle"
+          ],
+          "correct": true
+        }
+      ]
+    }
+  },
+  "toroidal": {
+    "r2_a1__last_32pct__s0.01": {
+      "4": {
+        "perplexity": 2.8896284506608176,
+        "accuracy": 0.8,
+        "correct_count": 16,
+        "total_prompts": 20,
+        "n_hooked_layers": 8,
+        "details": [
+          {
+            "prompt": "The capital of France is",
+            "answer": "paris.\n\n## step 2: evaluate the options\nlet's evaluate each option to see which one matches the capital of france:\na",
+            "keywords": [
+              "paris"
+            ],
+            "correct": true
+          },
+          {
+            "prompt": "Water boils at a temperature of",
+            "answer": "100\u00b0c.\n\n## step 2: identify the correct boiling point\nthe boiling point of water is a well-known",
+            "keywords": [
+              "100",
+              "212",
+              "celsius",
+              "fahrenheit"
+            ],
+            "correct": true
+          },
+          {
+            "prompt": "The speed of light is approximately",
+            "answer": "299,792,458 meters per second.\n\n## step 2: calculate the time it takes for light",
+            "keywords": [
+              "300",
+              "3",
+              "km",
+              "186"
+            ],
+            "correct": false
+          },
+          {
+            "prompt": "Newton discovered the law of",
+            "answer": "universal gravitation, which states that every point mass attracts every other point mass by a force acting along the line intersecting both points. the force is proportional",
+            "keywords": [
+              "gravity",
+              "gravitation",
+              "motion"
+            ],
+            "correct": true
+          },
+          {
+            "prompt": "The chemical formula for water is",
+            "answer": "h2o.\n\n## step 2: identify the correct option\nfrom the given options, the correct chemical formula for water is h2",
+            "keywords": [
+              "h2o"
+            ],
+            "correct": true
+          },
+          {
+            "prompt": "DNA stands for",
+            "answer": "\"short tandem repeat\" and refers to a region of dna that consists of short, repeated sequences of nucleotides. these sequences are typically 2-6",
+            "keywords": [
+              "deoxyribonucleic"
+            ],
+            "correct": false
+          },
+          {
+            "prompt": "The largest planet in our solar system is",
+            "answer": "jupiter.\n\nthe final answer is a.",
+            "keywords": [
+              "jupiter"
+            ],
+            "correct": true
+          },
+          {
+            "prompt": "Shakespeare wrote the play",
+            "answer": ".\n\nso, i think a is correct.\n\nthe answer should be a: william shakespeare.\n\nthe problem says \"put the",
+            "keywords": [
+              "hamlet",
+              "romeo",
+              "macbeth",
+              "othello",
+              "lear"
+            ],
+            "correct": false
+          },
+          {
+            "prompt": "The theory of relativity was proposed by",
+            "answer": "albert einstein in 1905 and 1915.\n\n## step 2: evaluate each option\na: isaac newton",
+            "keywords": [
+              "einstein",
+              "albert"
+            ],
+            "correct": true
+          },
+          {
+            "prompt": "Photosynthesis converts sunlight into",
+            "answer": "chemical energy, which is then used to produce glucose.\n\nso, the process that converts sunlight is photosynthesis.\n\ntherefore, the answer should",
+            "keywords": [
+              "energy",
+              "glucose",
+              "sugar",
+              "chemical"
+            ],
+            "correct": true
+          },
+          {
+            "prompt": "The human body has approximately how many bones:",
+            "answer": "206.\n\nthe human body has approximately how many bones: 206.\n\nthe human body has approximately how many",
+            "keywords": [
+              "206"
+            ],
+            "correct": true
+          },
+          {
+            "prompt": "Mount Everest is located in",
+            "answer": "the himalayas, which is in asia.\n\nthe himalayas are in asia, yes.\n\nperhaps the question is about the continent, and asia",
+            "keywords": [
+              "nepal",
+              "himalaya",
+              "tibet"
+            ],
+            "correct": true
+          },
+          {
+            "prompt": "The periodic table was created by",
+            "answer": "dmitri mendeleev in 1869. he arranged the elements based on their atomic weights and properties, and he left gaps for",
+            "keywords": [
+              "mendeleev"
+            ],
+            "correct": true
+          },
+          {
+            "prompt": "An electron has a charge of",
+            "answer": "-1.602 x 10^-19 c. if it moves with a velocity of 2.00 x",
+            "keywords": [
+              "negative",
+              "-1",
+              "1.6"
+            ],
+            "correct": true
+          },
+          {
+            "prompt": "The Great Wall of China was built to",
+            "answer": "protect against invasions from the north.\n\n## step 1: evaluate the historical context of the great wall of china\nthe great wall of china",
+            "keywords": [
+              "protect",
+              "defend",
+              "invad",
+              "mongol",
+              "border"
+            ],
+            "correct": true
+          },
+          {
+            "prompt": "Pi is approximately equal to",
+            "answer": "22/7.\n\nthe value of pi is a fundamental constant in mathematics, and its calculation has been a subject of interest for centuries",
+            "keywords": [
+              "3.14"
+            ],
+            "correct": false
+          },
+          {
+            "prompt": "The mitochondria is known as the",
+            "answer": "powerhouse of the cell because it produces atp through cellular respiration.\n\nso, i think a is correct.\n\nbut let me see if there",
+            "keywords": [
+              "powerhouse"
+            ],
+            "correct": true
+          },
+          {
+            "prompt": "The French Revolution began in the year",
+            "answer": "1789.\n\nthe american revolution ended in 1783.\n\nso, the american revolution ended before the french",
+            "keywords": [
+              "1789"
+            ],
+            "correct": true
+          },
+          {
+            "prompt": "Gravity on Earth accelerates objects at approximately",
+            "answer": "9.8 m/s\u00b2.\n\n## step 2: calculate the acceleration due to gravity on the moon\nthe acceleration due to",
+            "keywords": [
+              "9.8",
+              "10",
+              "m/s"
+            ],
+            "correct": true
+          },
+          {
+            "prompt": "The Pythagorean theorem states that",
+            "answer": "in a right-angled triangle, the square of the length of the hypotenuse (the side opposite the right angle) is equal to the sum",
+            "keywords": [
+              "a\u00b2",
+              "a^2",
+              "square",
+              "hypotenuse",
+              "right triangle"
+            ],
+            "correct": true
+          }
+        ]
+      }
+    }
+  }
+}

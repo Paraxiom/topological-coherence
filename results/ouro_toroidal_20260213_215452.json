@@ -1,0 +1,55 @@
+{
+  "experiment": "ouro_toroidal_loops",
+  "model": "ByteDance/Ouro-1.4B",
+  "device": "mps",
+  "date": "2026-02-13T21:55:22.214341",
+  "loop_counts": [
+    1,
+    2,
+    3,
+    4,
+    6,
+    8
+  ],
+  "baseline": {
+    "1": {
+      "error": "property 'key_cache' of 'UniversalTransformerCache' object has no setter"
+    },
+    "2": {
+      "error": "property 'key_cache' of 'UniversalTransformerCache' object has no setter"
+    },
+    "3": {
+      "error": "property 'key_cache' of 'UniversalTransformerCache' object has no setter"
+    },
+    "4": {
+      "error": "property 'key_cache' of 'UniversalTransformerCache' object has no setter"
+    },
+    "6": {
+      "error": "property 'key_cache' of 'UniversalTransformerCache' object has no setter"
+    },
+    "8": {
+      "error": "property 'key_cache' of 'UniversalTransformerCache' object has no setter"
+    }
+  },
+  "toroidal": {
+    "1": {
+      "error": "property 'key_cache' of 'UniversalTransformerCache' object has no setter"
+    },
+    "2": {
+      "error": "property 'key_cache' of 'UniversalTransformerCache' object has no setter"
+    },
+    "3": {
+      "error": "property 'key_cache' of 'UniversalTransformerCache' object has no setter"
+    },
+    "4": {
+      "error": "property 'key_cache' of 'UniversalTransformerCache' object has no setter"
+    },
+    "6": {
+      "error": "property 'key_cache' of 'UniversalTransformerCache' object has no setter"
+    },
+    "8": {
+      "error": "property 'key_cache' of 'UniversalTransformerCache' object has no setter"
+    }
+  },
+  "end_time": "2026-02-13T22:07:34.266968"
+}

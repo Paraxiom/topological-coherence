@@ -270,6 +270,8 @@ def run_experiment():
             config = AutoConfig.from_pretrained(model_name, trust_remote_code=True)
             config.total_ut_steps = n_loops
             config.early_exit_threshold = 1.0
+            if not hasattr(config, 'pad_token_id') or config.pad_token_id is None:
+                config.pad_token_id = tokenizer.eos_token_id
 
             model = AutoModelForCausalLM.from_pretrained(
                 model_name, config=config, trust_remote_code=True,

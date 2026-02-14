@@ -203,7 +203,7 @@ def compute_perplexity(model, tokenizer, device):
 
 def run_experiment():
     print("=" * 70)
-    print("LLAMA-3-8B + TOROIDAL LOGIT BIAS (TLB)")
+    print("LLAMA-3.1-8B + TOROIDAL LOGIT BIAS (TLB)")
     print("=" * 70)
     print(f"Device: {DEVICE} ({DTYPE})")
     print(f"Start: {datetime.now().isoformat()}")
@@ -213,7 +213,7 @@ def run_experiment():
 
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
-    model_name = "meta-llama/Meta-Llama-3-8B"
+    model_name = "meta-llama/Llama-3.1-8B"
     print(f"\nLoading {model_name}...", flush=True)
     t0 = time.time()
 
@@ -340,7 +340,7 @@ def run_experiment():
 
     # --- SUMMARY ---
     print("\n" + "=" * 70)
-    print("SUMMARY: LLAMA-3-8B + TLB")
+    print("SUMMARY: LLAMA-3.1-8B + TLB")
     print("=" * 70, flush=True)
 
     bl_ppl = all_results["baseline"].get("perplexity", float('nan'))

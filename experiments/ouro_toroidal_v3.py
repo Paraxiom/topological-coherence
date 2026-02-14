@@ -387,7 +387,7 @@ def run_experiment():
 
                     except Exception as e:
                         print(f"  ERROR: {e}", flush=True)
-            traceback.print_exc()
+                        traceback.print_exc()
                         all_results["toroidal"][config_key][str(n_loops)] = {"error": str(e)}
 
                     with open(RESULTS_FILE, 'w') as f:

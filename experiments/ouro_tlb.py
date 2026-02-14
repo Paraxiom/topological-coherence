@@ -393,7 +393,8 @@ def run_experiment():
         bl_acc = bl.get("accuracy", float('nan'))
         print(f"\nBaseline@{n_loops}: PPL={bl_ppl:.2f}  Acc={bl_acc:.0%}")
 
-        print(f"  {'TLB Config':<25} {'PPL':<8} {'Acc':<8} {'\u0394 Acc':<8}")
+        delta_hdr = "\u0394 Acc"
+        print(f"  {'TLB Config':<25} {'PPL':<8} {'Acc':<8} {delta_hdr:<8}")
         print(f"  {'-'*49}")
 
         for tlb_cfg in tlb_configs:

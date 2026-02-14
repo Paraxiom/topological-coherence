@@ -38,7 +38,8 @@ fi
 
 # Install minimal deps (RunPod PyTorch templates already have torch)
 echo "Installing dependencies..."
-pip install -q transformers numpy
+# Pin transformers<5 — Ouro's custom rope config breaks on transformers 5.x
+pip install -q "transformers>=4.36.0,<5.0.0" numpy
 echo ""
 
 # Verify

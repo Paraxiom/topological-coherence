@@ -20,6 +20,7 @@ import os
 import json
 import time
 import math
+import traceback
 import numpy as np
 import torch
 import torch.nn as nn
@@ -294,6 +295,7 @@ def run_experiment():
             import gc; gc.collect()
         except Exception as e:
             print(f"  ERROR: {e}", flush=True)
+            traceback.print_exc()
             all_results["baseline"][str(n_loops)] = {"error": str(e)}
 
         with open(RESULTS_FILE, 'w') as f:
@@ -334,10 +336,12 @@ def run_experiment():
                         config = AutoConfig.from_pretrained(model_name, trust_remote_code=True)
                         config.total_ut_steps = n_loops
                         config.early_exit_threshold = 1.0
+                        if not hasattr(config, 'pad_token_id') or config.pad_token_id is None:
+                            config.pad_token_id = tokenizer.eos_token_id
 
                         model = AutoModelForCausalLM.from_pretrained(
                             model_name, config=config, trust_remote_code=True,
-                            torch_dtype=torch.float32,
+                            torch_dtype=DTYPE,
                         ).to(device)
                         model.eval()
 
@@ -383,6 +387,7 @@ def run_experiment():
 
                     except Exception as e:
                         print(f"  ERROR: {e}", flush=True)
+            traceback.print_exc()
                         all_results["toroidal"][config_key][str(n_loops)] = {"error": str(e)}
 
                     with open(RESULTS_FILE, 'w') as f:

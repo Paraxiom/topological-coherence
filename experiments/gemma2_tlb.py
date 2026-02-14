@@ -1,7 +1,7 @@
 """
-Llama-3-8B + Toroidal Logit Bias (TLB)
+Gemma-2-9B + Toroidal Logit Bias (TLB)
 
-Tests TLB on Meta's Llama-3-8B — a standard (non-UT) transformer at 8B scale.
+Tests TLB on Google's Gemma-2-9B — a standard (non-UT) transformer at 9B scale.
 Previous results: TLB showed +10% on Ouro-1.4B (Universal Transformer, 4 loops).
 This experiment tests whether TLB generalizes to a larger, non-recurrent architecture.
 
@@ -38,7 +38,7 @@ RESULTS_DIR = Path(__file__).parent.parent / "results"
 if not RESULTS_DIR.exists():
     RESULTS_DIR = Path("./results")
 RESULTS_DIR.mkdir(exist_ok=True)
-RESULTS_FILE = RESULTS_DIR / f"llama3_tlb_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+RESULTS_FILE = RESULTS_DIR / f"gemma2_tlb_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
 
 
 # --- Toroidal Logit Bias (same implementation as Ouro experiments) ---
@@ -203,7 +203,7 @@ def compute_perplexity(model, tokenizer, device):
 
 def run_experiment():
     print("=" * 70)
-    print("LLAMA-3.1-8B + TOROIDAL LOGIT BIAS (TLB)")
+    print("GEMMA-2-9B + TOROIDAL LOGIT BIAS (TLB)")
     print("=" * 70)
     print(f"Device: {DEVICE} ({DTYPE})")
     print(f"Start: {datetime.now().isoformat()}")
@@ -213,7 +213,7 @@ def run_experiment():
 
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
-    model_name = "meta-llama/Llama-3.1-8B"
+    model_name = "google/gemma-2-9b"
     print(f"\nLoading {model_name}...", flush=True)
     t0 = time.time()
 
@@ -242,7 +242,7 @@ def run_experiment():
             })
 
     all_results = {
-        "experiment": "llama3_tlb",
+        "experiment": "gemma2_tlb",
         "model": model_name,
         "device": str(device),
         "dtype": str(DTYPE),
@@ -340,7 +340,7 @@ def run_experiment():
 
     # --- SUMMARY ---
     print("\n" + "=" * 70)
-    print("SUMMARY: LLAMA-3.1-8B + TLB")
+    print("SUMMARY: GEMMA-2-9B + TLB")
     print("=" * 70, flush=True)
 
     bl_ppl = all_results["baseline"].get("perplexity", float('nan'))

@@ -1,0 +1,1846 @@
+{
+  "experiment": "gemma2_tlb",
+  "model": "google/gemma-2-9b",
+  "device": "cuda",
+  "dtype": "torch.float16",
+  "date": "2026-02-14T17:26:31.779266",
+  "tlb_configs": [
+    "a0.30_r2.5",
+    "a0.30_r3.0",
+    "a0.30_r3.5",
+    "a0.30_r4.0",
+    "a0.40_r2.5",
+    "a0.40_r3.0",
+    "a0.40_r3.5",
+    "a0.40_r4.0",
+    "a0.50_r2.5",
+    "a0.50_r3.0",
+    "a0.50_r3.5",
+    "a0.50_r4.0",
+    "a0.60_r2.5",
+    "a0.60_r3.0",
+    "a0.60_r3.5",
+    "a0.60_r4.0",
+    "a0.70_r2.5",
+    "a0.70_r3.0",
+    "a0.70_r3.5",
+    "a0.70_r4.0"
+  ],
+  "method": "Toroidal Logit Bias on output logits",
+  "baseline": {
+    "perplexity": 4.320567345921765,
+    "accuracy": 0.95,
+    "correct_count": 19,
+    "total_prompts": 20,
+    "details": [
+      {
+        "prompt": "The capital of France is",
+        "answer": "a city of contrasts. it is a city of history and culture, but also of modernity and innovation. it is a city of art and fashion,",
+        "keywords": [
+          "paris"
+        ],
+        "correct": false
+      },
+      {
+        "prompt": "Water boils at a temperature of",
+        "answer": "100 degrees celsius.\n\nthe boiling point of water is 100 degrees celsius.\n\nthe boiling point of water is 1",
+        "keywords": [
+          "100",
+          "212",
+          "celsius",
+          "fahrenheit"
+        ],
+        "correct": true
+      },
+      {
+        "prompt": "The speed of light is approximately",
+        "answer": "300,000 km/s. what is the speed of light in meters per second?\n\na. 300",
+        "keywords": [
+          "300",
+          "3",
+          "km",
+          "186"
+        ],
+        "correct": true
+      },
+      {
+        "prompt": "Newton discovered the law of",
+        "answer": "universal gravitation in 1687. he was the first to show that the same force that makes an apple fall to the ground also keeps the",
+        "keywords": [
+          "gravity",
+          "gravitation",
+          "motion"
+        ],
+        "correct": true
+      },
+      {
+        "prompt": "The chemical formula for water is",
+        "answer": "h2o. this means that each molecule of water contains two hydrogen atoms and one oxygen atom. the hydrogen atoms are bonded to the oxygen atom by",
+        "keywords": [
+          "h2o"
+        ],
+        "correct": true
+      },
+      {
+        "prompt": "DNA stands for",
+        "answer": "deoxyribonucleic acid. it is a molecule that contains the genetic instructions used in the development and functioning of all known living organisms and many viruses. dna",
+        "keywords": [
+          "deoxyribonucleic"
+        ],
+        "correct": true
+      },
+      {
+        "prompt": "The largest planet in our solar system is",
+        "answer": "jupiter. it is a gas giant, meaning it is made up of mostly hydrogen and helium. jupiter is the fifth planet from the sun and is the",
+        "keywords": [
+          "jupiter"
+        ],
+        "correct": true
+      },
+      {
+        "prompt": "Shakespeare wrote the play",
+        "answer": "<em>hamlet</em> in the early 1600s. it is a story about a prince who is trying to avenge his father\u2019s",
+        "keywords": [
+          "hamlet",
+          "romeo",
+          "macbeth",
+          "othello",
+          "lear"
+        ],
+        "correct": true
+      },
+      {
+        "prompt": "The theory of relativity was proposed by",
+        "answer": "albert einstein in 1905. it is a theory of gravitation that is based on the principle of equivalence. the theory of relativity is a",
+        "keywords": [
+          "einstein",
+          "albert"
+        ],
+        "correct": true
+      },
+      {
+        "prompt": "Photosynthesis converts sunlight into",
+        "answer": "chemical energy. the process is carried out by plants, algae, and some bacteria. photosynthesis is the process by which plants, some bacteria, and",
+        "keywords": [
+          "energy",
+          "glucose",
+          "sugar",
+          "chemical"
+        ],
+        "correct": true
+      },
+      {
+        "prompt": "The human body has approximately how many bones:",
+        "answer": "a. 206\n\nb. 200\n\nc. 106\n\nd. 100\n\na",
+        "keywords": [
+          "206"
+        ],
+        "correct": true
+      },
+      {
+        "prompt": "Mount Everest is located in",
+        "answer": "the himalayas, which is the highest mountain range in the world. the himalayas are located in asia, and they are home to many of the world\u2019",
+        "keywords": [
+          "nepal",
+          "himalaya",
+          "tibet"
+        ],
+        "correct": true
+      },
+      {
+        "prompt": "The periodic table was created by",
+        "answer": "dmitri mendeleev in 1869. he arranged the elements in order of increasing atomic mass. he left gaps in the table for elements",
+        "keywords": [
+          "mendeleev"
+        ],
+        "correct": true
+      },
+      {
+        "prompt": "An electron has a charge of",
+        "answer": "$-1.6 \\times 10^{-19} \\mathrm{c}$ and a mass of $9.1 \\times 1",
+        "keywords": [
+          "negative",
+          "-1",
+          "1.6"
+        ],
+        "correct": true
+      },
+      {
+        "prompt": "The Great Wall of China was built to",
+        "answer": "keep out the mongols.\n\nthe great wall of china was built to keep out the mongols.\n\nthe great wall of china was built to keep out",
+        "keywords": [
+          "protect",
+          "defend",
+          "invad",
+          "mongol",
+          "border"
+        ],
+        "correct": true
+      },
+      {
+        "prompt": "Pi is approximately equal to",
+        "answer": "3.14.\n\nthe circumference of a circle is the distance around the circle.\n\nthe circumference of a circle is equal to 2",
+        "keywords": [
+          "3.14"
+        ],
+        "correct": true
+      },
+      {
+        "prompt": "The mitochondria is known as the",
+        "answer": "powerhouse of the cell. it is the site of cellular respiration, which is the process of converting glucose into atp. the mitochondria is also responsible for the",
+        "keywords": [
+          "powerhouse"
+        ],
+        "correct": true
+      },
+      {
+        "prompt": "The French Revolution began in the year",
+        "answer": "1789. it was a time of great change in france. the people were tired of the monarchy and wanted a new government. the",
+        "keywords": [
+          "1789"
+        ],
+        "correct": true
+      },
+      {
+        "prompt": "Gravity on Earth accelerates objects at approximately",
+        "answer": "9.8 m/s2. if you drop a ball from a height of 10 meters, how long will it take to hit",
+        "keywords": [
+          "9.8",
+          "10",
+          "m/s"
+        ],
+        "correct": true
+      },
+      {
+        "prompt": "The Pythagorean theorem states that",
+        "answer": "the sum of the squares of the two legs of a right triangle is equal to the square of the hypotenuse.\n\nthe pythagorean theorem is one",
+        "keywords": [
+          "a\u00b2",
+          "a^2",
+          "square",
+          "hypotenuse",
+          "right triangle"
+        ],
+        "correct": true
+      }
+    ]
+  },
+  "tlb": {
+    "a0.30_r2.5": {
+      "perplexity": 4.320567345921765,
+      "accuracy": 0.9,
+      "correct_count": 18,
+      "total_prompts": 20,
+      "tlb_alpha": 0.3,
+      "tlb_radius": 2.5,
+      "tlb_max_tokens": 1440,
+      "delta_vs_baseline": -0.04999999999999993,
+      "details": [
+        {
+          "prompt": "The capital of France is",
+          "answer": "a city of contrasts. it is a city of history and culture, of art and fashion, of food and wine, of romance and adventure. it",
+          "keywords": [
+            "paris"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "Water boils at a temperature of",
+          "answer": "100 degrees celsius.\n\nthe boiling point of water is 100 degrees celsius.\n\nthe boiling point of water is 1",
+          "keywords": [
+            "100",
+            "212",
+            "celsius",
+            "fahrenheit"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The speed of light is approximately",
+          "answer": "300,000 km/s. what is the speed of light in meters per second?\n\na $1.00",
+          "keywords": [
+            "300",
+            "3",
+            "km",
+            "186"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Newton discovered the law of",
+          "answer": "universal gravitation in 1687. this law states that every particle attracts every other particle in the universe with a force that is directly proportional to",
+          "keywords": [
+            "gravity",
+            "gravitation",
+            "motion"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The chemical formula for water is",
+          "answer": "h2o. this means that each molecule of water contains two hydrogen atoms and one oxygen atom. the hydrogen atoms are bonded to the oxygen atom by",
+          "keywords": [
+            "h2o"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "DNA stands for",
+          "answer": "deoxyribonucleic acid. it is a molecule that contains the genetic instructions used in the development and functioning of all known living organisms and many viruses. dna",
+          "keywords": [
+            "deoxyribonucleic"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The largest planet in our solar system is",
+          "answer": "jupiter. it is a gas giant and is the fifth planet from the sun. jupiter is the largest planet in our solar system. it is a gas",
+          "keywords": [
+            "jupiter"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Shakespeare wrote the play",
+          "answer": "in 1601, and it was first performed in 1604. it was written for the king's men, a",
+          "keywords": [
+            "hamlet",
+            "romeo",
+            "macbeth",
+            "othello",
+            "lear"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "The theory of relativity was proposed by",
+          "answer": "albert einstein in 1905. it is a theory of gravitation that is based on the principle of equivalence. it is a theory of gravitation",
+          "keywords": [
+            "einstein",
+            "albert"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Photosynthesis converts sunlight into",
+          "answer": "chemical energy. the process is carried out by plants, algae, and some bacteria. it is the basis of the food chain and the oxygen cycle.",
+          "keywords": [
+            "energy",
+            "glucose",
+            "sugar",
+            "chemical"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The human body has approximately how many bones:",
+          "answer": "a. 206\n\nb. 200\n\nc. 106\n\nd. 100\n\nthe",
+          "keywords": [
+            "206"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Mount Everest is located in",
+          "answer": "the himalayas, the highest mountain range in the world. it is the highest mountain in the world, with a height of 8,848",
+          "keywords": [
+            "nepal",
+            "himalaya",
+            "tibet"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The periodic table was created by",
+          "answer": "dmitri mendeleev in 1869. he was a russian chemist who was the first to arrange the elements in a table according to their",
+          "keywords": [
+            "mendeleev"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "An electron has a charge of",
+          "answer": "$-1.6 \\times 10^{-19} \\mathrm{c}$ and a mass of $9.1 \\times 1",
+          "keywords": [
+            "negative",
+            "-1",
+            "1.6"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The Great Wall of China was built to",
+          "answer": "keep out the mongols. the mongols were a nomadic people who lived in the steppes of central asia. they were a fierce and warlike people who were",
+          "keywords": [
+            "protect",
+            "defend",
+            "invad",
+            "mongol",
+            "border"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Pi is approximately equal to",
+          "answer": "3.14.\n\nthe circumference of a circle is the distance around the circle.\n\nthe circumference of a circle is equal to the diameter",
+          "keywords": [
+            "3.14"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The mitochondria is known as the",
+          "answer": "powerhouse of the cell. it is the site of cellular respiration, the process by which the energy in glucose is converted into atp. the mitochondria is a",
+          "keywords": [
+            "powerhouse"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The French Revolution began in the year",
+          "answer": "1789 and ended in the year 1799. the french revolution was a time of great change in france. it was",
+          "keywords": [
+            "1789"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Gravity on Earth accelerates objects at approximately",
+          "answer": "9.8 m/s2. this means that if you drop an object from a height of 1 meter, it will hit the ground",
+          "keywords": [
+            "9.8",
+            "10",
+            "m/s"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The Pythagorean theorem states that",
+          "answer": "the sum of the squares of the two legs of a right triangle is equal to the square of the hypotenuse.\n\nthe pythagorean theorem is one",
+          "keywords": [
+            "a\u00b2",
+            "a^2",
+            "square",
+            "hypotenuse",
+            "right triangle"
+          ],
+          "correct": true
+        }
+      ]
+    },
+    "a0.30_r3.0": {
+      "perplexity": 4.320567345921765,
+      "accuracy": 0.85,
+      "correct_count": 17,
+      "total_prompts": 20,
+      "tlb_alpha": 0.3,
+      "tlb_radius": 3.0,
+      "tlb_max_tokens": 1440,
+      "delta_vs_baseline": -0.09999999999999998,
+      "details": [
+        {
+          "prompt": "The capital of France is",
+          "answer": "a city of contrasts. it is a city of history and culture, of art and fashion, of food and wine, of romance and adventure. it",
+          "keywords": [
+            "paris"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "Water boils at a temperature of",
+          "answer": "100 degrees celsius.\n\nthe boiling point of water is 100 degrees celsius.\n\nthe boiling point of water is 1",
+          "keywords": [
+            "100",
+            "212",
+            "celsius",
+            "fahrenheit"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The speed of light is approximately",
+          "answer": "300,000 km/s. what is the speed of light in meters per second?\n\na $1.00",
+          "keywords": [
+            "300",
+            "3",
+            "km",
+            "186"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Newton discovered the law of",
+          "answer": "universal gravitation in 1687. this law is a fundamental law of physics that describes the gravitational force between two objects. the law states that",
+          "keywords": [
+            "gravity",
+            "gravitation",
+            "motion"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The chemical formula for water is",
+          "answer": "h2o. this means that for every one molecule of water, there are two atoms of hydrogen and one atom of oxygen.\n\nthe chemical formula",
+          "keywords": [
+            "h2o"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "DNA stands for",
+          "answer": "deoxyribonucleic acid. it is the genetic material of all living organisms. it is a long polymer of nucleotides. it is a double helix structure.",
+          "keywords": [
+            "deoxyribonucleic"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The largest planet in our solar system is",
+          "answer": "jupiter. it is a gas giant and is the fifth planet from the sun. jupiter has the shortest day of any planet in our solar system. it",
+          "keywords": [
+            "jupiter"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Shakespeare wrote the play",
+          "answer": "in 1601 and it was first performed in 1604. it is set in the 16th century and is",
+          "keywords": [
+            "hamlet",
+            "romeo",
+            "macbeth",
+            "othello",
+            "lear"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "The theory of relativity was proposed by",
+          "answer": "albert einstein in 1905. it is a theory of the structure of space and time and of their relationship to the other fundamental forces of",
+          "keywords": [
+            "einstein",
+            "albert"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Photosynthesis converts sunlight into",
+          "answer": "chemical energy. the process is carried out by plants, algae, and some bacteria. it is the basis of the food chain and the oxygen cycle.",
+          "keywords": [
+            "energy",
+            "glucose",
+            "sugar",
+            "chemical"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The human body has approximately how many bones:",
+          "answer": "the human body has approximately how many muscles:\n\nthe human body has approximately how many nerves:\n\nthe human body has approximately how many blood vessels",
+          "keywords": [
+            "206"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "Mount Everest is located in",
+          "answer": "the himalayas, the highest mountain range in the world. it is the highest mountain on earth, with a height of 8,848 meters",
+          "keywords": [
+            "nepal",
+            "himalaya",
+            "tibet"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The periodic table was created by",
+          "answer": "dmitri mendeleev in 1869. it is a table that organizes the chemical elements by their atomic number, electron configuration, and recurring",
+          "keywords": [
+            "mendeleev"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "An electron has a charge of",
+          "answer": "$-1.6 \\times 10^{-19} \\mathrm{c}$ and a mass of $9.1 \\times 1",
+          "keywords": [
+            "negative",
+            "-1",
+            "1.6"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The Great Wall of China was built to",
+          "answer": "keep out the mongols and other invaders. it was also built to keep the chinese people in. the great wall of china is one of the most famous",
+          "keywords": [
+            "protect",
+            "defend",
+            "invad",
+            "mongol",
+            "border"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Pi is approximately equal to",
+          "answer": "3.14.\n\nthe circumference of a circle is the distance around the circle.\n\nthe circumference of a circle is equal to the diameter",
+          "keywords": [
+            "3.14"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The mitochondria is known as the",
+          "answer": "powerhouse of the cell. it is the site of cellular respiration, the process by which the energy in glucose is converted into atp. the mitochondria is a",
+          "keywords": [
+            "powerhouse"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The French Revolution began in the year",
+          "answer": "1789 and ended in the year 1799. the french revolution was a time of great change in france. it was",
+          "keywords": [
+            "1789"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Gravity on Earth accelerates objects at approximately",
+          "answer": "9.8 m/s2. this means that if you drop an object from a height of 1 meter, it will hit the ground",
+          "keywords": [
+            "9.8",
+            "10",
+            "m/s"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The Pythagorean theorem states that",
+          "answer": "the sum of the squares of the two legs of a right triangle is equal to the square of the hypotenuse.\n\nthe pythagorean theorem is one",
+          "keywords": [
+            "a\u00b2",
+            "a^2",
+            "square",
+            "hypotenuse",
+            "right triangle"
+          ],
+          "correct": true
+        }
+      ]
+    },
+    "a0.30_r3.5": {
+      "perplexity": 4.320567345921765,
+      "accuracy": 0.8,
+      "correct_count": 16,
+      "total_prompts": 20,
+      "tlb_alpha": 0.3,
+      "tlb_radius": 3.5,
+      "tlb_max_tokens": 1440,
+      "delta_vs_baseline": -0.1499999999999999,
+      "details": [
+        {
+          "prompt": "The capital of France is",
+          "answer": "a city of contrasts. it is a city of history and culture, of art and fashion, of food and wine, of romance and adventure. it",
+          "keywords": [
+            "paris"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "Water boils at a temperature of",
+          "answer": "$100^{\\circ} \\mathrm{c}$. why does the temperature of the water not go above $100^{\\circ} \\",
+          "keywords": [
+            "100",
+            "212",
+            "celsius",
+            "fahrenheit"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The speed of light is approximately",
+          "answer": "$3 \\times 10^{8} \\mathrm{m} / \\mathrm{s}$. a light year is the distance light travels in",
+          "keywords": [
+            "300",
+            "3",
+            "km",
+            "186"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Newton discovered the law of",
+          "answer": "universal gravitation in 1687. this law is one of the most important laws in the history of science. it is the first law that",
+          "keywords": [
+            "gravity",
+            "gravitation",
+            "motion"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The chemical formula for water is",
+          "answer": "$h_2o$. how many atoms of oxygen are in a water molecule?\n\na $1.00-\\mathrm{kg}$ block",
+          "keywords": [
+            "h2o"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "DNA stands for",
+          "answer": "deoxyribonucleic acid. it is the genetic material of all living organisms. it is a long polymer of nucleotides. it is a double helix structure.",
+          "keywords": [
+            "deoxyribonucleic"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The largest planet in our solar system is",
+          "answer": "jupiter. it is a gas giant and is the fifth planet from the sun. jupiter has the shortest day of any planet in our solar system. it",
+          "keywords": [
+            "jupiter"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Shakespeare wrote the play",
+          "answer": "in 1601 and it was first performed in 1604. it was one of the last plays that he wrote. the",
+          "keywords": [
+            "hamlet",
+            "romeo",
+            "macbeth",
+            "othello",
+            "lear"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "The theory of relativity was proposed by",
+          "answer": "albert einstein in 1905. it is a theory of the structure of space and time and of their relationship to the other fundamental forces of",
+          "keywords": [
+            "einstein",
+            "albert"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Photosynthesis converts sunlight into",
+          "answer": "chemical energy. the process is so efficient that it is the basis of all life on earth.\n\nthe process of photosynthesis is a complex one, but",
+          "keywords": [
+            "energy",
+            "glucose",
+            "sugar",
+            "chemical"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The human body has approximately how many bones:",
+          "answer": "the human body has approximately how many muscles:\n\nthe human body has approximately how many nerves:\n\nthe human body has approximately how many blood vessels",
+          "keywords": [
+            "206"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "Mount Everest is located in",
+          "answer": "the himalayas, the highest mountain range in the world. it is the highest mountain on earth, with a height of 8,848 meters",
+          "keywords": [
+            "nepal",
+            "himalaya",
+            "tibet"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The periodic table was created by",
+          "answer": "dmitri mendeleev in 1869. he was a russian chemist who was the first to arrange the elements in a table by their atomic",
+          "keywords": [
+            "mendeleev"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "An electron has a charge of",
+          "answer": "$-1.6 \\times 10^{-19} \\mathrm{c}$ and a mass of $9.1 \\times 1",
+          "keywords": [
+            "negative",
+            "-1",
+            "1.6"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The Great Wall of China was built to",
+          "answer": "keep the mongols out of the country. it was built by the ming dynasty in the 14th century. it is the longest wall in the",
+          "keywords": [
+            "protect",
+            "defend",
+            "invad",
+            "mongol",
+            "border"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Pi is approximately equal to",
+          "answer": "3.14.\n\nthe circumference of a circle is the distance around the circle.\n\nthe circumference of a circle is equal to the diameter",
+          "keywords": [
+            "3.14"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The mitochondria is known as the",
+          "answer": "powerhouse of the cell. it is the site of cellular respiration in the cell. it is the site of the production of atp in the cell. it",
+          "keywords": [
+            "powerhouse"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The French Revolution began in the year",
+          "answer": "1789 and ended in the year 1799. the french revolution was a time of great change in france. it was",
+          "keywords": [
+            "1789"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Gravity on Earth accelerates objects at approximately",
+          "answer": "9.8 m/s2. this means that if you drop an object from a height of 1 meter, it will hit the ground",
+          "keywords": [
+            "9.8",
+            "10",
+            "m/s"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The Pythagorean theorem states that",
+          "answer": "the sum of the squares of the two legs of a right triangle is equal to the square of the hypotenuse.\n\nthe pythagorean theorem is one",
+          "keywords": [
+            "a\u00b2",
+            "a^2",
+            "square",
+            "hypotenuse",
+            "right triangle"
+          ],
+          "correct": true
+        }
+      ]
+    },
+    "a0.30_r4.0": {
+      "perplexity": 4.320567345921765,
+      "accuracy": 0.8,
+      "correct_count": 16,
+      "total_prompts": 20,
+      "tlb_alpha": 0.3,
+      "tlb_radius": 4.0,
+      "tlb_max_tokens": 1440,
+      "delta_vs_baseline": -0.1499999999999999,
+      "details": [
+        {
+          "prompt": "The capital of France is",
+          "answer": "one of the most visited cities in the world and is the most visited city in europe.\n\nthe city is home to some of the most famous and",
+          "keywords": [
+            "paris"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "Water boils at a temperature of",
+          "answer": "$100^{\\circ} \\mathrm{c}$. why does the temperature of the water not go above $100^{\\circ} \\",
+          "keywords": [
+            "100",
+            "212",
+            "celsius",
+            "fahrenheit"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The speed of light is approximately",
+          "answer": "$3 \\times 10^{8} \\mathrm{m} / \\mathrm{s}$. a light year is the distance light travels in",
+          "keywords": [
+            "300",
+            "3",
+            "km",
+            "186"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Newton discovered the law of",
+          "answer": "universal gravitation in 1687. this law is one of the most important laws in the history of science. it is the first law that",
+          "keywords": [
+            "gravity",
+            "gravitation",
+            "motion"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The chemical formula for water is",
+          "answer": "$h_2o$. the chemical formula for hydrogen peroxide is $h_2o_2$. how many more atoms of oxygen are in hydrogen",
+          "keywords": [
+            "h2o"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "DNA stands for",
+          "answer": "deoxyribonucleic acid. it is the genetic material of all living organisms. it is a long polymer of nucleotides. it is a double helix structure.",
+          "keywords": [
+            "deoxyribonucleic"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The largest planet in our solar system is",
+          "answer": "jupiter. it is a gas giant and is the fifth planet from the sun. it has the shortest day of all the planets in our solar system.",
+          "keywords": [
+            "jupiter"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Shakespeare wrote the play",
+          "answer": "in 1601 and it was first performed in 1604. it was one of the first plays to be performed in the",
+          "keywords": [
+            "hamlet",
+            "romeo",
+            "macbeth",
+            "othello",
+            "lear"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "The theory of relativity was proposed by",
+          "answer": "albert einstein in 1905. it is one of the most important theories in the history of physics. it is a theory of the structure",
+          "keywords": [
+            "einstein",
+            "albert"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Photosynthesis converts sunlight into",
+          "answer": "chemical energy that can be used by all living things. the process of photosynthesis is the basis of the food chain and the oxygen cycle. it is the",
+          "keywords": [
+            "energy",
+            "glucose",
+            "sugar",
+            "chemical"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The human body has approximately how many bones:",
+          "answer": "the human body has approximately how many muscles:\n\nthe human body has approximately how many nerves:\n\nthe human body has approximately how many blood vessels",
+          "keywords": [
+            "206"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "Mount Everest is located in",
+          "answer": "the himalayas and is the highest mountain in the world. it is the highest point on the earth's surface and is the highest point of the earth",
+          "keywords": [
+            "nepal",
+            "himalaya",
+            "tibet"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The periodic table was created by",
+          "answer": "dmitri mendeleev in 1869. it is a table that organizes the chemical elements by their atomic number, electron configuration, and recurring",
+          "keywords": [
+            "mendeleev"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "An electron has a charge of",
+          "answer": "$-1.6 \\times 10^{-19} \\mathrm{c}$ and a mass of $9.1 \\times 1",
+          "keywords": [
+            "negative",
+            "-1",
+            "1.6"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The Great Wall of China was built to",
+          "answer": "keep the mongols out of the country. it was built by the ming dynasty in the 14th century. it is the longest wall in the",
+          "keywords": [
+            "protect",
+            "defend",
+            "invad",
+            "mongol",
+            "border"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Pi is approximately equal to",
+          "answer": "3.14.\n\nthe circumference of a circle is the distance around the circle.\n\nthe circumference of a circle is equal to the diameter",
+          "keywords": [
+            "3.14"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The mitochondria is known as the",
+          "answer": "powerhouse of the cell. it is the site of cellular respiration in the cell. it is the site of the production of the energy in the form of",
+          "keywords": [
+            "powerhouse"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The French Revolution began in the year",
+          "answer": "1789 and ended in the year 1799. the french revolution was a time of great change in france. it was",
+          "keywords": [
+            "1789"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Gravity on Earth accelerates objects at approximately",
+          "answer": "9.8 m/s2. this means that if you drop an object from a height of 1 meter, it will hit the ground",
+          "keywords": [
+            "9.8",
+            "10",
+            "m/s"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The Pythagorean theorem states that",
+          "answer": "the sum of the squares of the two legs of a right triangle is equal to the square of the hypotenuse.\n\nthe pythagorean theorem is one",
+          "keywords": [
+            "a\u00b2",
+            "a^2",
+            "square",
+            "hypotenuse",
+            "right triangle"
+          ],
+          "correct": true
+        }
+      ]
+    },
+    "a0.40_r2.5": {
+      "perplexity": 4.320567345921765,
+      "accuracy": 0.9,
+      "correct_count": 18,
+      "total_prompts": 20,
+      "tlb_alpha": 0.4,
+      "tlb_radius": 2.5,
+      "tlb_max_tokens": 1440,
+      "delta_vs_baseline": -0.04999999999999993,
+      "details": [
+        {
+          "prompt": "The capital of France is",
+          "answer": "a city of contrasts. it is a city of history and culture, of art and fashion, of food and wine, of romance and adventure. it",
+          "keywords": [
+            "paris"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "Water boils at a temperature of",
+          "answer": "100 degrees celsius.\n\nthe boiling point of water is 100 degrees celsius.\n\nthe boiling point of water is 1",
+          "keywords": [
+            "100",
+            "212",
+            "celsius",
+            "fahrenheit"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The speed of light is approximately",
+          "answer": "300,000 km/s. what is the speed of light in meters per second?\n\nthe speed of light is approximately",
+          "keywords": [
+            "300",
+            "3",
+            "km",
+            "186"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Newton discovered the law of",
+          "answer": "universal gravitation in 1687. this law is a fundamental law of physics that describes the gravitational force between two objects. the law states that",
+          "keywords": [
+            "gravity",
+            "gravitation",
+            "motion"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The chemical formula for water is",
+          "answer": "h2o. this means that for every one molecule of water, there are two atoms of hydrogen and one atom of oxygen.\n\nthe chemical formula",
+          "keywords": [
+            "h2o"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "DNA stands for",
+          "answer": "deoxyribonucleic acid. it is a molecule that is found in the nucleus of the cell. it is the genetic material of the cell and is responsible",
+          "keywords": [
+            "deoxyribonucleic"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The largest planet in our solar system is",
+          "answer": "jupiter. it is a gas giant and is the fifth planet from the sun. jupiter has the shortest day of any planet in our solar system. it",
+          "keywords": [
+            "jupiter"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Shakespeare wrote the play",
+          "answer": "in 1601, and it was first performed in 1604. it was one of the last plays that he wrote.",
+          "keywords": [
+            "hamlet",
+            "romeo",
+            "macbeth",
+            "othello",
+            "lear"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "The theory of relativity was proposed by",
+          "answer": "albert einstein in 1905. it is a theory of gravitation that is based on the principle of equivalence. it is a theory of gravitation",
+          "keywords": [
+            "einstein",
+            "albert"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Photosynthesis converts sunlight into",
+          "answer": "chemical energy. the process is carried out by plants, algae, and some bacteria. it is a complex process that involves a series of chemical reactions.",
+          "keywords": [
+            "energy",
+            "glucose",
+            "sugar",
+            "chemical"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The human body has approximately how many bones:",
+          "answer": "a. 206\n\nb. 200\n\nc. 106\n\nd. 100\n\nthe",
+          "keywords": [
+            "206"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Mount Everest is located in",
+          "answer": "the himalayas, the highest mountain range in the world. it is the highest mountain in the world, with a height of 8,848",
+          "keywords": [
+            "nepal",
+            "himalaya",
+            "tibet"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The periodic table was created by",
+          "answer": "dmitri mendeleev in 1869. it is a table that organizes the chemical elements by their atomic number, electron configuration, and recurring",
+          "keywords": [
+            "mendeleev"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "An electron has a charge of",
+          "answer": "$-1.6 \\times 10^{-19} \\mathrm{c}$ and a mass of $9.1 \\times 1",
+          "keywords": [
+            "negative",
+            "-1",
+            "1.6"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The Great Wall of China was built to",
+          "answer": "keep out the mongols and other invaders. it was also built to keep the chinese people in the country. the great wall of china is one of the",
+          "keywords": [
+            "protect",
+            "defend",
+            "invad",
+            "mongol",
+            "border"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Pi is approximately equal to",
+          "answer": "3.14.\n\nthe circumference of a circle is the distance around the circle.\n\nthe circumference of a circle is equal to the diameter",
+          "keywords": [
+            "3.14"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The mitochondria is known as the",
+          "answer": "powerhouse of the cell. it is the site of cellular respiration, the process by which the energy in glucose is converted into atp. the mitochondria is a",
+          "keywords": [
+            "powerhouse"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The French Revolution began in the year",
+          "answer": "1789 and ended in the year 1799. the french revolution was a time of great change in france. it was",
+          "keywords": [
+            "1789"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Gravity on Earth accelerates objects at approximately",
+          "answer": "9.8 m/s2. this means that if you drop an object from a height of 1 meter, it will hit the ground",
+          "keywords": [
+            "9.8",
+            "10",
+            "m/s"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The Pythagorean theorem states that",
+          "answer": "the sum of the squares of the two legs of a right triangle is equal to the square of the hypotenuse.\n\nthe pythagorean theorem is one",
+          "keywords": [
+            "a\u00b2",
+            "a^2",
+            "square",
+            "hypotenuse",
+            "right triangle"
+          ],
+          "correct": true
+        }
+      ]
+    },
+    "a0.40_r3.0": {
+      "perplexity": 4.320567345921765,
+      "accuracy": 0.85,
+      "correct_count": 17,
+      "total_prompts": 20,
+      "tlb_alpha": 0.4,
+      "tlb_radius": 3.0,
+      "tlb_max_tokens": 1440,
+      "delta_vs_baseline": -0.09999999999999998,
+      "details": [
+        {
+          "prompt": "The capital of France is",
+          "answer": "one of the most visited cities in the world. it is the city of love, the city of the eiffel tower, the city of the louvre,",
+          "keywords": [
+            "paris"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "Water boils at a temperature of",
+          "answer": "$100^{\\circ} \\mathrm{c}$. why does the temperature of the water not go above $100^{\\circ} \\",
+          "keywords": [
+            "100",
+            "212",
+            "celsius",
+            "fahrenheit"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The speed of light is approximately",
+          "answer": "$3 \\times 10^8 \\mathrm{~m} / \\mathrm{s}$. a light year is the distance light travels in one",
+          "keywords": [
+            "300",
+            "3",
+            "km",
+            "186"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Newton discovered the law of",
+          "answer": "universal gravitation in 1687. this law is a fundamental law of physics that describes the gravitational force between two objects. the law states that",
+          "keywords": [
+            "gravity",
+            "gravitation",
+            "motion"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The chemical formula for water is",
+          "answer": "h2o. this means that one molecule of water contains two atoms of hydrogen and one atom of oxygen.\n\nthe chemical formula for water is h",
+          "keywords": [
+            "h2o"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "DNA stands for",
+          "answer": "deoxyribonucleic acid. it is the genetic material of all living organisms. it is a long polymer of nucleotides. it is a double helix structure.",
+          "keywords": [
+            "deoxyribonucleic"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The largest planet in our solar system is",
+          "answer": "jupiter. it is a gas giant and is the fifth planet from the sun. jupiter has the shortest day of any planet in our solar system. it",
+          "keywords": [
+            "jupiter"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Shakespeare wrote the play",
+          "answer": "in 1601 and it was first performed in 1604. it was one of the last plays that he wrote. the",
+          "keywords": [
+            "hamlet",
+            "romeo",
+            "macbeth",
+            "othello",
+            "lear"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "The theory of relativity was proposed by",
+          "answer": "albert einstein in 1905. it is a theory of the structure of space and time and of their relationship to the other fundamental forces of",
+          "keywords": [
+            "einstein",
+            "albert"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Photosynthesis converts sunlight into",
+          "answer": "chemical energy. the process is so efficient that it is the basis of all life on earth.\n\nthe process of photosynthesis is a complex one, but",
+          "keywords": [
+            "energy",
+            "glucose",
+            "sugar",
+            "chemical"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The human body has approximately how many bones:",
+          "answer": "the human body has approximately how many muscles:\n\nthe human body has approximately how many nerves:\n\nthe human body has approximately how many blood vessels",
+          "keywords": [
+            "206"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "Mount Everest is located in",
+          "answer": "the himalayas, the highest mountain range in the world. it is the highest mountain on earth, with a height of 8,848 meters",
+          "keywords": [
+            "nepal",
+            "himalaya",
+            "tibet"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The periodic table was created by",
+          "answer": "dmitri mendeleev in 1869. it is a table that organizes the chemical elements by their atomic number, electron configuration, and recurring",
+          "keywords": [
+            "mendeleev"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "An electron has a charge of",
+          "answer": "$-1.6 \\times 10^{-19} \\mathrm{c}$ and a mass of $9.1 \\times 1",
+          "keywords": [
+            "negative",
+            "-1",
+            "1.6"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The Great Wall of China was built to",
+          "answer": "keep the mongols out of the country. it was the only way to keep the mongols out of the country. the great wall of china was built to",
+          "keywords": [
+            "protect",
+            "defend",
+            "invad",
+            "mongol",
+            "border"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Pi is approximately equal to",
+          "answer": "3.14.\n\nthe circumference of a circle is the distance around the circle.\n\nthe circumference of a circle is equal to the diameter",
+          "keywords": [
+            "3.14"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The mitochondria is known as the",
+          "answer": "powerhouse of the cell. it is the site of cellular respiration in the cell. it is the site of the production of atp in the cell. it",
+          "keywords": [
+            "powerhouse"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The French Revolution began in the year",
+          "answer": "1789 and ended in the year 1799. the french revolution was a time of great change in france. it was",
+          "keywords": [
+            "1789"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Gravity on Earth accelerates objects at approximately",
+          "answer": "9.8 m/s2. this means that if you drop an object from a height of 1 meter, it will hit the ground",
+          "keywords": [
+            "9.8",
+            "10",
+            "m/s"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The Pythagorean theorem states that",
+          "answer": "the sum of the squares of the two legs of a right triangle is equal to the square of the hypotenuse.\n\nthe pythagorean theorem is one",
+          "keywords": [
+            "a\u00b2",
+            "a^2",
+            "square",
+            "hypotenuse",
+            "right triangle"
+          ],
+          "correct": true
+        }
+      ]
+    },
+    "a0.40_r3.5": {
+      "perplexity": 4.320567345921765,
+      "accuracy": 0.8,
+      "correct_count": 16,
+      "total_prompts": 20,
+      "tlb_alpha": 0.4,
+      "tlb_radius": 3.5,
+      "tlb_max_tokens": 1440,
+      "delta_vs_baseline": -0.1499999999999999,
+      "details": [
+        {
+          "prompt": "The capital of France is",
+          "answer": "one of the most visited cities in the world and is the most visited city in europe.\n\nthe city is home to some of the most famous and",
+          "keywords": [
+            "paris"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "Water boils at a temperature of",
+          "answer": "$100^{\\circ} \\mathrm{c}$. why does the temperature of the water not go above $100^{\\circ} \\",
+          "keywords": [
+            "100",
+            "212",
+            "celsius",
+            "fahrenheit"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The speed of light is approximately",
+          "answer": "$3 \\times 10^{8} \\mathrm{m} / \\mathrm{s}$. a light year is the distance light travels in",
+          "keywords": [
+            "300",
+            "3",
+            "km",
+            "186"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Newton discovered the law of",
+          "answer": "universal gravitation in 1687. this law is one of the most important laws of physics. it is the basis of the theory of the",
+          "keywords": [
+            "gravity",
+            "gravitation",
+            "motion"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The chemical formula for water is",
+          "answer": "$h_2o$. the chemical formula for hydrogen peroxide is $h_2o_2$. how many more atoms of oxygen are in hydrogen",
+          "keywords": [
+            "h2o"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "DNA stands for",
+          "answer": "deoxyribonucleic acid. it is the genetic material of all living organisms and is found in the nucleus of the cell. it is the blueprint for the",
+          "keywords": [
+            "deoxyribonucleic"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The largest planet in our solar system is",
+          "answer": "jupiter. it is a gas giant and is the fifth planet from the sun. jupiter has the shortest day of any planet in our solar system. it",
+          "keywords": [
+            "jupiter"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Shakespeare wrote the play",
+          "answer": "in 1601 and set it in the 16th century.\n\nin the play, the duke of milan, the duke of",
+          "keywords": [
+            "hamlet",
+            "romeo",
+            "macbeth",
+            "othello",
+            "lear"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "The theory of relativity was proposed by",
+          "answer": "albert einstein in 1905. it is one of the most important and influential theories in the history of physics. the theory of relativity is",
+          "keywords": [
+            "einstein",
+            "albert"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Photosynthesis converts sunlight into",
+          "answer": "chemical energy that can be used by all living things. the process of photosynthesis is the basis of the food chain and the oxygen cycle. it is the",
+          "keywords": [
+            "energy",
+            "glucose",
+            "sugar",
+            "chemical"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The human body has approximately how many bones:",
+          "answer": "a. 200 b. 300 c. 400 d. 500\n\nthe $100",
+          "keywords": [
+            "206"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "Mount Everest is located in",
+          "answer": "the himalayas in the border of nepal and tibet. it is the highest mountain in the world. the first person to climb the mountain was edmund hillary and",
+          "keywords": [
+            "nepal",
+            "himalaya",
+            "tibet"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The periodic table was created by",
+          "answer": "dmitri mendeleev in 1869. it is a table that is used to organize all of the elements in the universe in a way",
+          "keywords": [
+            "mendeleev"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "An electron has a charge of",
+          "answer": "$-1.6 \\times 10^{-19} \\mathrm{c}$ and a mass of $9.1 \\times 1",
+          "keywords": [
+            "negative",
+            "-1",
+            "1.6"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The Great Wall of China was built to",
+          "answer": "keep the mongols out of the country. it was the only way to keep the mongols out of the country. the great wall of china was built to",
+          "keywords": [
+            "protect",
+            "defend",
+            "invad",
+            "mongol",
+            "border"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Pi is approximately equal to",
+          "answer": "3.14.\n\nthe circumference of a circle is the distance around the circle.\n\nthe circumference of a circle is equal to the diameter",
+          "keywords": [
+            "3.14"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The mitochondria is known as the",
+          "answer": "powerhouse of the cell. it is the site of cellular respiration in the cell. it is the site of the production of the energy in the form of",
+          "keywords": [
+            "powerhouse"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The French Revolution began in the year",
+          "answer": "1789 and ended in the year 1799. the french revolution was a time of great change in france. it was",
+          "keywords": [
+            "1789"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Gravity on Earth accelerates objects at approximately",
+          "answer": "9.8 m/s2. this means that if you drop an object from a height of 1 meter, it will hit the ground",
+          "keywords": [
+            "9.8",
+            "10",
+            "m/s"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The Pythagorean theorem states that",
+          "answer": "the sum of the squares of the two legs of a right triangle is equal to the square of the hypotenuse.\n\nthe pythagorean theorem is one",
+          "keywords": [
+            "a\u00b2",
+            "a^2",
+            "square",
+            "hypotenuse",
+            "right triangle"
+          ],
+          "correct": true
+        }
+      ]
+    },
+    "a0.40_r4.0": {
+      "perplexity": 4.320567345921765,
+      "accuracy": 0.8,
+      "correct_count": 16,
+      "total_prompts": 20,
+      "tlb_alpha": 0.4,
+      "tlb_radius": 4.0,
+      "tlb_max_tokens": 1440,
+      "delta_vs_baseline": -0.1499999999999999,
+      "details": [
+        {
+          "prompt": "The capital of France is",
+          "answer": "one of the most visited cities in the world and is the most visited city in europe.\n\nthe city is one of the most visited in the world",
+          "keywords": [
+            "paris"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "Water boils at a temperature of",
+          "answer": "$100^{\\circ} \\mathrm{c}$. why does the temperature of the water not go over $100^{\\circ} \\",
+          "keywords": [
+            "100",
+            "212",
+            "celsius",
+            "fahrenheit"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The speed of light is approximately",
+          "answer": "$3 \\times 10^{8} \\mathrm{m} / \\mathrm{s}$. a light year is the distance light travels in",
+          "keywords": [
+            "300",
+            "3",
+            "km",
+            "186"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Newton discovered the law of",
+          "answer": "universal gravitation in 1687. this law is one of the most important and fundamental laws of physics and is the basis of our understanding of",
+          "keywords": [
+            "gravity",
+            "gravitation",
+            "motion"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The chemical formula for water is",
+          "answer": "$h_2o$. the chemical formula for hydrogen peroxide is $h_2o_2$. in the hydrogen peroxide molecule, the oxygen atoms",
+          "keywords": [
+            "h2o"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "DNA stands for",
+          "answer": "deoxyribonucleic acid. it is the genetic material of all living organisms and is found in the nucleus of the cell. it is the blueprint for the",
+          "keywords": [
+            "deoxyribonucleic"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The largest planet in our solar system is",
+          "answer": "jupiter. it is a gas giant and is the fifth planet from the sun. it has the shortest day of all the planets in the solar system and",
+          "keywords": [
+            "jupiter"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Shakespeare wrote the play",
+          "answer": "in 1601 and set it in the 16th century.\n\nin the play, the duke of milan, the duke of",
+          "keywords": [
+            "hamlet",
+            "romeo",
+            "macbeth",
+            "othello",
+            "lear"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "The theory of relativity was proposed by",
+          "answer": "albert einstein in 1905. it is one of the most important and influential theories in the history of physics. the theory of relativity is",
+          "keywords": [
+            "einstein",
+            "albert"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Photosynthesis converts sunlight into",
+          "answer": "chemical energy that can be used by all living things. the process of photosynthesis is the only way that energy from the sun can be used by living things",
+          "keywords": [
+            "energy",
+            "glucose",
+            "sugar",
+            "chemical"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The human body has approximately how many bones:",
+          "answer": "a. 200 b. 300 c. 400 d. 500\n\nthe $100",
+          "keywords": [
+            "206"
+          ],
+          "correct": false
+        },
+        {
+          "prompt": "Mount Everest is located in",
+          "answer": "the himalayas and is the highest mountain in the world. it is the highest point on the earth's surface and the highest point on the earth'",
+          "keywords": [
+            "nepal",
+            "himalaya",
+            "tibet"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The periodic table was created by",
+          "answer": "the russian chemist dmitri mendeleev in 1869. it is a table of the chemical elements arranged in order of atomic number, electron",
+          "keywords": [
+            "mendeleev"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "An electron has a charge of",
+          "answer": "$-1.6 \\times 10^{-19} \\mathrm{c}$ and a mass of $9.1 \\times 1",
+          "keywords": [
+            "negative",
+            "-1",
+            "1.6"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The Great Wall of China was built to",
+          "answer": "keep the mongols out of the country. it was the only way to keep the mongols out of the country. the great wall of china was built to",
+          "keywords": [
+            "protect",
+            "defend",
+            "invad",
+            "mongol",
+            "border"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Pi is approximately equal to",
+          "answer": "3.14.\n\nthe first 10 digits of pi are 3.1415926535.",
+          "keywords": [
+            "3.14"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The mitochondria is known as the",
+          "answer": "powerhouse of the cell. it is the site of cellular respiration in the cell. it is the site of the production of the energy in the form of",
+          "keywords": [
+            "powerhouse"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The French Revolution began in the year",
+          "answer": "1789 and ended in the year 1799. the french revolution was a time of great change in france. it was",
+          "keywords": [
+            "1789"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "Gravity on Earth accelerates objects at approximately",
+          "answer": "9.8 m/s2. this means that if you drop an object from a height of 1 meter, it will hit the ground",
+          "keywords": [
+            "9.8",
+            "10",
+            "m/s"
+          ],
+          "correct": true
+        },
+        {
+          "prompt": "The Pythagorean theorem states that",
+          "answer": "the sum of the squares of the two legs of a right triangle is equal to the square of the hypotenuse.\n\nthe pythagorean theorem is one",
+          "keywords": [
+            "a\u00b2",
+            "a^2",
+            "square",
+            "hypotenuse",
+            "right triangle"
+          ],
+          "correct": true
+        }
+      ]
+    }
+  }
+}

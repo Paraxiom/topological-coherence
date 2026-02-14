@@ -59,11 +59,12 @@ echo ""
 # Make results dir
 mkdir -p ../results
 
-# Run the experiment
-echo "Starting v3 experiment..."
-echo "Expected time: ~30 min on T4, ~15 min on A40/A100"
+# Run the experiment — choose which one
+SCRIPT="${1:-ouro_tlb.py}"
+echo "Starting experiment: $SCRIPT"
+echo "Expected time: ~15-30 min on GPU"
 echo ""
-python3 ouro_toroidal_v3.py 2>&1 | tee ../results/v3_run.log
+python3 "$SCRIPT" 2>&1 | tee ../results/run.log
 
 echo ""
 echo "=============================================="

@@ -31,7 +31,7 @@ if torch.cuda.is_available():
     DEVICE = torch.device("cuda")
     DTYPE = torch.float16  # faster on GPU
     print(f"GPU detected: {torch.cuda.get_device_name(0)}")
-    print(f"VRAM: {torch.cuda.get_device_properties(0).total_mem / 1e9:.1f} GB")
+    print(f"VRAM: {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB")
 else:
     DEVICE = torch.device("cpu")
     DTYPE = torch.float32

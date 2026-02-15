@@ -1,0 +1,33 @@
+\documentclass[11pt,a4paper]{letter}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+
+\signature{Sylvain Cormier\\Paraxiom Research\\sylvain@paraxiom.org}
+\address{Sylvain Cormier\\Paraxiom Technologies Inc.\\Montreal, QC, Canada\\sylvain@paraxiom.org}
+
+\begin{document}
+
+\begin{letter}{Editorial Office\\Quantum Reports\\MDPI}
+
+\opening{Dear Editors,}
+
+I am pleased to submit the manuscript entitled \textbf{``Topological Constraints for Coherent Language Models: Why Geometry Prevents Hallucination''} for consideration in \textit{Quantum Reports}, under the Topic \textbf{``Topological, Quantum, and Molecular Information Approaches to Computation and Intelligence''} edited by Prof.\ Michel Planat and Prof.\ Edward A.\ Rietman.
+
+This paper presents a formal framework connecting topological geometry---specifically the Tonnetz torus and its spectral gap---to the problem of hallucination in large language models. We establish a hierarchy of sufficient conditions for coherent inference: doubly-stochastic constraints (DeepSeek's mHC) $\subset$ Hamiltonian coherence (ERLHS) $\subset$ toroidal spectral filtering (Karmonic). The key contribution is both theoretical and experimental:
+
+\begin{itemize}
+    \item A constructive proof that toroidal topology with constant spectral gap $\lambda_1 = \Theta(1)$ bounds latent drift, with explicit Poincar\'{e} inequality and exponential convergence guarantees.
+    \item Experimental validation across 7 language models (Phi-2, Ouro-1.4B, Qwen 0.5B/1.5B/7B, Mistral 7B, OLMo 7B, Gemma-2-9B), demonstrating up to +2.8 percentage points on TruthfulQA and 40\% drift reduction on synthetic benchmarks.
+    \item Discovery of a regime-dependent ceiling effect: toroidal logit bias improves models with moderate accuracy ($\leq$90\%) but degrades models already near ceiling ($\geq$95\%), identifying it as a calibration mechanism rather than a universal improvement.
+\end{itemize}
+
+The manuscript fits squarely within the Topic's scope: it applies topological structures (graph Laplacians on tori, spectral gap theory, Poincar\'{e} inequalities) to a computational intelligence problem (LLM coherence). The cross-domain nature of the spectral gap---connecting quantum error correction (toric codes), consensus protocols, and language model inference---aligns with the Topic's emphasis on bridging mathematical topology and computational systems.
+
+The paper has been posted as a preprint on Zenodo (DOI: 10.5281/zenodo.18516477) and all code and experimental results are publicly available at \url{https://github.com/Paraxiom/topological-coherence}.
+
+This manuscript has not been published elsewhere and is not under consideration by another journal.
+
+\closing{Sincerely,}
+
+\end{letter}
+\end{document}

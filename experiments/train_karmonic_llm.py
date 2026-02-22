@@ -427,8 +427,9 @@ class KarmonicLLMTrainer(Trainer):
 
     def _hook_fn(self, module, input, output):
         """Capture last hidden states before the LM head."""
-        # output is BaseModelOutputWithPast; hidden_states is output[0]
-        if isinstance(output, tuple):
+        if isinstance(output, torch.Tensor):
+            self._captured_hidden = output
+        elif isinstance(output, tuple):
             self._captured_hidden = output[0]
         else:
             self._captured_hidden = output.last_hidden_state

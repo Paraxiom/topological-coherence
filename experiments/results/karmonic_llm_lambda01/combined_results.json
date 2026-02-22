@@ -1,0 +1,36 @@
+[
+  {
+    "condition": "lora_karmonic",
+    "model": "Qwen/Qwen2.5-0.5B-Instruct",
+    "lambda_karmonic": 0.01,
+    "grad_scale": 0.1,
+    "use_tlb": false,
+    "train_samples": 5000,
+    "train_time_s": 176.2,
+    "eval_time_s": 464.1,
+    "mc1_accuracy": 0.2681,
+    "mc1_correct": 219,
+    "mc1_total": 817,
+    "mc2_score": 0.4082,
+    "mc2_total": 817,
+    "perplexity": 17.604,
+    "num_chunks": 50
+  },
+  {
+    "condition": "lora_karmonic_tlb",
+    "model": "Qwen/Qwen2.5-0.5B-Instruct",
+    "lambda_karmonic": 0.01,
+    "grad_scale": 0.1,
+    "use_tlb": true,
+    "train_samples": 5000,
+    "train_time_s": 178.4,
+    "eval_time_s": 1269.8,
+    "mc1_accuracy": 0.2693,
+    "mc1_correct": 220,
+    "mc1_total": 817,
+    "mc2_score": 0.4084,
+    "mc2_total": 817,
+    "perplexity": 17.570,
+    "num_chunks": 50
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "condition": "grpo_sami_ot",
+  "config": {
+    "grpo": true,
+    "sami": true,
+    "ot": true,
+    "karmonic": false
+  },
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "n_steps": 200,
+  "lambda_sami": 0.05,
+  "lambda_karmonic": 0,
+  "lambda_ot": 0.01,
+  "train_time_s": 71.5,
+  "eval_time_s": 369.3,
+  "mc1_accuracy": 0.4479804161566707,
+  "mc1_correct": 366,
+  "mc2_score": 0.49913706881566927,
+  "mc2_total": 817,
+  "perplexity": 18.184602909466797,
+  "num_chunks": 50
+}

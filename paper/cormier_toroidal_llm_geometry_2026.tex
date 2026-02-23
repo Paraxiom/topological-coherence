@@ -36,10 +36,10 @@ Paraxiom Research\\
 \maketitle
 
 \begin{abstract}
-We present evidence that large language model hidden states exhibit toroidal topology and introduce a training-time regularizer that exploits this structure for truthfulness alignment. Using persistent homology on Qwen 2.5-0.5B hidden states extracted from TruthfulQA, we detect strong toroidal signals across all network layers: Betti numbers $\beta_1 = 23$--$37$ (indicating many independent cycles) and $\beta_2 \geq 1$ (indicating voids), with truthful and hallucinated answers separated by $30$--$121^\circ$ in PCA angular space. Motivated by this geometric finding, we replace the generic Sinkhorn optimal transport regularizer in the ENIGMA alignment framework with \textbf{Karmonic spectral filtering}---a targeted regularizer derived from the cycle graph Laplacian that preserves low-frequency toroidal modes while attenuating high-frequency noise. In controlled ablation experiments using DPO preference optimization on TruthfulQA, Karmonic filtering outperforms Sinkhorn OT by \textbf{+1.3 percentage points} on MC1 accuracy and \textbf{+4.4 percentage points} on MC2 score in matched conditions (both with SAMI mutual information). DPO with Karmonic alone achieves MC1 $= 0.468$ on TruthfulQA, a \textbf{+19 percentage point} improvement over the untrained baseline, with stable perplexity. All experiments use a single RTX 4090 with 200 training steps.
+We present evidence that large language model hidden states exhibit toroidal topology and introduce a training-time regularizer that exploits this structure for truthfulness alignment. Using persistent homology on Qwen 2.5-0.5B hidden states extracted from TruthfulQA, we detect strong toroidal signals across all network layers: Betti numbers $\beta_1 = 23$--$37$ (indicating many independent cycles) and $\beta_2 \geq 1$ (indicating voids), with truthful and hallucinated answers separated by $30$--$121^\circ$ in PCA angular space. Motivated by this geometric finding, we replace the generic Sinkhorn optimal transport regularizer in the ENIGMA alignment framework with \textbf{Karmonic spectral filtering}---a targeted regularizer derived from the cycle graph Laplacian that preserves low-frequency toroidal modes while attenuating high-frequency noise. In controlled ablation experiments using DPO preference optimization on TruthfulQA across two model scales (Qwen 2.5-0.5B and Gemma-3-1B-IT), Karmonic filtering outperforms Sinkhorn OT at 0.5B (\textbf{+1.3pp} MC1, \textbf{+4.4pp} MC2) while the two regularizers converge at 1B scale. This \emph{scale-dependent advantage} suggests Karmonic's spectral selectivity is most beneficial when representations are noisier. DPO with Karmonic achieves MC1 $= 0.468$ (0.5B) and $0.499$ (1B) on TruthfulQA, improvements of \textbf{+19pp} and \textbf{+22pp} over untrained baselines, with stable perplexity at both scales. All experiments use single-GPU training with 200 steps.
 
 \medskip
-\noindent\textit{Scope: This work is empirical. We detect toroidal topology and show that a torus-aware regularizer outperforms a geometry-agnostic one. We make no claims about universal structure or ontological status of the detected topology. The contribution is operational: Karmonic filtering is a drop-in replacement for Sinkhorn OT in geometry-aware alignment pipelines.}
+\noindent\textit{Scope: This work is empirical. We detect toroidal topology and show that a torus-aware regularizer can outperform a geometry-agnostic one, with the advantage being scale-dependent. We make no claims about universal structure or ontological status of the detected topology.}
 \end{abstract}
 
 % =========================================================================
@@ -58,7 +58,7 @@ This paper bridges the gap between inference-time geometric intervention and geo
     \item \textbf{Topological detection}: We show that LLM hidden states exhibit toroidal topology via persistent homology ($\beta_1 = 23$--$37$ across layers), providing empirical justification for torus-aware methods.
     \item \textbf{Angular separation}: Truthful and hallucinated answers separate by $30$--$121^\circ$ in PCA angular projections, confirming that the detected toroidal structure encodes task-relevant information.
     \item \textbf{Karmonic spectral filtering}: We introduce a targeted replacement for Sinkhorn OT that exploits the cycle graph Laplacian eigenstructure, preserving low-frequency class structure while attenuating high-frequency noise.
-    \item \textbf{Empirical validation}: In controlled ablations, Karmonic beats Sinkhorn OT by +1.3pp MC1 and +4.4pp MC2, establishing that topology-aware regularization outperforms geometry-agnostic drift control.
+    \item \textbf{Multi-scale validation}: In controlled ablations on Qwen 2.5-0.5B and Gemma-3-1B-IT, Karmonic beats Sinkhorn OT at 0.5B (+1.3pp MC1, +4.4pp MC2) while the two converge at 1B, revealing a scale-dependent regularization dynamic.
 \end{enumerate}
 
 % =========================================================================
@@ -218,13 +218,13 @@ We test five conditions in controlled ablation:
 5 & DPO + Karmonic & \checkmark & & Karmonic \\
 \bottomrule
 \end{tabular}
-\caption{Five experimental conditions. All use Qwen 2.5-0.5B-Instruct with LoRA ($r=16$, $\alpha=32$).}
+\caption{Five experimental conditions, run identically on both Qwen 2.5-0.5B~\cite{qwen2025} and Gemma-3-1B-IT~\cite{gemma2025} with LoRA ($r=16$, $\alpha=32$).}
 \label{tab:conditions}
 \end{table}
 
-\textbf{Hyperparameters}: LoRA targets $\{q, k, v, o\}$ projections with dropout 0.1. DPO $\beta = 0.1$. Learning rate $2 \times 10^{-5}$ with AdamW (weight decay 0.01). SAMI: $\lambda_{\text{SAMI}} = 0.05$, temperature 0.07, 6 constitutional principles, row InfoNCE (column skipped when batch $<$ num principles). Karmonic: $\lambda_{\text{Karmonic}} = 0.01$, gradient scale 0.1, grid size 12, 6 modes, buffer size 8. Sinkhorn OT: $\lambda_{\text{OT}} = 0.01$, $\epsilon = 0.1$, 20 iterations. All conditions: 200 steps, 500 training samples from TruthfulQA, evaluated on the full 817-sample validation set.
+\textbf{Hyperparameters} (identical at both scales): LoRA targets $\{q, k, v, o\}$ projections with dropout 0.1. DPO $\beta = 0.1$. Learning rate $2 \times 10^{-5}$ with AdamW (weight decay 0.01). SAMI: $\lambda_{\text{SAMI}} = 0.05$, temperature 0.07, 6 constitutional principles, row InfoNCE (column skipped when batch $<$ num principles). Karmonic: $\lambda_{\text{Karmonic}} = 0.01$, gradient scale 0.1, grid size 12, 6 modes, buffer size 8. Sinkhorn OT: $\lambda_{\text{OT}} = 0.01$, $\epsilon = 0.1$, 20 iterations. All conditions: 200 steps, 500 training samples from TruthfulQA, evaluated on the full 817-sample validation set.
 
-\textbf{Hardware}: Single NVIDIA RTX 4090 (RunPod), $\sim$1.4 GB VRAM, $\sim$1 minute training + $\sim$6 minutes evaluation per condition.
+\textbf{Hardware}: Qwen 0.5B: NVIDIA RTX 4090 ($\sim$1.4 GB VRAM, $\sim$1 min train + $\sim$6 min eval). Gemma 1B: NVIDIA A40 ($\sim$4 GB VRAM, $\sim$1.4 min train + $\sim$8 min eval). Both on RunPod.
 
 % =========================================================================
 \section{Results}
@@ -247,53 +247,113 @@ DPO + SAMI + Karmonic & 0.461 & \textbf{0.544} & 18.22 & +18.4pp & +13.7pp \\
 DPO + Karmonic & 0.468 & 0.531 & 18.21 & +19.0pp & +12.5pp \\
 \bottomrule
 \end{tabular}
-\caption{Main results on TruthfulQA (817 samples). MC1 = single-best accuracy, MC2 = normalized probability mass on correct answers, PPL = WikiText-2 perplexity. Deltas computed vs.\ untrained baseline. All conditions: Qwen 2.5-0.5B, LoRA $r=16$, 200 steps.}
-\label{tab:main_results}
+\caption{Qwen 2.5-0.5B results on TruthfulQA (817 samples). MC1 = single-best accuracy, MC2 = normalized probability mass on correct answers, PPL = WikiText-2 perplexity. Deltas computed vs.\ untrained baseline.}
+\label{tab:qwen_results}
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Condition} & \textbf{MC1} & \textbf{MC2} & \textbf{PPL} & $\Delta$\textbf{MC1} & $\Delta$\textbf{MC2} \\
+\midrule
+Untrained baseline & 0.280 & 0.432 & 57.01 & --- & --- \\
+\midrule
+DPO only & \textbf{0.502} & \textbf{0.615} & 57.43 & +22.2pp & +18.3pp \\
+DPO + SAMI & 0.443 & 0.543 & 56.93 & +16.3pp & +11.1pp \\
+DPO + SAMI + OT & \textbf{0.504} & 0.594 & 57.64 & +22.4pp & +16.2pp \\
+DPO + SAMI + Karmonic & 0.494 & 0.584 & 57.29 & +21.4pp & +15.2pp \\
+DPO + Karmonic & 0.499 & 0.603 & 57.76 & +21.9pp & +17.1pp \\
+\bottomrule
+\end{tabular}
+\caption{Gemma-3-1B-IT results on TruthfulQA (817 samples). Same conditions and hyperparameters as Table~\ref{tab:qwen_results}. Note higher baseline perplexity reflects the different model and tokenizer.}
+\label{tab:gemma_results}
 \end{table}
 
 \subsection{DPO is Highly Effective}
 
-DPO alone produces a massive +20.8 percentage point MC1 improvement (0.278 $\rightarrow$ 0.486), confirming that direct preference optimization between known correct and incorrect answers provides strong alignment signal even at the 0.5B scale and with only 200 training steps. This serves as a strong baseline against which to measure regularizer contributions.
+DPO alone produces massive MC1 improvements at both scales: +20.8pp on Qwen 0.5B (0.278 $\rightarrow$ 0.486) and +22.2pp on Gemma 1B (0.280 $\rightarrow$ 0.502). This confirms that direct preference optimization between known correct and incorrect answers provides strong alignment signal regardless of model scale, even with only 200 training steps. This serves as a strong baseline against which to measure regularizer contributions.
 
-\subsection{Karmonic Outperforms Sinkhorn OT}
+\subsection{Karmonic vs.\ Sinkhorn OT: Scale-Dependent Advantage}
 
-The headline result: in matched SAMI conditions (conditions 3 vs.\ 4):
+In matched SAMI conditions (conditions 3 vs.\ 4), the comparison between Karmonic and Sinkhorn OT reveals a scale-dependent pattern:
 
+\textbf{At 0.5B} (Qwen): Karmonic wins decisively:
 \begin{itemize}
     \item \textbf{MC1}: Karmonic 0.461 vs.\ OT 0.448 (\textbf{+1.3pp})
     \item \textbf{MC2}: Karmonic 0.544 vs.\ OT 0.499 (\textbf{+4.4pp})
 \end{itemize}
 
-The MC2 improvement is particularly striking: Karmonic not only selects the single best answer more accurately but also assigns substantially more probability mass to the full set of correct answers. This is consistent with Karmonic's spectral filtering mechanism, which preserves the low-frequency class structure that maps truthful answers to a coherent toroidal neighborhood.
+\textbf{At 1B} (Gemma): OT slightly leads:
+\begin{itemize}
+    \item \textbf{MC1}: OT 0.504 vs.\ Karmonic 0.494 (\textbf{+1.0pp} to OT)
+    \item \textbf{MC2}: OT 0.594 vs.\ Karmonic 0.584 (\textbf{+1.0pp} to OT)
+\end{itemize}
+
+The 0.5B MC2 advantage (+4.4pp) is particularly striking: Karmonic not only selects the single best answer more accurately but also assigns substantially more probability mass to the full set of correct answers. At 1B, the gap closes to 1pp---the two regularizers effectively converge. We interpret this in Section~\ref{sec:scale_dependent}.
 
 \subsection{SAMI Interference with DPO}
 
-An unexpected finding: adding SAMI to DPO \emph{hurts} performance (MC1 drops from 0.486 to 0.416, $-7$pp). This contrasts with ENIGMA's results where SAMI improved GRPO. The likely explanation: SAMI's symmetric InfoNCE loss competes with DPO for gradient signal. DPO directly optimizes answer preferences, while SAMI optimizes alignment between completions and constitutional principles---at batch size 1, these objectives may conflict. Notably, both regularizers (OT and Karmonic) partially recover the SAMI-induced degradation, with Karmonic recovering more (0.461 vs.\ 0.448).
+A consistent finding across both scales: adding SAMI to DPO \emph{hurts} performance. At 0.5B, MC1 drops from 0.486 to 0.416 ($-7$pp); at 1B, MC1 drops from 0.502 to 0.443 ($-5.9$pp). This contrasts with ENIGMA's results where SAMI improved GRPO. The likely explanation: SAMI's symmetric InfoNCE loss competes with DPO for gradient signal. DPO directly optimizes answer preferences, while SAMI optimizes alignment between completions and constitutional principles---at batch size 1, these objectives may conflict. Notably, both regularizers (OT and Karmonic) partially recover the SAMI-induced degradation at both scales.
 
 \subsection{Perplexity Stability}
 
-All conditions maintain perplexity within the narrow range 18.18--18.24, confirming that neither DPO training nor Karmonic regularization degrades general language modeling quality. This is expected given the small number of training steps (200) and low LoRA rank (16).
+All conditions maintain stable perplexity at both scales: 18.18--18.24 for Qwen 0.5B and 56.93--57.76 for Gemma 1B. Neither DPO training nor geometric regularization degrades general language modeling quality. This is expected given the small number of training steps (200) and low LoRA rank (16). The higher absolute perplexity of Gemma reflects the different tokenizer and model architecture rather than degradation.
+
+\subsection{Multi-Scale Analysis}
+\label{sec:scale_dependent}
+
+Table~\ref{tab:scale_comparison} summarizes the cross-scale comparison for the key regularizer matchup.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+& \multicolumn{2}{c}{\textbf{Qwen 0.5B}} & \multicolumn{2}{c}{\textbf{Gemma 1B}} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+\textbf{Condition} & MC1 & MC2 & MC1 & MC2 \\
+\midrule
+DPO + SAMI + OT & 0.448 & 0.499 & \textbf{0.504} & \textbf{0.594} \\
+DPO + SAMI + Karmonic & \textbf{0.461} & \textbf{0.544} & 0.494 & 0.584 \\
+\midrule
+$\Delta$ (Karmonic $-$ OT) & +1.3pp & +4.4pp & $-$1.0pp & $-$1.0pp \\
+\bottomrule
+\end{tabular}
+\caption{Karmonic vs.\ Sinkhorn OT in matched conditions across scales. Karmonic's advantage inverts from positive (0.5B) to slightly negative (1B), suggesting scale-dependent regularization dynamics.}
+\label{tab:scale_comparison}
+\end{table}
+
+Three patterns emerge from the multi-scale comparison:
+
+\textbf{1. Karmonic's advantage is scale-dependent.} The 0.5B advantage (+1.3pp MC1, +4.4pp MC2) reverses to a slight 1B disadvantage ($-$1.0pp each). This is consistent with the hypothesis that Karmonic's spectral selectivity is most beneficial when hidden state representations are noisier and the toroidal structure is harder for generic methods to exploit.
+
+\textbf{2. Both regularizers improve with scale.} Absolute MC1 scores increase from 0.448/0.461 (0.5B) to 0.504/0.494 (1B), reflecting better base representations at larger scale. As base representations improve, the marginal benefit of spectral selectivity diminishes.
+
+\textbf{3. SAMI interference is consistent.} The SAMI degradation pattern (DPO+SAMI worse than DPO alone) holds at both scales, confirming it is a systematic interaction between SAMI's InfoNCE and DPO's preference loss rather than a scale artifact.
 
 % =========================================================================
 \section{Discussion}
 % =========================================================================
 
-\subsection{Why Karmonic Beats OT}
+\subsection{Scale-Dependent Regularization}
 
-The mechanism is spectral selectivity. Sinkhorn OT computes a transport plan between hidden state distributions that minimizes total movement, but it treats all dimensions equally. In a high-dimensional space with toroidal structure, most dimensions encode noise---penalizing movement along them wastes gradient budget.
+The inversion from Karmonic advantage at 0.5B to convergence at 1B admits a natural explanation via representation quality.
 
-Karmonic filtering decomposes the representation into Fourier modes on the torus and applies differential penalties: low modes (carrying class structure) are lightly regularized, high modes (carrying noise) are strongly regularized. This allows the model to freely adjust its class-relevant toroidal coordinates (guided by DPO) while constraining noise accumulation.
+At 0.5B, hidden states are noisier: the toroidal structure exists (as shown by persistent homology) but is buried under high-frequency noise in many dimensions. Karmonic's spectral selectivity---penalizing high-frequency modes while preserving low-frequency class structure---provides a strong inductive bias that helps DPO find the relevant toroidal coordinates. Sinkhorn OT, treating all dimensions equally, wastes gradient budget constraining noise dimensions that are irrelevant to truthfulness.
 
-The +4.4pp MC2 advantage over OT reflects this: by preserving the low-frequency mode structure, Karmonic allows the model to distribute probability mass across all correct answers in a coherent toroidal neighborhood, rather than concentrating on a single one.
+At 1B, hidden states are cleaner: the model's larger capacity produces representations where the relevant structure is more accessible. The generic drift control of Sinkhorn OT becomes sufficient, and Karmonic's spectral inductive bias no longer provides marginal benefit---both regularizers converge to similar performance.
+
+This is analogous to the role of architectural priors in computer vision: convolution (a strong geometric prior) dominates at low data/compute, while transformers (a weaker prior) catch up with sufficient scale. Here, Karmonic is the stronger geometric prior and Sinkhorn OT the weaker one.
 
 \subsection{Limitations}
 
 \begin{enumerate}
-    \item \textbf{Model scale}: All experiments use Qwen 2.5-0.5B (0.5 billion parameters). Behavior at 1B+ scale---where ENIGMA reports its results~\cite{seneque2025enigma}---may differ. The toroidal structure detected in Phase 2 should be re-verified at larger scales.
+    \item \textbf{Model scale}: We test at 0.5B and 1B. ENIGMA reports results at 1B with GRPO; behavior at 3B+ where larger batch sizes enable proper GRPO advantages is untested. The toroidal structure detected via persistent homology should be re-verified at larger scales.
     \item \textbf{Training duration}: 200 steps is minimal. Longer training may change the relative ordering of conditions, particularly for SAMI which may need more steps to converge.
     \item \textbf{Single benchmark}: We evaluate on TruthfulQA only. Performance on reasoning (GPQA), coding (HumanEval), or open-ended generation is untested.
-    \item \textbf{DPO vs.\ GRPO}: We use DPO instead of ENIGMA's GRPO due to scale constraints. The relative advantage of Karmonic over OT should be validated under GRPO at larger scale.
+    \item \textbf{DPO vs.\ GRPO}: We use DPO instead of ENIGMA's GRPO due to scale constraints. The relative advantage of Karmonic over OT should be validated under GRPO at larger scale where GRPO's on-policy generation produces diverse completions.
     \item \textbf{Torus dimensionality}: We project to $T^2$ (2-torus) via FourierTorusHead, but the persistent homology suggests $T^k$ with $k \gg 2$. Higher-dimensional torus projections may capture more structure.
+    \item \textbf{Two model families}: We compare Qwen 2.5-0.5B and Gemma-3-1B-IT, which differ in architecture, tokenizer, and pretraining data. A cleaner scale comparison would use models from the same family at different sizes.
 \end{enumerate}
 
 \subsection{Connection to Toroidal Logit Bias}
@@ -304,23 +364,24 @@ Our prior work~\cite{cormier2026tlb} showed that inference-time toroidal constra
 \section{Conclusion}
 % =========================================================================
 
-We have presented three results that together establish toroidal geometry as a productive framework for LLM alignment:
+We have presented four results that together establish toroidal geometry as a productive framework for LLM alignment:
 
 \begin{enumerate}
     \item \textbf{Toroidal topology is present}: Persistent homology detects $\beta_1 = 23$--$37$ significant cycles across all layers of Qwen 2.5-0.5B, with truthful/hallucinated angular separation of 30--121$^\circ$.
-    \item \textbf{Karmonic beats Sinkhorn OT}: As a drop-in replacement for ENIGMA's OT regularizer, Karmonic spectral filtering achieves +1.3pp MC1 and +4.4pp MC2 in matched conditions, by exploiting spectral selectivity on the detected toroidal structure.
-    \item \textbf{DPO + Karmonic is effective}: At 0.5B scale with 200 steps, DPO with Karmonic regularization achieves MC1 $= 0.468$ (+19pp over baseline) with stable perplexity.
+    \item \textbf{Karmonic beats Sinkhorn OT at small scale}: At 0.5B, Karmonic spectral filtering achieves +1.3pp MC1 and +4.4pp MC2 over Sinkhorn OT in matched conditions, by exploiting spectral selectivity on the detected toroidal structure.
+    \item \textbf{Scale-dependent regularization}: At 1B, Karmonic and OT converge ($\Delta \leq 1$pp), suggesting that spectral selectivity is most valuable when representations are noisier and the manifold structure is harder to exploit with generic methods.
+    \item \textbf{DPO + geometric regularization is effective}: DPO with Karmonic achieves MC1 $= 0.468$ (0.5B, +19pp) and $0.499$ (1B, +22pp) on TruthfulQA with stable perplexity.
 \end{enumerate}
 
-The broader implication is that \emph{topology-aware regularization outperforms geometry-agnostic drift control}. When the representation manifold has identifiable structure---as we show LLM hidden states do---regularizers that exploit that structure provide better alignment outcomes.
+The broader implication is that \emph{topology-aware regularization provides strongest benefit at smaller scales}, where representation noise makes manifold structure harder to exploit. As models scale and representations become cleaner, the advantage of targeted spectral methods over generic drift control diminishes---a finding with practical implications for choosing regularizers at different compute budgets.
 
-\textbf{Future work}: Scale to 1--3B models with GRPO; test Karmonic with higher-dimensional torus projections ($T^k$, $k > 2$); combine training-time Karmonic with inference-time TLB; verify post-training amplification of toroidal structure ($\beta_1$ increase).
+\textbf{Future work}: Scale to 3B+ with GRPO (where on-policy generation produces diverse completions); test Karmonic with higher-dimensional torus projections ($T^k$, $k > 2$); combine training-time Karmonic with inference-time TLB; verify post-training amplification of toroidal structure ($\beta_1$ increase); test on same-family models at different scales (e.g., Qwen 0.5B/1.5B/3B) for cleaner scale comparisons.
 
 Code and data available at \url{https://github.com/Paraxiom/topological-coherence}.
 
 \section*{Acknowledgments}
 
-Experiments conducted on RunPod RTX 4090 infrastructure. This work builds on the ENIGMA framework~\cite{seneque2025enigma}; we thank the authors for their detailed methodology.
+Experiments conducted on RunPod infrastructure (RTX 4090 for Qwen 0.5B, A40 for Gemma 1B). This work builds on the ENIGMA framework~\cite{seneque2025enigma}; we thank the authors for their detailed methodology.
 
 \bibliographystyle{plain}
 \begin{thebibliography}{99}
@@ -414,6 +475,11 @@ Learning mixed-curvature representations in product spaces.
 Cormier, S. (2025).
 ERLHS: Emergent Reasoning via Latent Hamiltonian Structure.
 \textit{Zenodo}. DOI: 10.5281/zenodo.17928909.
+
+\bibitem{gemma2025}
+Gemma Team, Google DeepMind (2025).
+Gemma 3 Technical Report.
+\textit{arXiv preprint arXiv:2503.19786}.
 
 \end{thebibliography}
 

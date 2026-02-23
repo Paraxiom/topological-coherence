@@ -222,26 +222,18 @@ class RouterHookManager:
 
         n_hooks = 0
         for name, module in base.named_modules():
-            # OLMoE / Qwen2Moe: layers.X.mlp.gate
+            # OLMoE: layers.X.mlp.gate (OlmoeTopKRouter — not nn.Linear!)
             # DeepSeek-MoE: layers.X.mlp.gate (nn.Linear)
-            # Mixtral: layers.X.block_sparse_moe.gate
+            # Mixtral: layers.X.block_sparse_moe.gate (nn.Linear)
+            # Match any module named "gate" inside mlp/moe/sparse paths
             is_gate = (
-                name.endswith(".gate") and isinstance(module, nn.Linear)
-                and "mlp" in name or "moe" in name or "sparse" in name
+                name.endswith(".gate")
+                and ("mlp" in name or "moe" in name or "sparse" in name)
             )
             if is_gate:
                 handle = module.register_forward_hook(self._hook_fn)
                 self.handles.append(handle)
                 n_hooks += 1
-
-        if n_hooks == 0:
-            # Fallback: look for any Linear whose output dim matches n_experts
-            # and is inside a module with "moe" or "gate" in its name
-            for name, module in base.named_modules():
-                if isinstance(module, nn.Linear) and "gate" in name.lower():
-                    handle = module.register_forward_hook(self._hook_fn)
-                    self.handles.append(handle)
-                    n_hooks += 1
 
         print(f"RouterHookManager: {n_hooks} gate hooks registered", flush=True)
         return n_hooks
@@ -676,12 +668,15 @@ def run_condition(condition_name, config, args):
 
             # Aggregate routing logits from this step (all layers)
             if batch_routing:
-                # Stack all layers, take softmax to get routing probs
-                # Each is (tokens, n_experts) — average across layers and tokens
+                # OLMoE router outputs softmaxed probs; other archs may output raw logits.
+                # Normalise to probs if not already (check if sums ≈ 1).
                 all_probs = []
                 for logits in batch_routing:
-                    probs = F.softmax(logits.float(), dim=-1)
-                    all_probs.append(probs.mean(dim=0))  # (n_experts,)
+                    logits = logits.float()
+                    if logits.sum(dim=-1).mean().item() < 0.95:
+                        # Raw logits — apply softmax
+                        logits = F.softmax(logits, dim=-1)
+                    all_probs.append(logits.mean(dim=0))  # (n_experts,)
                 # Average across layers → single (n_experts,) routing distribution
                 step_routing = torch.stack(all_probs).mean(dim=0).unsqueeze(0)  # (1, n_experts)
 

@@ -1,0 +1,727 @@
+{
+  "layer_0": {
+    "layer": 0,
+    "shape": [
+      1024,
+      896
+    ],
+    "persistent_homology": {
+      "betti_numbers": {
+        "0": 134,
+        "1": 32,
+        "2": 8
+      },
+      "persistence_stats": {
+        "0": {
+          "total_features": 499,
+          "significant_features": 134,
+          "max_persistence": 33.27740478515625,
+          "mean_persistence": 11.154039101036851,
+          "median_persistence": 9.789426803588867,
+          "std_persistence": 6.7154917059653245,
+          "threshold": 16.50491850955419
+        },
+        "1": {
+          "total_features": 169,
+          "significant_features": 32,
+          "max_persistence": 3.4892711639404297,
+          "mean_persistence": 0.8494143232086001,
+          "median_persistence": 0.70745849609375,
+          "std_persistence": 0.6910292531873079,
+          "threshold": 1.398487749281058
+        },
+        "2": {
+          "total_features": 50,
+          "significant_features": 8,
+          "max_persistence": 1.3069877624511719,
+          "mean_persistence": 0.30973373413085936,
+          "median_persistence": 0.21307086944580078,
+          "std_persistence": 0.32044254087853785,
+          "threshold": 0.5335134103243386
+        }
+      },
+      "torus_score": 3,
+      "n_points": 500,
+      "n_dims_pca": 50
+    },
+    "spectral_analysis": {
+      "spectral_gap": 5.787671816800457e-15,
+      "eigenvalues": [
+        -6.247910073360385e-16,
+        5.787671816800457e-15,
+        0.07950056280205887,
+        0.2889962083763618,
+        0.29366329531145413,
+        0.31642367657155235,
+        0.3656038699116276,
+        0.4502294499169152,
+        0.4791088972198526,
+        0.5136972164116823,
+        0.5402976713143032,
+        0.5431488841453276,
+        0.6993406599076183,
+        0.7398975661780895,
+        0.8557575249575017,
+        0.9238861131375375,
+        1.0184047439319488,
+        1.0550276198604875,
+        1.0736644546124603,
+        1.1326974862931853
+      ],
+      "lambda2_lambda1_ratio": 795005628.0205888,
+      "multiplicity_score": 1.2578527305395407e-09,
+      "gap_ratios": [],
+      "torus_12_fit": 0.0,
+      "n_points": 1000
+    },
+    "circular_statistics": {
+      "planes": {
+        "PC1_PC2": {
+          "rayleigh_R": 0.16332153975963593,
+          "rayleigh_z": 27.31410026550293,
+          "rayleigh_p": 1.3728938775756094e-12,
+          "mean_direction_deg": 40.29916763305664,
+          "angular_separation_deg": 15.503898620605469,
+          "explained_var": 0.1655086725950241
+        },
+        "PC1_PC3": {
+          "rayleigh_R": 0.11697801202535629,
+          "rayleigh_z": 14.01226806640625,
+          "rayleigh_p": 8.21389789962268e-07,
+          "mean_direction_deg": 8.416194915771484,
+          "angular_separation_deg": 63.060997009277344,
+          "explained_var": 0.14069759845733643
+        },
+        "PC2_PC3": {
+          "rayleigh_R": 0.02136804535984993,
+          "rayleigh_z": 0.467551589012146,
+          "rayleigh_p": 0.6265344023704529,
+          "mean_direction_deg": 26.591697692871094,
+          "angular_separation_deg": 120.65389251708984,
+          "explained_var": 0.09444886445999146
+        },
+        "PC1_PC4": {
+          "rayleigh_R": 0.12103908509016037,
+          "rayleigh_z": 15.002071380615234,
+          "rayleigh_p": 3.0526933869623463e-07,
+          "mean_direction_deg": -9.161057472229004,
+          "angular_separation_deg": 17.23145294189453,
+          "explained_var": 0.13503922522068024
+        },
+        "PC2_PC4": {
+          "rayleigh_R": 0.07578534632921219,
+          "rayleigh_z": 5.881260871887207,
+          "rayleigh_p": 0.002791263395920396,
+          "mean_direction_deg": 44.61808776855469,
+          "angular_separation_deg": 7.897204399108887,
+          "explained_var": 0.08879049122333527
+        }
+      },
+      "best_separation_deg": 120.65389251708984,
+      "best_plane": "PC2_PC3",
+      "max_rayleigh_R": 0.16332153975963593,
+      "circular_score": 3,
+      "pca_explained_variance": [
+        0.10587870329618454,
+        0.05962996929883957,
+        0.034818898886442184,
+        0.029160520061850548,
+        0.025392379611730576,
+        0.021470101550221443,
+        0.017550623044371605,
+        0.017104052007198334,
+        0.01602545753121376,
+        0.014804673381149769
+      ]
+    },
+    "torus_projection": {
+      "torus_separation_deg": 0.2139472932776709,
+      "circle1_sep_deg": 0.16388964240863685,
+      "circle2_sep_deg": 0.05005765086903407,
+      "truthful_circular_variance": 0.0005871500324485801,
+      "hallucinated_circular_variance": 0.000672487181253012
+    },
+    "torus_evidence_score": 6,
+    "torus_evidence_max": 7
+  },
+  "layer_12": {
+    "layer": 12,
+    "shape": [
+      1024,
+      896
+    ],
+    "persistent_homology": {
+      "betti_numbers": {
+        "0": 120,
+        "1": 37,
+        "2": 21
+      },
+      "persistence_stats": {
+        "0": {
+          "total_features": 499,
+          "significant_features": 120,
+          "max_persistence": 30.612886428833008,
+          "mean_persistence": 11.429541033828903,
+          "median_persistence": 10.432276725769043,
+          "std_persistence": 7.477638883586595,
+          "threshold": 17.909915609355636
+        },
+        "1": {
+          "total_features": 205,
+          "significant_features": 37,
+          "max_persistence": 5.371118545532227,
+          "mean_persistence": 1.0411070288681403,
+          "median_persistence": 0.7009258270263672,
+          "std_persistence": 1.0134370676818807,
+          "threshold": 1.7143628947082479
+        },
+        "2": {
+          "total_features": 92,
+          "significant_features": 21,
+          "max_persistence": 1.5286483764648438,
+          "mean_persistence": 0.2827018032903257,
+          "median_persistence": 0.19766807556152344,
+          "std_persistence": 0.2587764182432435,
+          "threshold": 0.4564444938047669
+        }
+      },
+      "torus_score": 3,
+      "n_points": 500,
+      "n_dims_pca": 50
+    },
+    "spectral_analysis": {
+      "spectral_gap": -2.9316814763854146e-16,
+      "eigenvalues": [
+        -5.392222419025438e-15,
+        -2.9316814763854146e-16,
+        7.158541861066797e-15,
+        0.11130423456293517,
+        0.1282746091482282,
+        0.14987461152644216,
+        0.18596647851662937,
+        0.2183975521259287,
+        0.269961512121222,
+        0.29933216963182546,
+        0.3634768258242529,
+        0.4476402372137093,
+        0.5271144149956534,
+        0.5334486497016606,
+        0.6139421842608823,
+        0.6634499700807981,
+        0.7280292215060308,
+        0.7778891689253001,
+        0.856485416771846,
+        1.0050522867706269
+      ],
+      "lambda2_lambda1_ratio": 7.158541861066797e-05,
+      "multiplicity_score": 0.5000178969952346,
+      "gap_ratios": [],
+      "torus_12_fit": 0.0,
+      "n_points": 1000
+    },
+    "circular_statistics": {
+      "planes": {
+        "PC1_PC2": {
+          "rayleigh_R": 0.054291289299726486,
+          "rayleigh_z": 3.018285036087036,
+          "rayleigh_p": 0.048884980380535126,
+          "mean_direction_deg": -137.29733276367188,
+          "angular_separation_deg": 35.817047119140625,
+          "explained_var": 0.1635136604309082
+        },
+        "PC1_PC3": {
+          "rayleigh_R": 0.10428856313228607,
+          "rayleigh_z": 11.137130737304688,
+          "rayleigh_p": 1.4561482203134801e-05,
+          "mean_direction_deg": 107.60504150390625,
+          "angular_separation_deg": 17.09029197692871,
+          "explained_var": 0.14992015063762665
+        },
+        "PC2_PC3": {
+          "rayleigh_R": 0.06421943753957748,
+          "rayleigh_z": 4.22311544418335,
+          "rayleigh_p": 0.014652922749519348,
+          "mean_direction_deg": 127.8240737915039,
+          "angular_separation_deg": 1.3188822269439697,
+          "explained_var": 0.0954509824514389
+        },
+        "PC1_PC4": {
+          "rayleigh_R": 0.06120094656944275,
+          "rayleigh_z": 3.83544921875,
+          "rayleigh_p": 0.021591637283563614,
+          "mean_direction_deg": -165.04713439941406,
+          "angular_separation_deg": 1.3362854719161987,
+          "explained_var": 0.13980334997177124
+        },
+        "PC2_PC4": {
+          "rayleigh_R": 0.06613146513700485,
+          "rayleigh_z": 4.478331565856934,
+          "rayleigh_p": 0.011352337896823883,
+          "mean_direction_deg": -165.66041564941406,
+          "angular_separation_deg": 5.1702752113342285,
+          "explained_var": 0.0853341817855835
+        }
+      },
+      "best_separation_deg": 35.817047119140625,
+      "best_plane": "PC1_PC2",
+      "max_rayleigh_R": 0.10428856313228607,
+      "circular_score": 3,
+      "pca_explained_variance": [
+        0.10899142175912857,
+        0.05452224612236023,
+        0.040928732603788376,
+        0.030811935663223267,
+        0.029770197346806526,
+        0.02542489767074585,
+        0.02323620393872261,
+        0.022137826308608055,
+        0.020406154915690422,
+        0.018100326880812645
+      ]
+    },
+    "torus_projection": {
+      "torus_separation_deg": 0.6497246369951947,
+      "circle1_sep_deg": 0.31752884793081654,
+      "circle2_sep_deg": 0.3321957890643781,
+      "truthful_circular_variance": 0.0005882923970620402,
+      "hallucinated_circular_variance": 0.0006789249342985526
+    },
+    "torus_evidence_score": 6,
+    "torus_evidence_max": 7
+  },
+  "layer_21": {
+    "layer": 21,
+    "shape": [
+      1024,
+      896
+    ],
+    "persistent_homology": {
+      "betti_numbers": {
+        "0": 150,
+        "1": 23,
+        "2": 2
+      },
+      "persistence_stats": {
+        "0": {
+          "total_features": 499,
+          "significant_features": 150,
+          "max_persistence": 29.30677032470703,
+          "mean_persistence": 9.960054804901322,
+          "median_persistence": 6.997371196746826,
+          "std_persistence": 7.91651923498572,
+          "threshold": 14.913890431732547
+        },
+        "1": {
+          "total_features": 122,
+          "significant_features": 23,
+          "max_persistence": 4.656949996948242,
+          "mean_persistence": 0.8617793458407043,
+          "median_persistence": 0.5411796569824219,
+          "std_persistence": 0.8955872195725889,
+          "threshold": 1.4367668765550108
+        },
+        "2": {
+          "total_features": 17,
+          "significant_features": 2,
+          "max_persistence": 1.389699935913086,
+          "mean_persistence": 0.24870917376349955,
+          "median_persistence": 0.12132453918457031,
+          "std_persistence": 0.3120101815380963,
+          "threshold": 0.4333347207226666
+        }
+      },
+      "torus_score": 3,
+      "n_points": 500,
+      "n_dims_pca": 50
+    },
+    "spectral_analysis": {
+      "spectral_gap": 4.720287940693024e-15,
+      "eigenvalues": [
+        -2.954335325271109e-15,
+        4.720287940693024e-15,
+        0.016431768531920698,
+        0.035807548544929985,
+        0.0878835595262517,
+        0.09498494651367162,
+        0.1298912825043091,
+        0.16505011757204016,
+        0.2323872822679616,
+        0.2572070908064022,
+        0.2881715726819252,
+        0.31110850243059157,
+        0.3250329110403247,
+        0.3339890461010631,
+        0.42268307451194626,
+        0.4396787950475605,
+        0.44538731932982867,
+        0.4884169956623706,
+        0.5033489427814206,
+        0.6019162519870139
+      ],
+      "lambda2_lambda1_ratio": 164317685.31920698,
+      "multiplicity_score": 6.085772192186003e-09,
+      "gap_ratios": [],
+      "torus_12_fit": 0.0,
+      "n_points": 1000
+    },
+    "circular_statistics": {
+      "planes": {
+        "PC1_PC2": {
+          "rayleigh_R": 0.14263838529586792,
+          "rayleigh_z": 20.83400535583496,
+          "rayleigh_p": 8.951718810656928e-10,
+          "mean_direction_deg": -161.7125701904297,
+          "angular_separation_deg": 5.11790132522583,
+          "explained_var": 0.10490010678768158
+        },
+        "PC1_PC3": {
+          "rayleigh_R": 0.1222631186246872,
+          "rayleigh_z": 15.307028770446777,
+          "rayleigh_p": 2.2503074603719142e-07,
+          "mean_direction_deg": -160.68780517578125,
+          "angular_separation_deg": 5.918536186218262,
+          "explained_var": 0.09490032494068146
+        },
+        "PC2_PC3": {
+          "rayleigh_R": 0.12304182350635529,
+          "rayleigh_z": 15.502633094787598,
+          "rayleigh_p": 1.850512347800759e-07,
+          "mean_direction_deg": 154.47177124023438,
+          "angular_separation_deg": 4.342811584472656,
+          "explained_var": 0.0800395980477333
+        },
+        "PC1_PC4": {
+          "rayleigh_R": 0.11501732468605042,
+          "rayleigh_z": 13.546480178833008,
+          "rayleigh_p": 1.3086947774354485e-06,
+          "mean_direction_deg": -154.17855834960938,
+          "angular_separation_deg": 13.945879936218262,
+          "explained_var": 0.09276197850704193
+        },
+        "PC2_PC4": {
+          "rayleigh_R": 0.11935645341873169,
+          "rayleigh_z": 14.587865829467773,
+          "rayleigh_p": 4.6192386093935056e-07,
+          "mean_direction_deg": -156.59744262695312,
+          "angular_separation_deg": 30.184703826904297,
+          "explained_var": 0.07790124416351318
+        }
+      },
+      "best_separation_deg": 30.184703826904297,
+      "best_plane": "PC2_PC4",
+      "max_rayleigh_R": 0.14263838529586792,
+      "circular_score": 3,
+      "pca_explained_variance": [
+        0.059880420565605164,
+        0.045019689947366714,
+        0.03501990810036659,
+        0.03288155421614647,
+        0.029220106080174446,
+        0.026191215962171555,
+        0.023722395300865173,
+        0.02094843052327633,
+        0.02086104452610016,
+        0.020237550139427185
+      ]
+    },
+    "torus_projection": {
+      "torus_separation_deg": 0.6479615737441916,
+      "circle1_sep_deg": 0.3606125747682454,
+      "circle2_sep_deg": 0.2873489989759462,
+      "truthful_circular_variance": 0.0006166010935249044,
+      "hallucinated_circular_variance": 0.0006168514681372805
+    },
+    "torus_evidence_score": 6,
+    "torus_evidence_max": 7
+  },
+  "layer_22": {
+    "layer": 22,
+    "shape": [
+      1024,
+      896
+    ],
+    "persistent_homology": {
+      "betti_numbers": {
+        "0": 153,
+        "1": 26,
+        "2": 3
+      },
+      "persistence_stats": {
+        "0": {
+          "total_features": 499,
+          "significant_features": 153,
+          "max_persistence": 36.14739227294922,
+          "mean_persistence": 9.538706009158629,
+          "median_persistence": 6.216870307922363,
+          "std_persistence": 7.9461248415126144,
+          "threshold": 14.162995149434977
+        },
+        "1": {
+          "total_features": 108,
+          "significant_features": 26,
+          "max_persistence": 4.270143508911133,
+          "mean_persistence": 0.7372225169782285,
+          "median_persistence": 0.4315147399902344,
+          "std_persistence": 0.7795054169371405,
+          "threshold": 1.2110201569273749
+        },
+        "2": {
+          "total_features": 11,
+          "significant_features": 3,
+          "max_persistence": 0.8368358612060547,
+          "mean_persistence": 0.35023637251420453,
+          "median_persistence": 0.32430267333984375,
+          "std_persistence": 0.30211869328052543,
+          "threshold": 0.6264213666203692
+        }
+      },
+      "torus_score": 3,
+      "n_points": 500,
+      "n_dims_pca": 50
+    },
+    "spectral_analysis": {
+      "spectral_gap": -4.079226572920557e-15,
+      "eigenvalues": [
+        -7.941132343219649e-15,
+        -4.079226572920557e-15,
+        0.03147032568647386,
+        0.0344529973912196,
+        0.04412416588124896,
+        0.11916490271926429,
+        0.15069545040060892,
+        0.17349997204196083,
+        0.19249717364209584,
+        0.21957764953534867,
+        0.25528494924957074,
+        0.32714503873610623,
+        0.3730265608115142,
+        0.4038731039908636,
+        0.4274074026284277,
+        0.4942763045477817,
+        0.5652678186004793,
+        0.6032679123953189,
+        0.6281405066324941,
+        0.6396159485737695
+      ],
+      "lambda2_lambda1_ratio": 314703256.8647386,
+      "multiplicity_score": 3.177596603106673e-09,
+      "gap_ratios": [],
+      "torus_12_fit": 0.0,
+      "n_points": 1000
+    },
+    "circular_statistics": {
+      "planes": {
+        "PC1_PC2": {
+          "rayleigh_R": 0.13220907747745514,
+          "rayleigh_z": 17.89874267578125,
+          "rayleigh_p": 1.685290484942925e-08,
+          "mean_direction_deg": -34.50666046142578,
+          "angular_separation_deg": 14.077025413513184,
+          "explained_var": 0.1002047136425972
+        },
+        "PC1_PC3": {
+          "rayleigh_R": 0.11834251135587692,
+          "rayleigh_z": 14.341069221496582,
+          "rayleigh_p": 5.912249889661325e-07,
+          "mean_direction_deg": -27.677244186401367,
+          "angular_separation_deg": 5.60421085357666,
+          "explained_var": 0.08901410549879074
+        },
+        "PC2_PC3": {
+          "rayleigh_R": 0.10932905972003937,
+          "rayleigh_z": 12.23971176147461,
+          "rayleigh_p": 4.834601895709056e-06,
+          "mean_direction_deg": -164.86923217773438,
+          "angular_separation_deg": 29.956907272338867,
+          "explained_var": 0.07663784176111221
+        },
+        "PC1_PC4": {
+          "rayleigh_R": 0.1303003877401352,
+          "rayleigh_z": 17.38566780090332,
+          "rayleigh_p": 2.8151427855505062e-08,
+          "mean_direction_deg": -3.8285133838653564,
+          "angular_separation_deg": 7.944396495819092,
+          "explained_var": 0.08650510758161545
+        },
+        "PC2_PC4": {
+          "rayleigh_R": 0.1180063784122467,
+          "rayleigh_z": 14.25971794128418,
+          "rayleigh_p": 6.413324626919348e-07,
+          "mean_direction_deg": 165.80218505859375,
+          "angular_separation_deg": 10.581628799438477,
+          "explained_var": 0.07412884384393692
+        }
+      },
+      "best_separation_deg": 29.956907272338867,
+      "best_plane": "PC2_PC3",
+      "max_rayleigh_R": 0.13220907747745514,
+      "circular_score": 2,
+      "pca_explained_variance": [
+        0.05629048869013786,
+        0.043914224952459335,
+        0.03272361680865288,
+        0.030214617028832436,
+        0.028652368113398552,
+        0.02517823688685894,
+        0.021851863712072372,
+        0.02103244513273239,
+        0.01992887258529663,
+        0.019744092598557472
+      ]
+    },
+    "torus_projection": {
+      "torus_separation_deg": 0.6101920846748728,
+      "circle1_sep_deg": 0.327975702621513,
+      "circle2_sep_deg": 0.2822163820533599,
+      "truthful_circular_variance": 0.0005926507018492178,
+      "hallucinated_circular_variance": 0.0005740225279096123
+    },
+    "torus_evidence_score": 5,
+    "torus_evidence_max": 7
+  },
+  "layer_23": {
+    "layer": 23,
+    "shape": [
+      1024,
+      896
+    ],
+    "persistent_homology": {
+      "betti_numbers": {
+        "0": 154,
+        "1": 25,
+        "2": 4
+      },
+      "persistence_stats": {
+        "0": {
+          "total_features": 499,
+          "significant_features": 154,
+          "max_persistence": 35.88154220581055,
+          "mean_persistence": 9.583689227312027,
+          "median_persistence": 6.198848724365234,
+          "std_persistence": 7.973292023958859,
+          "threshold": 14.172140748324093
+        },
+        "1": {
+          "total_features": 108,
+          "significant_features": 25,
+          "max_persistence": 3.744579315185547,
+          "mean_persistence": 0.7898838823592221,
+          "median_persistence": 0.5516452789306641,
+          "std_persistence": 0.7488575906571787,
+          "threshold": 1.300502869587843
+        },
+        "2": {
+          "total_features": 16,
+          "significant_features": 4,
+          "max_persistence": 0.8921394348144531,
+          "mean_persistence": 0.32553279399871826,
+          "median_persistence": 0.15796279907226562,
+          "std_persistence": 0.2818203297565856,
+          "threshold": 0.43978312882885123
+        }
+      },
+      "torus_score": 3,
+      "n_points": 500,
+      "n_dims_pca": 50
+    },
+    "spectral_analysis": {
+      "spectral_gap": 7.422372515269643e-15,
+      "eigenvalues": [
+        1.6633313475097906e-16,
+        7.422372515269643e-15,
+        0.03402916317955704,
+        0.04980633912530085,
+        0.11117752017546226,
+        0.12102410584279817,
+        0.14843180727864394,
+        0.1554100999506817,
+        0.1659532007999373,
+        0.18145535583172412,
+        0.2020534127942709,
+        0.24319368040846373,
+        0.3498421475988445,
+        0.3653845145170758,
+        0.37700327058796207,
+        0.3888309313935566,
+        0.41965468928659605,
+        0.4599015991540508,
+        0.4744439932929389,
+        0.5556126620831204
+      ],
+      "lambda2_lambda1_ratio": 340291631.7955704,
+      "multiplicity_score": 2.9386558662152126e-09,
+      "gap_ratios": [],
+      "torus_12_fit": 0.0,
+      "n_points": 1000
+    },
+    "circular_statistics": {
+      "planes": {
+        "PC1_PC2": {
+          "rayleigh_R": 0.10613775998353958,
+          "rayleigh_z": 11.535589218139648,
+          "rayleigh_p": 9.775911166798323e-06,
+          "mean_direction_deg": -31.081695556640625,
+          "angular_separation_deg": 18.320371627807617,
+          "explained_var": 0.10399459302425385
+        },
+        "PC1_PC3": {
+          "rayleigh_R": 0.10873804241418839,
+          "rayleigh_z": 12.107736587524414,
+          "rayleigh_p": 5.5166669881145936e-06,
+          "mean_direction_deg": -35.281471252441406,
+          "angular_separation_deg": 4.079415798187256,
+          "explained_var": 0.0914391428232193
+        },
+        "PC2_PC3": {
+          "rayleigh_R": 0.07986727356910706,
+          "rayleigh_z": 6.531872272491455,
+          "rayleigh_p": 0.0014562767464667559,
+          "mean_direction_deg": -164.2429656982422,
+          "angular_separation_deg": 35.00201416015625,
+          "explained_var": 0.07905077934265137
+        },
+        "PC1_PC4": {
+          "rayleigh_R": 0.11779852211475372,
+          "rayleigh_z": 14.209527969360352,
+          "rayleigh_p": 6.743423455191078e-07,
+          "mean_direction_deg": -3.43056058883667,
+          "angular_separation_deg": 5.2666850090026855,
+          "explained_var": 0.088457390666008
+        },
+        "PC2_PC4": {
+          "rayleigh_R": 0.10232540220022202,
+          "rayleigh_z": 10.721779823303223,
+          "rayleigh_p": 2.2059219190850854e-05,
+          "mean_direction_deg": 161.6188201904297,
+          "angular_separation_deg": 15.656937599182129,
+          "explained_var": 0.07606902718544006
+        }
+      },
+      "best_separation_deg": 35.00201416015625,
+      "best_plane": "PC2_PC3",
+      "max_rayleigh_R": 0.11779852211475372,
+      "circular_score": 3,
+      "pca_explained_variance": [
+        0.05819147452712059,
+        0.04580311477184296,
+        0.03324766457080841,
+        0.030265914276242256,
+        0.027927177026867867,
+        0.02517777308821678,
+        0.021882200613617897,
+        0.021395379677414894,
+        0.01986587792634964,
+        0.019540827721357346
+      ]
+    },
+    "torus_projection": {
+      "torus_separation_deg": 0.4687948034905892,
+      "circle1_sep_deg": 0.28313515541112505,
+      "circle2_sep_deg": 0.1856596480794642,
+      "truthful_circular_variance": 0.000597429403055294,
+      "hallucinated_circular_variance": 0.0006007405155423751
+    },
+    "torus_evidence_score": 6,
+    "torus_evidence_max": 7
+  }
+}

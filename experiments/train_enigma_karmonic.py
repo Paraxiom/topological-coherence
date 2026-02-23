@@ -219,10 +219,21 @@ class SAMILoss(nn.Module):
         row_loss = F.cross_entropy(sim, labels)
 
         # Column InfoNCE: each principle -> find its completions
-        # For simplicity, transpose and use the same labels
-        col_loss = F.cross_entropy(sim.T, labels[:sim.shape[1]] if sim.shape[1] <= len(labels) else labels)
-
-        loss = 0.5 * (row_loss + col_loss)
+        # Only valid when B >= P; with B=1 just use row loss
+        B = sim.shape[0]
+        P = sim.shape[1]
+        if B >= P:
+            # Build column targets: for each principle p, find which completion has label p
+            col_targets = torch.zeros(P, dtype=torch.long, device=sim.device)
+            for p_idx in range(P):
+                matches = (labels == p_idx).nonzero(as_tuple=True)[0]
+                if len(matches) > 0:
+                    col_targets[p_idx] = matches[0]
+            col_loss = F.cross_entropy(sim.T, col_targets)
+            loss = 0.5 * (row_loss + col_loss)
+        else:
+            # Not enough completions for meaningful column InfoNCE
+            loss = row_loss
 
         # MI estimate (InfoNCE lower bound)
         mi_estimate = math.log(sim.shape[1]) - loss.detach()
@@ -519,36 +530,39 @@ def eval_perplexity(model, tokenizer, max_samples=50, max_length=512):
 # Principle encoder
 # ---------------------------------------------------------------------------
 
-def encode_principles(model, tokenizer, principles, device):
-    """Encode constitutional principles through the model to get hidden states.
+def encode_principles(model, tokenizer, principles, device, captured_hidden_ref):
+    """Encode constitutional principles using the model's forward hook.
+
+    Uses the same hook mechanism as training to capture last hidden layer.
+
+    Args:
+        captured_hidden_ref: mutable list [None] shared with hook_fn
 
     Returns: (P, hidden_dim) tensor
     """
     all_hidden = []
     model.eval()
     with torch.no_grad():
-        for p in principles:
+        for i, p in enumerate(principles):
             inputs = tokenizer(p, return_tensors="pt", truncation=True,
                                max_length=128).to(device)
-            # Need output_hidden_states — get last layer from base model
-            base = model
-            while hasattr(base, "base_model"):
-                base = base.base_model
-            if hasattr(base, "model") and hasattr(base.model, "model"):
-                # PEFT wrapping
-                outputs = model(**inputs, output_hidden_states=True)
-            else:
-                outputs = model(**inputs, output_hidden_states=True)
+            captured_hidden_ref[0] = None
+            _ = model(**inputs)
 
-            if hasattr(outputs, "hidden_states") and outputs.hidden_states is not None:
-                last = outputs.hidden_states[-1]
+            if captured_hidden_ref[0] is not None:
+                hidden = captured_hidden_ref[0]
             else:
-                last = outputs.logits  # fallback, shouldn't happen
+                # Fallback: use logits shape as indicator
+                print(f"  WARNING: hook didn't capture for principle {i}, using zeros")
+                hidden_dim = model.config.hidden_size
+                all_hidden.append(torch.zeros(hidden_dim, device=device))
+                continue
 
             # Mean pool
             mask = inputs["attention_mask"].unsqueeze(-1).float()
-            pooled = (last * mask).sum(dim=1) / mask.sum(dim=1).clamp(min=1)
+            pooled = (hidden * mask).sum(dim=1) / mask.sum(dim=1).clamp(min=1)
             all_hidden.append(pooled[0])
+            print(f"  Principle {i} encoded: shape={pooled.shape}", flush=True)
 
     return torch.stack(all_hidden)
 
@@ -629,17 +643,10 @@ def run_condition(condition_name, config, args):
 
     dev = next(model.parameters()).device
 
-    # Frozen reference model for GRPO ratio computation
+    # Note: ref_model=None means GRPO uses detached log probs as reference
+    # (avoids loading two models on single GPU which causes device_map hang)
     ref_model = None
-    if config["grpo"]:
-        ref_model = AutoModelForCausalLM.from_pretrained(
-            MODEL_NAME, torch_dtype=torch.float16,
-            device_map="auto" if torch.cuda.is_available() else None,
-            trust_remote_code=True,
-        )
-        ref_model.eval()
-        for p in ref_model.parameters():
-            p.requires_grad = False
+    print(f"Model on device: {dev}, VRAM: {torch.cuda.memory_allocated()/1e9:.1f}GB")
 
     # Initialize components
     grpo = GRPOTrainer(
@@ -669,15 +676,9 @@ def run_condition(condition_name, config, args):
     optimizer = torch.optim.AdamW(trainable_params, lr=args.lr, weight_decay=0.01)
 
     # Load data
+    print("Loading training data...")
     prompts, principle_labels = load_training_data(tokenizer, max_samples=args.train_samples)
-
-    # Encode principles once
-    principle_hidden = None
-    if config["sami"]:
-        print("Encoding constitutional principles...")
-        principle_hidden = encode_principles(
-            model, tokenizer, PRINCIPLES, dev
-        ).detach()
+    print(f"Loaded {len(prompts)} training prompts")
 
     # Reference hidden states for Sinkhorn OT (captured from base model)
     ref_hidden_cache = None
@@ -695,18 +696,36 @@ def run_condition(condition_name, config, args):
 
     # Register hook on final norm layer
     hook_handle = None
+    print("Registering hook...")
+    # Walk PEFT -> base model (max 5 hops to avoid infinite loop)
     base = model
-    while hasattr(base, "base_model"):
-        base = base.base_model
-    if hasattr(base, "model") and hasattr(base.model, "model"):
-        base = base.model.model  # PEFT -> Qwen -> model
+    for _ in range(5):
+        if hasattr(base, "base_model"):
+            base = base.base_model
+        elif hasattr(base, "model"):
+            base = base.model
+        else:
+            break
+    # Now find the norm layer
     if hasattr(base, "norm"):
         hook_handle = base.norm.register_forward_hook(hook_fn)
-    elif hasattr(base, "model") and hasattr(base.model, "norm"):
-        hook_handle = base.model.norm.register_forward_hook(hook_fn)
+        print(f"Hook registered on {type(base).__name__}.norm")
+    else:
+        print(f"WARNING: No norm layer found on {type(base).__name__}, hook skipped")
+
+    # Encode principles (must be after hook registration)
+    principle_hidden = None
+    if config["sami"]:
+        print("Encoding constitutional principles...", flush=True)
+        principle_hidden = encode_principles(
+            model, tokenizer, PRINCIPLES, dev, captured_hidden
+        ).detach()
+        print(f"Principles encoded: {principle_hidden.shape}", flush=True)
 
     # Training loop
-    print(f"\nTraining for {args.n_steps} steps...")
+    import sys
+    print(f"\nTraining for {args.n_steps} steps...", flush=True)
+    sys.stdout.flush()
     model.train()
     if sami:
         sami.train()
@@ -783,7 +802,7 @@ def run_condition(condition_name, config, args):
         if (step + 1) % args.log_every == 0:
             recent = logs[-args.log_every:]
             avg_loss = np.mean([l["total_loss"] for l in recent])
-            msg = f"Step {step+1}: total_loss={avg_loss:.4f}"
+            msg = f"Step {step+1}/{args.n_steps}: total_loss={avg_loss:.4f}"
             if "grpo_loss" in recent[-1]:
                 avg_grpo = np.mean([l.get("grpo_loss", 0) for l in recent])
                 msg += f" grpo={avg_grpo:.4f}"
@@ -796,7 +815,7 @@ def run_condition(condition_name, config, args):
             if "ot_loss" in recent[-1]:
                 avg_ot = np.mean([l.get("ot_loss", 0) for l in recent])
                 msg += f" ot={avg_ot:.4f}"
-            tqdm.write(msg)
+            print(msg, flush=True)
 
     train_time = time.time() - t0
 

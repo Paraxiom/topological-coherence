@@ -1,0 +1,112 @@
+[
+  {
+    "condition": "dpo_only",
+    "config": {
+      "dpo": true,
+      "sami": false,
+      "ot": false,
+      "karmonic": false
+    },
+    "model": "google/gemma-3-1b-it",
+    "n_steps": 200,
+    "lambda_sami": 0,
+    "lambda_karmonic": 0,
+    "lambda_ot": 0,
+    "train_time_s": 64.3,
+    "eval_time_s": 497.2,
+    "mc1_accuracy": 0.5018359853121175,
+    "mc1_correct": 410,
+    "mc2_score": 0.6146027234885528,
+    "mc2_total": 817,
+    "perplexity": 57.432975788386685,
+    "num_chunks": 50
+  },
+  {
+    "condition": "dpo_sami",
+    "config": {
+      "dpo": true,
+      "sami": true,
+      "ot": false,
+      "karmonic": false
+    },
+    "model": "google/gemma-3-1b-it",
+    "n_steps": 200,
+    "lambda_sami": 0.05,
+    "lambda_karmonic": 0,
+    "lambda_ot": 0,
+    "train_time_s": 84.1,
+    "eval_time_s": 488.1,
+    "mc1_accuracy": 0.4430844553243574,
+    "mc1_correct": 362,
+    "mc2_score": 0.5429901389971327,
+    "mc2_total": 817,
+    "perplexity": 56.934669092959204,
+    "num_chunks": 50
+  },
+  {
+    "condition": "dpo_sami_ot",
+    "config": {
+      "dpo": true,
+      "sami": true,
+      "ot": true,
+      "karmonic": false
+    },
+    "model": "google/gemma-3-1b-it",
+    "n_steps": 200,
+    "lambda_sami": 0.05,
+    "lambda_karmonic": 0,
+    "lambda_ot": 0.01,
+    "train_time_s": 90.5,
+    "eval_time_s": 497.7,
+    "mc1_accuracy": 0.5042839657282742,
+    "mc1_correct": 412,
+    "mc2_score": 0.5941199022976582,
+    "mc2_total": 817,
+    "perplexity": 57.642646031140096,
+    "num_chunks": 50
+  },
+  {
+    "condition": "dpo_sami_karmonic",
+    "config": {
+      "dpo": true,
+      "sami": true,
+      "ot": false,
+      "karmonic": true
+    },
+    "model": "google/gemma-3-1b-it",
+    "n_steps": 200,
+    "lambda_sami": 0.05,
+    "lambda_karmonic": 0.01,
+    "lambda_ot": 0,
+    "train_time_s": 85.8,
+    "eval_time_s": 494.3,
+    "mc1_accuracy": 0.4944920440636475,
+    "mc1_correct": 404,
+    "mc2_score": 0.5844895358397838,
+    "mc2_total": 817,
+    "perplexity": 57.29194746280807,
+    "num_chunks": 50
+  },
+  {
+    "condition": "dpo_karmonic",
+    "config": {
+      "dpo": true,
+      "sami": false,
+      "ot": false,
+      "karmonic": true
+    },
+    "model": "google/gemma-3-1b-it",
+    "n_steps": 200,
+    "lambda_sami": 0,
+    "lambda_karmonic": 0.01,
+    "lambda_ot": 0,
+    "train_time_s": 79.6,
+    "eval_time_s": 506.2,
+    "mc1_accuracy": 0.49938800489596086,
+    "mc1_correct": 408,
+    "mc2_score": 0.6029394826907009,
+    "mc2_total": 817,
+    "perplexity": 57.75962746075195,
+    "num_chunks": 50
+  }
+]

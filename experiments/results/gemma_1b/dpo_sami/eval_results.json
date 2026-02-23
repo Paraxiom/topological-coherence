@@ -1,0 +1,22 @@
+{
+  "condition": "dpo_sami",
+  "config": {
+    "dpo": true,
+    "sami": true,
+    "ot": false,
+    "karmonic": false
+  },
+  "model": "google/gemma-3-1b-it",
+  "n_steps": 200,
+  "lambda_sami": 0.05,
+  "lambda_karmonic": 0,
+  "lambda_ot": 0,
+  "train_time_s": 84.1,
+  "eval_time_s": 488.1,
+  "mc1_accuracy": 0.4430844553243574,
+  "mc1_correct": 362,
+  "mc2_score": 0.5429901389971327,
+  "mc2_total": 817,
+  "perplexity": 56.934669092959204,
+  "num_chunks": 50
+}

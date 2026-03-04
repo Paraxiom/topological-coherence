@@ -41,3 +41,11 @@ docs/doppler_cooling_mechanism.*
 docs/tonnetz_harmonic_structure.*
 docs/harmonic_energy_paths.*
 docs/length_harmony_correct.*
+
+# Private/internal
+cover_letter_*.pdf
+cover_letter_*.tex
+SUBMISSION_INSTRUCTIONS.md
+AUDIT_CERTIFICATE.md
+BRIEFING_*.md
+SOCIAL_POSTS_*.md
